@@ -66,6 +66,7 @@ source text for other files. The old manifest is used only for comparison and
 as a write precondition. Changed paths, ignore rules, packages, instruction
 documents and scanner configuration are handled by reconstruction. Renames
 appear as removal and addition. The no-change refresh skips publication.
+Ignore-rule reads and source reads share the snapshot's total byte budget.
 
 Update reports full reconstruction explicitly. Neither a matching timestamp,
 a matching size, nor a persisted digest proves the current bytes. This version
@@ -106,6 +107,8 @@ manifests through this interface.
 A failed publication leaves an existing manifest intact. A terminated process
 can leave temporary files or an update lock. Remove a stale lock only after
 confirming no writer is active. Locking coordinates ContextAnvil writers.
+If the destination directory identity changes, cleanup avoids unlinking
+entries in the replacement directory.
 Node's path-based filesystem API cannot provide an atomic compare-and-swap
 against arbitrary external writers or hostile parent-directory swaps. Choose
 a destination directory controlled by the user.

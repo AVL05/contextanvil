@@ -139,6 +139,13 @@ test('partial scans expose warnings and cannot overwrite a complete snapshot', (
   }
 });
 
+test('manifest read budget includes ignore rules and the source hash pass', (t) => {
+  const { root } = setup(t, { '.gitignore': '# abc\n', 'a.js': 'xyz' });
+  const snapshot = snapshotRepository(root, { maxTotalReadBytes: 10 });
+  assert.ok(snapshot.bytesRead <= 10);
+  assert.equal(snapshot.manifest.scan.complete, false);
+});
+
 test('a process exit before publication leaves the previous manifest readable', (t) => {
   const repo = setup(t, { 'source.js': 'before' });
   const previous = snapshotRepository(repo.root);
@@ -158,6 +165,29 @@ test('a process exit before publication leaves the previous manifest readable', 
   assert.equal(readManifest(repo.output).text, previous.text);
   assert.ok(fs.existsSync(path.join(repo.base, '.snapshot.json.contextanvil-lock')));
   assert.throws(() => writeManifest(repo.output, snapshotRepository(repo.root), readManifest(repo.output)), /lock already exists/);
+});
+
+test('cleanup leaves a replacement directory and its lock alone', (t) => {
+  if (process.platform === 'win32') return t.skip('open handles can prevent directory rename');
+  const repo = setup(t, { 'source.js': 'before' });
+  const parent = path.join(repo.base, 'output');
+  const moved = path.join(repo.base, 'moved');
+  fs.mkdirSync(parent);
+  const output = path.join(parent, 'snapshot.json');
+  const lock = path.join(parent, '.snapshot.json.contextanvil-lock');
+  const previous = snapshotRepository(repo.root);
+  writeManifest(output, previous);
+  fs.writeFileSync(path.join(repo.root, 'source.js'), 'after');
+  assert.throws(() => writeManifest(output, snapshotRepository(repo.root), readManifest(output), {
+    replace() {
+      fs.renameSync(parent, moved);
+      fs.mkdirSync(parent);
+      fs.writeFileSync(lock, 'another writer');
+      throw new Error('destination moved');
+    },
+  }), /Could not publish/);
+  assert.equal(fs.readFileSync(lock, 'utf8'), 'another writer');
+  assert.equal(readManifest(path.join(moved, 'snapshot.json')).text, previous.text);
 });
 
 test('manifest paths refuse symlinks and source aliases cannot hash credentials', (t) => {

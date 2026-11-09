@@ -21,10 +21,11 @@ function targetOf(input) {
     || target.split(path.sep).some((segment) => segment.toLowerCase() === '.git')) {
     throw storageError('Unsafe manifest path.');
   }
-  if (path.relative(parent, realpath(parent)) !== '' || !fs.statSync(parent).isDirectory()) {
+  const directory = stat(parent);
+  if (!directory.isDirectory() || path.relative(parent, realpath(parent)) !== '') {
     throw storageError('Manifest parent must be an existing directory without symlink indirection.');
   }
-  return { target, parent, name };
+  return { target, parent, name, directory };
 }
 
 const sameFile = (a, b) => a.dev === b.dev && a.ino === b.ino;
@@ -32,6 +33,15 @@ const sameRevision = (a, b) => sameFile(a, b) && a.size === b.size
   && a.mtimeNs === b.mtimeNs && a.ctimeNs === b.ctimeNs;
 const stat = (target) => fs.lstatSync(target, { bigint: true });
 const busy = (error) => ['EBUSY', 'EACCES', 'EPERM'].includes(error.code);
+
+function stillDirectory(parent, directory) {
+  try {
+    const current = stat(parent);
+    return current.isDirectory() && sameFile(directory, current) && path.relative(parent, realpath(parent)) === '';
+  } catch {
+    return false;
+  }
+}
 
 function readFile(target) {
   const original = stat(target);
@@ -100,19 +110,25 @@ export function writeManifest(input, snapshot, expected, { replace = fs.renameSy
   let temporary;
   let ownsTemporary = false;
   let tempFd;
+  let destination;
   try {
-    const { target, parent, name } = targetOf(input);
+    destination = targetOf(input);
+    const { target, parent, name, directory } = destination;
     if (isInside(snapshot.root, target)) throw storageError('Write the manifest outside the scanned repository.');
     if (expected && expected.text === snapshot.text) {
       assertCurrent(target, expected);
       return false;
     }
-    const directory = stat(parent);
+    const assertDirectory = () => {
+      if (!stillDirectory(parent, directory)) throw storageError('Manifest directory changed during the write.');
+    };
+    assertDirectory();
     if (expected) {
       lock = path.join(parent, '.' + name + '.contextanvil-lock');
       lockFd = fs.openSync(lock, 'wx', 0o600);
       assertCurrent(target, expected);
     }
+    assertDirectory();
     temporary = path.join(parent, '.contextanvil-' + crypto.randomBytes(16).toString('hex') + '.tmp');
     tempFd = fs.openSync(temporary, 'wx', 0o600);
     ownsTemporary = true;
@@ -121,9 +137,7 @@ export function writeManifest(input, snapshot, expected, { replace = fs.renameSy
     fs.closeSync(tempFd);
     tempFd = undefined;
     for (const delay of [10, 25, 50, 100, 0]) {
-      if (path.relative(parent, realpath(parent)) !== '' || !sameFile(directory, stat(parent))) {
-        throw storageError('Manifest directory changed during the write.');
-      }
+      assertDirectory();
       try {
         if (expected) {
           assertCurrent(target, expected);
@@ -152,12 +166,16 @@ export function writeManifest(input, snapshot, expected, { replace = fs.renameSy
     if (tempFd !== undefined) {
       try { fs.closeSync(tempFd); } catch { /* best effort */ }
     }
-    if (ownsTemporary) {
+    const canClean = destination && (ownsTemporary || lockFd !== undefined)
+      && stillDirectory(destination.parent, destination.directory);
+    if (ownsTemporary && canClean) {
       try { fs.unlinkSync(temporary); } catch { /* best effort */ }
     }
     if (lockFd !== undefined) {
       try { fs.closeSync(lockFd); } catch { /* best effort */ }
-      try { fs.unlinkSync(lock); } catch { /* best effort */ }
+      if (canClean) {
+        try { fs.unlinkSync(lock); } catch { /* best effort */ }
+      }
     }
   }
 }

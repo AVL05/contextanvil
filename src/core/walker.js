@@ -31,11 +31,11 @@ function byName(a, b) {
 }
 
 /** Ignore files are read only if they are regular files inside the root (a symlink to elsewhere is not followed). */
-function readIgnoreFile(root, rel, limits) {
+function readIgnoreFile(root, rel, limits, remaining) {
   const cap = limits.maxIgnoreFileBytes;
   const reader = createReader({
     root, files: [{ path: rel, size: 0 }],
-    limits: { maxFileBytes: cap, maxTotalReadBytes: cap },
+    limits: { maxFileBytes: cap, maxTotalReadBytes: Math.min(cap, remaining) },
   });
   const text = reader.read(rel);
   return { rules: text === null ? null : parseIgnore(text), reads: reader.filesRead(), bytes: reader.bytesRead() };
@@ -69,7 +69,7 @@ function listDirectory(abs, maxEntries) {
  * @param {object} limits
  * @param {{ respectIgnore?: boolean }} [options]
  */
-export function walkRepository(root, limits, { respectIgnore = true } = {}) {
+export function walkRepository(root, limits, { respectIgnore = true, boundIgnoreIo = false } = {}) {
   const files = [];
   const sensitive = [];
   const diagnostics = [];
@@ -105,7 +105,8 @@ export function walkRepository(root, limits, { respectIgnore = true } = {}) {
       for (const name of ['.gitignore', '.contextanvilignore']) {
         if (!entries.some((e) => e.name === name && (e.isFile() || e.isSymbolicLink()))) continue;
         const rel = dir.rel ? `${dir.rel}/${name}` : name;
-        const { rules, reads, bytes } = readIgnoreFile(root, rel, limits);
+        const remaining = boundIgnoreIo ? limits.maxTotalReadBytes - ignoreBytes : Infinity;
+        const { rules, reads, bytes } = readIgnoreFile(root, rel, limits, remaining);
         ignoreReads += reads;
         ignoreBytes += bytes;
         if (!rules) diagnostics.push({ level: 'warn', code: 'ignore-unreadable', message: 'Ignore rules could not be read safely', path: rel });

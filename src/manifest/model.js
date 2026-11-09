@@ -5,7 +5,7 @@ import { byCodeUnit, normalizeRelative } from '../core/paths.js';
 import { hasUnsafeCharacters } from '../core/sanitize.js';
 import { classifySensitivePath, findSecrets } from '../core/secrets.js';
 import { ContextAnvilError } from '../errors.js';
-import { readerFor, scanRepository, SCHEMA_VERSION } from '../scanner.js';
+import { readerFor, scanRepository, SCHEMA_VERSION, snapshotReadBudget } from '../scanner.js';
 import { VERSION } from '../version.js';
 
 const FORMAT = 'contextanvil-manifest';
@@ -94,7 +94,7 @@ export function parseManifest(text) {
 
 /** Reconstruct from a live scan. Never use an old manifest as a detector input. */
 export function snapshotRepository(root, options = {}) {
-  const scan = scanRepository(root, options);
+  const scan = scanRepository(root, { ...options, [snapshotReadBudget]: true });
   const reader = readerFor(scan);
   const warnings = new Set(scan.diagnostics.filter((d) => d.level !== 'info').map((d) => d.code));
   let complete = !scan.stats.truncated && !scan.stats.excluded.unreadable

@@ -11,6 +11,7 @@ import { DETECTORS } from './detectors/index.js';
 import { TOOL_NAME, VERSION } from './version.js';
 
 export const SCHEMA_VERSION = 1;
+export const snapshotReadBudget = Symbol('share snapshot read budget with ignore traversal');
 
 /**
  * Analyse a repository without modifying it or executing anything in it.
@@ -31,9 +32,11 @@ export function scanRepository(rootInput = '.', options = {}) {
     throw new ContextAnvilError('ROOT_NOT_DIRECTORY', `Not a directory: ${rootInput}`);
   }
 
-  const walk = walkRepository(root, limits, { respectIgnore: options.respectIgnore !== false });
+  const boundIgnoreIo = options[snapshotReadBudget] === true;
+  const walk = walkRepository(root, limits, { respectIgnore: options.respectIgnore !== false, boundIgnoreIo });
   const diagnostics = [...walk.diagnostics];
-  const reader = createReader({ root, files: walk.files, limits, diagnostics });
+  const readLimits = boundIgnoreIo ? { ...limits, maxTotalReadBytes: limits.maxTotalReadBytes - walk.ignoreBytes } : limits;
+  const reader = createReader({ root, files: walk.files, limits: readLimits, diagnostics });
   const ctx = createDetectorContext({ root, files: walk.files, reader, diagnostics });
 
   for (const detector of DETECTORS) {
