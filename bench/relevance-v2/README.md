@@ -22,3 +22,43 @@ all tasks in each sampled repository. Report exploratory 95% intervals and
 repository-level effects. Three holdout repositories cannot establish
 generalization. The design's +10 point candidate and +5 point essential
 coverage targets still govern promotion.
+
+## Regression investigation
+
+The original implementation is pinned at
+`bc0b059017d48d502a6832c052bf9e758a3d5162`. Run with the pinned clones
+under the given directory. Write diagnostic artifacts outside scanned repositories.
+
+```sh
+node bench/relevance-v2/evaluate.js <clone-directory> dev diagnose > dev.json
+node bench/relevance-v2/evaluate.js <clone-directory> holdout diagnose > postmortem.json
+node bench/relevance-v2/report.js dev.json postmortem.json
+```
+
+Development ablations each switch one policy relative to v2: reject
+graph-only candidates, replace quotas with a bounded union prioritized by
+the stronger of lexical and graph evidence, suppress graph score, suppress
+the lexical barrel discount, or restore Phase 1.2 pack policy. Downstream
+changes from that switch are intentional. The pack ablation holds the
+candidate and ranking policies fixed.
+
+Losses are attributed to the earliest observable blocking stage:
+missing from the shortlist, ranked below the pack shortlist or moved
+down, or considered for the pack but omitted. The attribution is
+descriptive. A lower rank can also affect budget admission. Bytes for
+instructions and file explanations exclude headings and the common
+envelope. Labelled hits per KiB measure observed density. Human-judged
+marginal utility requires independently adjudicated relevance labels.
+
+### Untouched follow-up set
+
+`future-labels.json` freezes 33 tasks from Acorn, Redux and Symfony Console.
+Its SHA-256 is
+`316d4078414251ba462975b9100988426ec9d700dd8eb15a1bf8be870721bebb`.
+The mechanical selector, 80-commit history depth and weak-label rubric
+match the pilot. Each history head and parent snapshot is pinned in JSON.
+All three are MIT-licensed (Acorn package LICENSE files, Redux
+`LICENSE.md`, Symfony Console `LICENSE`). Keep this set untouched until a
+corrected configuration is frozen. It can evaluate weak-label retrieval
+and ranking. Independent essential-file adjudication still requires a
+separate freeze before any final run.

@@ -1,0 +1,789 @@
+{
+  "selection": "bench/external/select.js (rules in the file header)",
+  "repos": {
+    "acorn": {
+      "url": "https://github.com/acornjs/acorn",
+      "head": "e4516ce0f49aea06b98ae1a551644119958ed4e1"
+    },
+    "redux": {
+      "url": "https://github.com/reduxjs/redux",
+      "head": "61ebf8596654cf3c4b197e426e302fcb3c2bc13e"
+    },
+    "console": {
+      "url": "https://github.com/symfony/console",
+      "head": "dc3c284882e545b47f590c392e7be0da4184b6e2"
+    }
+  },
+  "tasks": [
+    {
+      "id": "acorn-e4516ce",
+      "repo": "acorn",
+      "commit": "e4516ce0f49aea06b98ae1a551644119958ed4e1",
+      "parent": "69788e23ca00483aef84005502dc3b88f2af38df",
+      "subject": "Scan regexp group disjunction in linear time",
+      "task": "Scan regexp group disjunction in linear time",
+      "relevant": [
+        {
+          "path": "acorn/src/regexp.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-ffadf59",
+      "repo": "acorn",
+      "commit": "ffadf59c5716832a93cf2ecfb868c0a523bc5623",
+      "parent": "ecd9b4260daaf0566db2f0fcc623791a9c75241f",
+      "subject": "Skip check for 'arguments' reserved ident when parsing a label",
+      "task": "Skip check for 'arguments' reserved ident when parsing a label",
+      "relevant": [
+        {
+          "path": "acorn/src/expression.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn/src/state.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn/src/statement.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/tests-class-features-2022.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-0faff19",
+      "repo": "acorn",
+      "commit": "0faff199c827bb36ee5426764c5a90c7729d4ed2",
+      "parent": "32d09233e5784b3f51014dc454b7197a024afaf1",
+      "subject": "Only allow const without initializer before of/in when actually in a for statement",
+      "task": "Only allow const without initializer before of/in when actually in a for statement",
+      "relevant": [
+        {
+          "path": "acorn/src/statement.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/tests-harmony.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-46fafc5",
+      "repo": "acorn",
+      "commit": "46fafc5ae456ab2b4c0daad1aceb07b7a689e37e",
+      "parent": "ac794b1532dcc5031adb49c44bd5214a61ef8eb5",
+      "subject": "Make skipWhiteSpace skip HTML comments",
+      "task": "Make skipWhiteSpace skip HTML comments",
+      "relevant": [
+        {
+          "path": "acorn/src/whitespace.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/tests-harmony.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-c912cf2",
+      "repo": "acorn",
+      "commit": "c912cf2611079812638a49bc38292557a1096be8",
+      "parent": "f180fd7f1e92ea35c064132366de07eedd761e31",
+      "subject": "Disallow additional subscripts before arrow in async arrow functions",
+      "task": "Disallow additional subscripts before arrow in async arrow functions",
+      "relevant": [
+        {
+          "path": "acorn/src/expression.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/tests-asyncawait.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-5bd50cd",
+      "repo": "acorn",
+      "commit": "5bd50cd72dc9ddb1856ed13cfa8a1c4884be917a",
+      "parent": "efd7a2106bb52698a7f596d496efdd7a5290d291",
+      "subject": "Compare expression end instead of identity in parseSubscripts",
+      "task": "Compare expression end instead of identity in parseSubscripts",
+      "relevant": [
+        {
+          "path": "acorn/src/expression.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-f065b20",
+      "repo": "acorn",
+      "commit": "f065b20cf0f5a55b311eebdad74b1341c84e6438",
+      "parent": "0a76c0e323ee8e64a7f31619875b9a2d0dde5f41",
+      "subject": "Upgrade github actions to get rid of warning",
+      "task": "Upgrade github actions to get rid of warning",
+      "relevant": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-b61cb9a",
+      "repo": "acorn",
+      "commit": "b61cb9a4f245c0f7abc8c3ea9f85b5ac8bc5fbce",
+      "parent": "c8d515c7f9c8baa62bf5ccffba98507b7be46218",
+      "subject": "Add startLocation option",
+      "task": "Add startLocation option",
+      "relevant": [
+        {
+          "path": "acorn/README.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn/src/acorn.d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn/src/options.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn/src/state.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-b7c31b6",
+      "repo": "acorn",
+      "commit": "b7c31b626e135c4ed130ff5063c44c20ea8e231a",
+      "parent": "5c4af50af1536f144f0a4f254c50e5e34c0a2415",
+      "subject": "Fix mistake in previous patch",
+      "task": "Fix mistake in previous patch",
+      "relevant": [
+        {
+          "path": "acorn-loose/src/tokenize.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-8a47812",
+      "repo": "acorn",
+      "commit": "8a4781267015166036cced10fca2799906222de7",
+      "parent": "3bc83f91bbddf23a6e8b69cbec2d2c332ee08253",
+      "subject": "Convert stack overflow errors to SyntaxError instances",
+      "task": "Convert stack overflow errors to SyntaxError instances",
+      "relevant": [
+        {
+          "path": "acorn-loose/src/state.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn/src/expression.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn/src/parseutil.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn/src/state.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/tests.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-27781e4",
+      "repo": "acorn",
+      "commit": "27781e4542a3fd319661d65cf65558560ecedb0b",
+      "parent": "2dded4b9de2df211d065262efc633740d9071dfc",
+      "subject": "Remove unnecessary test",
+      "task": "Remove unnecessary test",
+      "relevant": [
+        {
+          "path": "acorn/src/expression.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "acorn-e4baf9e",
+      "repo": "acorn",
+      "commit": "e4baf9eebe3dd9b2df6ccdfa2127ebfb423b2b8d",
+      "parent": "543c6f072e5b9a605c222691e1aa623efe107f62",
+      "subject": "Mark acorn-walk 8.3.5",
+      "task": "Mark acorn-walk 8.3.5",
+      "relevant": [
+        {
+          "path": "acorn-walk/CHANGELOG.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "acorn-walk/package.json",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-fb3bad6",
+      "repo": "redux",
+      "commit": "fb3bad6804d651b8ae0e909f32765beb989ba6f8",
+      "parent": "84a4b78b5ff93de8ee07434906a78e96b0b4f8ee",
+      "subject": "chore: replace rimraf cleanup with fs.rmSync (#4951)",
+      "task": "replace rimraf cleanup with fs.rmSync (#4951)",
+      "relevant": [
+        {
+          "path": "package.json",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "scripts/clean.mts"
+      ]
+    },
+    {
+      "id": "redux-0a7e097",
+      "repo": "redux",
+      "commit": "0a7e09776cd3b7adaf29cf0dc6b736092b18ef1e",
+      "parent": "4921e2bae702c4081f7e36b9fecbd6e50801b526",
+      "subject": "type-tests: replace deprecated toMatchTypeOf with toExtend (#4927)",
+      "task": "type-tests: replace deprecated toMatchTypeOf with toExtend (#4927)",
+      "relevant": [
+        {
+          "path": "test/typescript/actionCreators.test-d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/typescript/compose.test-d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/typescript/dispatch.test-d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/typescript/enhancers.test-d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/typescript/injectedDispatch.test-d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/typescript/middleware.test-d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/typescript/reducers.test-d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/typescript/store.test-d.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-fefb7f5",
+      "repo": "redux",
+      "commit": "fefb7f53254f8176fa6afc7e16a50755e7dddb00",
+      "parent": "71606661ac515bdd64c199a6bb508401c7cf736f",
+      "subject": "docs: fix typos in reducer and store type JSDoc (#4919)",
+      "task": "fix typos in reducer and store type JSDoc (#4919)",
+      "relevant": [
+        {
+          "path": "src/types/reducers.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "src/types/store.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-2d5498d",
+      "repo": "redux",
+      "commit": "2d5498d1c302f8a6691a9564b3b25cf50b7e176b",
+      "parent": "5d65348e26635b6ec627b1030732ed38797e88e9",
+      "subject": "docs: recommend `createEntityAdapter` for normalized state (#4899)",
+      "task": "recommend `createEntityAdapter` for normalized state (#4899)",
+      "relevant": [
+        {
+          "path": "docs/usage/structuring-reducers/NormalizingStateShape.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/usage/structuring-reducers/PrerequisiteConcepts.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-28d433b",
+      "repo": "redux",
+      "commit": "28d433b762735c870a073e3a3c8a27a33ca8df6f",
+      "parent": "4b49bf1216476f47ac0ae70d049c08fcb978648b",
+      "subject": "fix: use String() to safely serialize Symbol action.type in dispatch error message (#4888)",
+      "task": "use String() to safely serialize Symbol action.type in dispatch error message (#4888)",
+      "relevant": [
+        {
+          "path": "src/createStore.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/createStore.spec.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-1afbd4a",
+      "repo": "redux",
+      "commit": "1afbd4aa3dc923509cdf5659ec5cff44ebd0d13b",
+      "parent": "735b5e2e173755b70ccdb02f37c8abfd827b2531",
+      "subject": "Fix: Add missing `StateExt` generic to `StoreCreator` second overload (#4864)",
+      "task": "Add missing `StateExt` generic to `StoreCreator` second overload (#4864)",
+      "relevant": [
+        {
+          "path": "src/types/store.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-a28b432",
+      "repo": "redux",
+      "commit": "a28b432828c2b565d26c23b688760c5ff92e5c35",
+      "parent": "ab47d947c29f2ce7f47a3a69eb6075a036355248",
+      "subject": "docs: add \"name\" attribute to text input form element in AddPostForm.… (#4829)",
+      "task": "add \"name\" attribute to text input form element in AddPostForm.… (#4829)",
+      "relevant": [
+        {
+          "path": "docs/tutorials/essentials/part-3-data-flow.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/tutorials/essentials/part-4-using-data.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/tutorials/essentials/part-7-rtk-query-basics.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-af8e64f",
+      "repo": "redux",
+      "commit": "af8e64f97c6ea0bea6eb670f9c8dfecf27f93803",
+      "parent": "fb9289285a1e9f012b9721ae982eb0e0aee21213",
+      "subject": "docs(typescript): fix union type terminology (#4839)",
+      "task": "fix union type terminology (#4839)",
+      "relevant": [
+        {
+          "path": "docs/tutorials/essentials/part-5-async-logic.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-585743d",
+      "repo": "redux",
+      "commit": "585743d3c47ba11a43924b69cb89071a7df9786b",
+      "parent": "820301a1865c499ae18ca96ffece122790937b56",
+      "subject": "docs(GettingStarted): update and expand project setup templates section (#4809)",
+      "task": "update and expand project setup templates section (#4809)",
+      "relevant": [
+        {
+          "path": "docs/introduction/GettingStarted.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-c303b1f",
+      "repo": "redux",
+      "commit": "c303b1f4b2ffa82408b48ff22bc4b8b1a3aae1d3",
+      "parent": "94afef689a45a092d4dbf2a4148dc2f536aeff52",
+      "subject": "Pin workflow actions to specific SHA (latest minor version) (#4831)",
+      "task": "Pin workflow actions to specific SHA (latest minor version) (#4831)",
+      "relevant": [
+        {
+          "path": ".github/workflows/publish.yaml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/size.yaml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/test.yaml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "redux-fc26987",
+      "repo": "redux",
+      "commit": "fc26987671f2d44a017f7e5d9c8e14c5d60c9556",
+      "parent": "78b284438224bfde0af85094344b09676db40afb",
+      "subject": "docs: Fix grammatical error in part-6-performance-normalization.md (#4816)",
+      "task": "Fix grammatical error in part-6-performance-normalization.md (#4816)",
+      "relevant": [
+        {
+          "path": "docs/tutorials/essentials/part-6-performance-normalization.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-b3f1fd1",
+      "repo": "console",
+      "commit": "b3f1fd177d6a951ec5223e742a4dcc5342137f40",
+      "parent": "1784eaef694778b7549ee25fc27af793a31e28f5",
+      "subject": "Fix-Console-deprecated-option-warning",
+      "task": "Fix-Console-deprecated-option-warning",
+      "relevant": [
+        {
+          "path": "Command/Command.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Command/CommandTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-ba1fc83",
+      "repo": "console",
+      "commit": "ba1fc838957e308f3aa62b5c1b05225925be7285",
+      "parent": "6d3b382ee17cfd6aefcfaed0ed08f5958d68ecec",
+      "subject": "[Console] Normalize line endings in path completion tests",
+      "task": "[Console] Normalize line endings in path completion tests",
+      "relevant": [
+        {
+          "path": "Tests/Command/CompleteCommandTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-e8e24a2",
+      "repo": "console",
+      "commit": "e8e24a2d8565cb89dc0b1904178c42ddf9c9dcf6",
+      "parent": "93f71682852c143df400243992cff54abe03471d",
+      "subject": "[Console] Speed up writing to a section in several steps",
+      "task": "[Console] Speed up writing to a section in several steps",
+      "relevant": [
+        {
+          "path": "Output/ConsoleSectionOutput.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Output/ConsoleSectionOutputTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-a030532",
+      "repo": "console",
+      "commit": "a030532a509ab2c5599590884a2019c63374ef5e",
+      "parent": "679a0587ef43b2f1be1dd8db4c2db4e63c9a01eb",
+      "subject": "[Console] Wrap exception messages on word boundaries",
+      "task": "[Console] Wrap exception messages on word boundaries",
+      "relevant": [
+        {
+          "path": "Application.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/ApplicationTest.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Fixtures/application_renderexception4.txt",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Fixtures/application_renderexception_escapeslines.txt",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-757a736",
+      "repo": "console",
+      "commit": "757a736f585d40052a1a62f91a3795849fcf18a0",
+      "parent": "62a7087107191e1a3fa62acdf27e1c84c007b9af",
+      "subject": "[Console] Register class-level `#[AsCommand]` groups and let the attribute list options",
+      "task": "[Console] Register class-level `#[AsCommand]` groups and let the attribute list options",
+      "relevant": [
+        {
+          "path": "Attribute/AsCommand.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "CHANGELOG.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Command/Command.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Command/InvokableCommand.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "DependencyInjection/AddConsoleCommandPass.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Command/CommandTest.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/DependencyInjection/AddConsoleCommandPassTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-12d627f",
+      "repo": "console",
+      "commit": "12d627f7274c1ceccb5f48c77957101a7f177dce",
+      "parent": "147c43c391c4cbdb7e34bf0fa577e763a1f31c19",
+      "subject": "[Console] Wrap TextDescriptor descriptions to the terminal width",
+      "task": "[Console] Wrap TextDescriptor descriptions to the terminal width",
+      "relevant": [
+        {
+          "path": "CHANGELOG.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Descriptor/TextDescriptor.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Descriptor/AbstractDescriptorTestCase.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Descriptor/TextDescriptorTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-4ac015e",
+      "repo": "console",
+      "commit": "4ac015ef5b05c0c69c9a917bfa214fdcaa91278e",
+      "parent": "186f5caef6ebdd410d98eb49c76e9c80ff161027",
+      "subject": "[Console] Fix terminator handling in the image protocols",
+      "task": "[Console] Fix terminator handling in the image protocols",
+      "relevant": [
+        {
+          "path": "Terminal/Image/ITerm2Protocol.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Terminal/Image/KittyGraphicsProtocol.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Terminal/Image/ITerm2ProtocolTest.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Terminal/Image/KittyGraphicsProtocolTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-8f99e85",
+      "repo": "console",
+      "commit": "8f99e854dd6c359375cf1b4ff1f2e421180af303",
+      "parent": "b63836998511b9d49862c7ca72a41dd49fdd491b",
+      "subject": "[Console] Reduce buffer reallocations in FileInputHelper paste detection",
+      "task": "[Console] Reduce buffer reallocations in FileInputHelper paste detection",
+      "relevant": [
+        {
+          "path": "Helper/FileInputHelper.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Helper/FileInputHelperTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-3b6316b",
+      "repo": "console",
+      "commit": "3b6316bdb3ac5d3b3a29fa057afaa71047e2e49e",
+      "parent": "b711a8ab808b6c074c6b8caef70d0fd8d6b6d07d",
+      "subject": "[Console] Fix #[MapDateTime] arguments resolved as strings by BuiltinTypeValueResolver",
+      "task": "[Console] Fix #[MapDateTime] arguments resolved as strings by BuiltinTypeValueResolver",
+      "relevant": [
+        {
+          "path": "ArgumentResolver/ValueResolver/BuiltinTypeValueResolver.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/ArgumentResolver/ValueResolver/BuiltinTypeValueResolverTest.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "Tests/Command/InvokableCommandTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "console-644d4b2",
+      "repo": "console",
+      "commit": "644d4b270c8d1c76c137a63bf75a2a99724bda1c",
+      "parent": "210e53a956321f584e815cd8ad123d5af2d554cc",
+      "subject": "[Console] Remove trailing dot in command alternative list",
+      "task": "[Console] Remove trailing dot in command alternative list",
+      "relevant": [
+        {
+          "path": "Application.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    }
+  ]
+}

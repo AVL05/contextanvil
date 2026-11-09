@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { compileContext, scanRepository } from '../src/index.js';
+import { experimentOptions } from '../src/compiler/experiment.js';
 import { makeRepo, treeDigest } from './helpers.js';
 
 const options = { relevanceV2: true, retrievalDiagnostics: true, budget: '8kb' };
@@ -22,6 +23,13 @@ test('bounded v2 expands across real imports in both directions and discounts ba
   assert.ok(!v2.retrieval.ranked.find((file) => file.path === 'noise.ts')?.reasons.some((reason) => reason.kind === 'graph'));
   assert.ok(compileContext(scan, 'Change Panel', options).retrieval.candidates.includes('launcher.tsx'));
   assert.deepEqual(v2, compileContext(scan, 'Change Launchpad', options));
+  const stages = [];
+  const trace = { mark: (stage) => stages.push(stage) };
+  assert.deepEqual(v2, compileContext(scan, 'Change Launchpad', { ...options, [experimentOptions]: trace }));
+  assert.ok(trace.retrieval.expanded.includes('widgets/panel.tsx'));
+  assert.ok(trace.retrieval.union.includes('widgets/panel.tsx'));
+  assert.ok(stages.includes('rerank'));
+  assert.deepEqual(trace.pack.files.map((file) => file.path), v2.files.map((file) => file.path));
   assert.equal(treeDigest(repo.root), before);
 });
 

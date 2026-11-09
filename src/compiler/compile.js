@@ -9,6 +9,7 @@ import { analyzeFiles, isScorable } from './analyze.js';
 import { byteLength, estimateTokens, parseBudget } from './budget.js';
 import { findRelated, rankFiles } from './relevance.js';
 import { retrieve } from './retrieve.js';
+import { experimentOptions } from './experiment.js';
 import { classifyIntent, extractTaskTerms, matchTerm, splitWords } from './terms.js';
 
 export const PACK_SCHEMA_VERSION = 1;
@@ -78,13 +79,18 @@ export function compileContext(scan, task, options = {}) {
     ...preRank.filter((f) => f.score <= 0).sort((a, b) => sizeOf.get(a.path) - sizeOf.get(b.path) || byCodeUnit(a.path, b.path)),
   ].map((f) => f.path);
   const v2 = options.relevanceV2 === true;
+  const experiment = options[experimentOptions];
+  const v2Pack = v2 && experiment?.variant !== 'legacy-pack';
+  experiment?.mark('path-ranking');
   const { analyses, skipped: contentSkipped } = analyzeFiles(scan, reader, readOrder, {
     maxFiles: options.maxContentFiles ?? 5000, terms, relationshipIndex: v2,
   });
+  experiment?.mark('read-and-extract');
 
   // 2. Full scoring (every point carries a reason; see relevance.js for the scoring table).
   const { ranked: allRanked, termInfo } = rankFiles({ candidates, terms, mentioned: mentionedPaths, intent, analyses, structuralBoosts: !v2 });
-  const retrieval = retrieve(allRanked, analyses, taskInfo.text, v2);
+  experiment?.mark('lexical-ranking');
+  const retrieval = retrieve(allRanked, analyses, taskInfo.text, v2, experiment);
   const ranked = retrieval.ranked.map((f) => ({ path: f.path, size: f.size, category: f.category, score: f.score, reasons: f.reasons }));
   const selectedFiles = ranked.slice(0, top).map((f) => {
     const a = analyses.get(f.path);
@@ -94,7 +100,7 @@ export function compileContext(scan, task, options = {}) {
   });
 
   // 3. Applicable instruction sections.
-  const primary = (v2 ? selectedFiles : selectedFiles.slice(0, 3)).map((f) => f.path);
+  const primary = (v2Pack ? selectedFiles : selectedFiles.slice(0, 3)).map((f) => f.path);
   const omissions = [];
   const docs = [];
   const seenHashes = new Map();
@@ -184,12 +190,12 @@ export function compileContext(scan, task, options = {}) {
   selectedFiles.forEach((f, i) => {
     const lines = [`- \`${f.path}\` (score ${f.score}; ${fmtKiB(f.size)}${f.sha256 ? `; sha256 ${shortHash(f.sha256)}` : ''})`];
     const reasons = [...f.reasons].filter((r) => r.points > 0).sort((a, b) => b.points - a.points);
-    lines.push(`  - why: ${reasons.slice(0, v2 ? 1 : 4).map((r) => r.brief ?? r.detail).join('; ')}`);
+    lines.push(`  - why: ${reasons.slice(0, v2Pack ? 1 : 4).map((r) => r.brief ?? r.detail).join('; ')}`);
     if (f.symbols.length) lines.push(`  - symbols: ${f.symbols.map((s) => `${s.name} (${s.kind}, line ${s.line})`).join(', ')}`);
     if (f.related.length) lines.push(`  - related: ${f.related.slice(0, 3).map((r) => `\`${r.path}\` (${r.relation})`).join(', ')}`);
     add({
       id: `file:${f.path}`, section: 'files', priority: i < 3 ? 30 + i : 60 + i, markdown: lines.join('\n'), file: f,
-      compact: v2
+      compact: v2Pack
         ? `- \`${f.path}\` (score ${f.score}; sha256 ${shortHash(f.sha256)})`
         : `- \`${f.path}\` (score ${f.score}; reasons trimmed to fit budget)`,
     });
@@ -201,7 +207,7 @@ export function compileContext(scan, task, options = {}) {
     const note = c.cut ? `\n> [truncated: ${c.cut} more line${c.cut === 1 ? '' : 's'} at ${c.doc.path}:${c.section.startLine}-${c.section.endLine}]` : '';
     add({
       id: `instruction:${c.doc.path}:${c.section.startLine}`, section: 'instructions',
-      priority: v2 ? 20 + i / (sectionCandidates.length + 1) : c.matched > 0 ? 34 + i * 0.01 : 70 + i * 0.01,
+      priority: v2Pack ? 20 + i / (sectionCandidates.length + 1) : c.matched > 0 ? 34 + i * 0.01 : 70 + i * 0.01,
       markdown: `${head}\nWhy included: ${c.why}\n${body}${note}`,
       instruction: { path: c.doc.path, section: c.breadcrumb, startLine: c.section.startLine, endLine: c.section.endLine, sha256: c.doc.sha256, why: c.why, truncated: c.cut > 0, text: c.text },
     });
@@ -264,6 +270,7 @@ export function compileContext(scan, task, options = {}) {
   }
 
   // 7. Pack within budget.
+  experiment?.mark('prepare-pack');
   const sectionTitles = {
     snapshot: 'Project snapshot (observed facts)',
     commands: 'Commands (from manifests; ContextAnvil never runs them)',
@@ -372,6 +379,18 @@ export function compileContext(scan, task, options = {}) {
 
   // 8. Structured form of exactly what was rendered.
   const includedFiles = included.filter((i) => i.file).map((i) => i.file);
+  experiment?.mark('select-and-render');
+  if (experiment) experiment.pack = {
+    ranked: ranked.slice(0, 64),
+    considered: selectedFiles.map((file) => file.path),
+    budgetExcluded: dropped.filter((item) => item.file).map((item) => item.file.path),
+    instructionBytes: included.filter((item) => item.instruction).reduce((bytes, item) => bytes + byteLength(item.markdown) + 1, 0),
+    files: included.filter((item) => item.file).map((item) => ({
+      path: item.file.path,
+      bytes: byteLength(item.markdown) + 1,
+      explanationBytes: item.markdown.split('\n').slice(1).reduce((bytes, line) => bytes + byteLength(line) + 1, 0),
+    })),
+  };
   const includedFactIds = [...new Set(included.flatMap((i) => (i.facts ?? []).map((f) => f.id)))];
   return {
     schemaVersion: PACK_SCHEMA_VERSION,
