@@ -26,9 +26,13 @@ for (const ds of data.datasets) {
   const repo = materialize(HERE, ds.source);
   try {
     // The only legitimately machine-specific text is the temporary directory; mask it in both slash styles.
-    const mask = (value) => JSON.stringify(value)
-      .split(repo.dir.replace(/\\/g, '\\\\')).join('<root>')
-      .split(repo.dir.replace(/\\/g, '/')).join('<root>');
+    // ContextAnvil reports the REAL path (macOS: /private/var/... for /var/...), and the real path ends with the
+    // unresolved one, so the longest spelling must be masked first or "/private<root>" is left behind.
+    const roots = [...new Set([repo.dir, fs.realpathSync(repo.dir), fs.realpathSync.native(repo.dir)])].sort((a, b) => b.length - a.length);
+    const mask = (value) => roots.reduce(
+      (text, dir) => text.split(dir.replace(/\\/g, '\\\\')).join('<root>').split(dir.replace(/\\/g, '/')).join('<root>'),
+      JSON.stringify(value),
+    );
     const scan = scanRepository(repo.dir);
     const parts = [mask(scan), mask(diagnose(scan))];
     for (const t of ds.tasks) {
@@ -37,6 +41,11 @@ for (const ds of data.datasets) {
       parts.push(pack);
     }
     out[ds.id] = sha(parts.join('\n'));
+    if (process.env.DIGEST_DUMP) {
+      // Diagnostic aid: write the masked outputs so two platforms can be diffed.
+      fs.mkdirSync(process.env.DIGEST_DUMP, { recursive: true });
+      fs.writeFileSync(path.join(process.env.DIGEST_DUMP, `${ds.id}.txt`), parts.join('\n\n'));
+    }
     all.push(out[ds.id]);
   } finally {
     repo.cleanup();

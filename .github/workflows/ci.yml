@@ -81,12 +81,14 @@ jobs:
 
       - name: Cross-platform determinism digest
         shell: bash
-        run: node bench/digest.js > "$RUNNER_TEMP/digest.json" && cat "$RUNNER_TEMP/digest.json"
+        run: DIGEST_DUMP="$RUNNER_TEMP/digest-dump" node bench/digest.js > "$RUNNER_TEMP/digest.json" && cat "$RUNNER_TEMP/digest.json"
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: digest-${{ matrix.os }}-node-${{ matrix.node == 'lts/*' && 'lts' || matrix.node }}
-          path: ${{ runner.temp }}/digest.json
+          path: |
+            ${{ runner.temp }}/digest.json
+            ${{ runner.temp }}/digest-dump
 
   determinism-across-platforms:
     name: Same output on every OS and Node version
