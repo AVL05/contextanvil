@@ -5,6 +5,10 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 
 ## [Unreleased]
 
+- Add explicit `manifest create`, `verify`, `diff`, and `update` commands with
+  canonical source hashes, fact provenance, and atomic external publication.
+  Refreshes reconstruct from live files and skip writes when unchanged.
+
 Phase 1.2: cross-platform validation and independent evaluation.
 
 ### Verified

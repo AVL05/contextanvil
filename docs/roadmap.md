@@ -37,23 +37,13 @@ secret redaction; ignore, symlink and traversal safety.
 
 ## Planned (not implemented)
 
-### Phase 2: persistent manifests, incremental updates, diffs, safe generation
+### Phase 2: persistent manifests and live diffs
 
-A full technical design exists: [design/phase-2-manifests.md](design/phase-2-manifests.md). It is a proposal awaiting review, and contains its own acceptance criteria and open questions. No code has been written.
-
-Goal: stop re-deriving facts on every run and let people review how context changes.
-
-- A **context manifest** file (a versioned JSON document of facts and digests) that the user explicitly
-  creates and commits or ignores. Never created implicitly.
-- **Incremental updates**: re-analyse only files whose content digest changed; detect removed sources.
-- **Diffs**: `contextanvil diff` showing facts added, removed or gone stale between two manifests or commits,
-  using the existing content-digest freshness marker.
-- **Safe generation of agent instruction files**: draft AGENTS.md / CLAUDE.md content from observed facts, written
-  only to a new path or shown as a diff. Never overwrite an existing file; no hooks or agent configuration
-  installed automatically; every generated line cites its evidence.
-- Configuration file (limits, extra ignore rules, custom instruction locations).
-
-Open questions: manifest location and format stability, merge behaviour when users edit generated files.
+The [manifest implementation](design/phase-2-manifests.md) adds explicit
+create, verify, live diff and update. Snapshots persist provenance and hashes
+outside the scanned tree. Refresh reconstructs live state and skips an
+identical write. A verified incremental read cache and safe generation of
+instruction files remain future work.
 
 ### Phase 3: MCP server
 

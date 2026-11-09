@@ -6,7 +6,7 @@ ContextAnvil is a context-engineering toolkit for AI coding agents. It reads a r
 is in it, and compiles a small, source-grounded context pack for the task at hand, then checks the
 repository's agent-facing context (AGENTS.md, CLAUDE.md and friends) for problems.
 
-It is deterministic, offline and read-only. It needs no API key, no cloud service and no language model.
+It is deterministic and offline. Repository analysis is read-only. It needs no API key, no cloud service and no language model.
 
 > **Status: v0.1.1+, early development.** Scan, context and doctor are implemented and tested. The test suite and a
 > cross-platform output comparison have run **green on GitHub Actions on Ubuntu, macOS and Windows with Node.js 22, 24 and
@@ -329,6 +329,26 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
   accepting and running it; `actionlint` was not available.
 - Output is ASCII-only so legacy Windows consoles render it correctly.
 
+## Repository manifests
+
+```sh
+contextanvil manifest create . --output ../context-snapshot.json
+contextanvil manifest verify . --manifest ../context-snapshot.json
+contextanvil manifest diff . --manifest ../context-snapshot.json --json
+contextanvil manifest update . --manifest ../context-snapshot.json
+```
+
+Create requires a new path outside the scanned tree. Update explicitly
+refreshes a valid manifest and skips writing when its bytes are unchanged.
+Verify returns exit 1 on drift. Diff reports additions, removals and changes
+to files and fact summaries. All commands accept `--json` and scanner limit
+flags. Use the same scanner options for comparable snapshots.
+
+Every refresh reads the live repository and reports full reconstruction.
+The manifest stores source hashes and fact provenance without instruction
+text. It is a review artifact and never supplies context to the compiler.
+See the [manifest format and storage guarantees](docs/design/phase-2-manifests.md).
+
 ## Limitations
 
 - **Relevance is lexical and structural.** Task matching uses file names, directories, declared symbols, word matches,
@@ -359,7 +379,7 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
   untrusted process is modifying.
 - **Default exclusions** apply by directory name (`vendor`, `dist`, `build`, `out`, ...), and `.git/info/exclude`
   is not read.
-- **No incremental state:** every run re-scans. No manifests, diffs or file generation yet.
+- **No persisted read cache:** every run re-scans. Manifest refresh compares verified snapshots and skips publication when bytes are unchanged.
 - Version 0.1.1 has had no outside users. Expect rough edges and report them.
 
 ## Roadmap
@@ -368,7 +388,7 @@ What exists today is described above. Everything below is **planned and not impl
 [docs/roadmap.md](docs/roadmap.md). A technical design for Phase 2 exists ([docs/design/phase-2-manifests.md](docs/design/phase-2-manifests.md))
 but no code:
 
-2. Persistent context manifests, incremental updates, diffs, and safe generation of instruction files.
+2. Persistent context manifests and live diffs. Verified read skipping and safe instruction generation remain separate work.
 3. An MCP server exposing repository context and project rules.
 4. A visual dashboard for project understanding, evidence inspection and conflict resolution.
 5. Reproducible agent benchmarks comparing agent workflows with and without ContextAnvil.

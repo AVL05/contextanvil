@@ -8,7 +8,7 @@ To report a vulnerability, see `SECURITY.md`.
 
 | Property | How it is enforced |
 | -------- | ------------------ |
-| Read-only | No code path writes to a scanned directory. Tests hash the fixture trees before and after `scanRepository`, `compileContext` and `diagnose` and assert they are unchanged. The only write in `src/` is the CLI writing to stdout/stderr. |
+| Read-only analysis | Tests hash fixture trees before and after analysis. Explicit `manifest create` and `manifest update` publish only outside the scanned root. Filesystem writes are confined to `src/manifest/storage.js`. |
 | No execution of repository code | There is no `child_process`, `eval`, `new Function` or dynamic `import()` of scanned content. npm and Composer scripts, and JavaScript/PHP config files, are recorded as text only. |
 | No network | The code makes no network calls and has no dependencies that could. Nothing is transmitted. |
 | Bounded work | Limits on file count, depth, entries per directory, per-file size and total bytes read (configurable). Every regular expression applied to repository text is bounded, and ignore patterns are matched without compiling them to regular expressions. Hitting a limit is reported. |
