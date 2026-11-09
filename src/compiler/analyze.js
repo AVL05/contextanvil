@@ -2,6 +2,7 @@ import path from 'node:path';
 import { classifyFile, isGeneratedOrLock } from '../core/classify.js';
 import { byCodeUnit, dirname, normalizeRelative } from '../core/paths.js';
 import { contentNeedle } from './terms.js';
+import { extractRelationships } from './relationships.js';
 
 const JS_EXT = ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.mts', '.cts', '.tsx'];
 const MAX_SYMBOLS = 40;
@@ -77,19 +78,21 @@ function createResolvers(scan, reader) {
     }
   }
   const has = (p) => reader.has(p);
-  const tryFile = (base) => {
+  const tryFile = (base, strict) => {
     const stem = base.replace(/\.(c|m)?jsx?$/, '');
     const candidates = [base, ...JS_EXT.map((e) => base + e), ...JS_EXT.map((e) => `${stem}${e}`), ...JS_EXT.map((e) => `${base}/index${e}`)];
-    return candidates.find(has) ?? null;
+    if (!strict || has(base)) return candidates.find(has) ?? null;
+    const matches = [...new Set(candidates.filter(has))];
+    return matches.length === 1 ? matches[0] : null;
   };
-  const js = (fromFile, spec) => {
+  const js = (fromFile, spec, strict = false) => {
     if (spec.startsWith('.')) {
       const joined = path.posix.normalize(path.posix.join(dirname(fromFile) || '.', spec));
       if (joined.startsWith('..')) return null;
-      return tryFile(joined === '.' ? '' : joined);
+      return tryFile(joined === '.' ? '' : joined, strict);
     }
     for (const { prefix, target } of aliases) {
-      if (spec.startsWith(prefix)) return tryFile(path.posix.join(target, spec.slice(prefix.length)));
+      if (spec.startsWith(prefix)) return tryFile(path.posix.join(target, spec.slice(prefix.length)), strict);
     }
     return null;
   };
@@ -98,13 +101,17 @@ function createResolvers(scan, reader) {
     .filter((f) => f.id.startsWith('convention:psr4:'))
     .flatMap((f) => f.data.directories.map((dir) => ({ ns: f.data.namespace, dir: dir.replace(/\/$/, '') })))
     .sort((a, b) => b.ns.length - a.ns.length || byCodeUnit(a.ns, b.ns));
-  const fqToPath = (fq) => {
+  const fqToPath = (fq, strict = false) => {
+    const matches = new Set();
     for (const { ns, dir } of psr4) {
       if (!fq.startsWith(ns)) continue;
       const rel = `${dir ? `${dir}/` : ''}${fq.slice(ns.length).replace(/\\/g, '/')}.php`;
-      if (has(rel)) return rel;
+      if (has(rel)) {
+        if (!strict) return rel;
+        matches.add(rel);
+      }
     }
-    return null;
+    return matches.size === 1 ? matches.values().next().value : null;
   };
   const php = (text) => {
     const out = new Set();
@@ -129,7 +136,8 @@ function createResolvers(scan, reader) {
     }
     return [...out];
   };
-  return { js, php };
+  const nextEntries = new Set(scan.facts.filter((f) => f.kind === 'entrypoint' && f.data?.via === 'next').map((f) => f.data.path));
+  return { js, php, fqToPath, has, nextEntries };
 }
 
 /**
@@ -138,7 +146,7 @@ function createResolvers(scan, reader) {
  *
  * @returns {{ analyses: Map<string, object>, skipped: number }}
  */
-export function analyzeFiles(scan, reader, orderedPaths, { maxFiles, terms = [] }) {
+export function analyzeFiles(scan, reader, orderedPaths, { maxFiles, terms = [], relationshipIndex = false }) {
   const resolvers = createResolvers(scan, reader);
   const needles = terms.filter((t) => t.length >= 3).map((t) => [t, contentNeedle(t)]);
   const analyses = new Map();
@@ -154,9 +162,14 @@ export function analyzeFiles(scan, reader, orderedPaths, { maxFiles, terms = [] 
       skipped++;
       continue;
     }
-    const symbols = category === 'source' || category === 'test' ? symbolsOf(meta.text, language) : [];
+    const relationships = relationshipIndex ? extractRelationships(meta.text, language, rel, resolvers) : null;
+    const symbols = relationshipIndex
+      ? [...(relationships?.symbols ?? [])].map(([name, line]) => ({ name, kind: 'identifier', line }))
+      : category === 'source' || category === 'test' ? symbolsOf(meta.text, language) : [];
     let imports = [];
-    if (language === 'JavaScript' || language === 'TypeScript') {
+    if (relationshipIndex) {
+      imports = relationships?.links.map((link) => link.target) ?? [];
+    } else if (language === 'JavaScript' || language === 'TypeScript') {
       imports = importSpecifiers(meta.text).map((s) => resolvers.js(rel, s)).filter(Boolean);
     } else if (language === 'PHP' || language === 'Blade') {
       imports = resolvers.php(meta.text);
@@ -174,6 +187,7 @@ export function analyzeFiles(scan, reader, orderedPaths, { maxFiles, terms = [] 
       hits,
       sha256: meta.sha256.slice(0, 16),
       bytes: meta.bytes,
+      ...(relationshipIndex && { relationships }),
     });
   }
   return { analyses, skipped };

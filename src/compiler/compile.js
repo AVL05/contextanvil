@@ -8,6 +8,7 @@ import { TOOL_NAME, VERSION } from '../version.js';
 import { analyzeFiles, isScorable } from './analyze.js';
 import { byteLength, estimateTokens, parseBudget } from './budget.js';
 import { findRelated, rankFiles } from './relevance.js';
+import { retrieve } from './retrieve.js';
 import { classifyIntent, extractTaskTerms, matchTerm, splitWords } from './terms.js';
 
 export const PACK_SCHEMA_VERSION = 1;
@@ -51,7 +52,7 @@ function packageRunner(pm, name) {
  *
  * @param {object} scan Result of scanRepository().
  * @param {string} task Free-text description of the work.
- * @param {{ budget?: string|number, top?: number, maxContentFiles?: number }} [options]
+ * @param {{ budget?: string|number, top?: number, maxContentFiles?: number, relevanceV2?: boolean, retrievalDiagnostics?: boolean }} [options]
  */
 export function compileContext(scan, task, options = {}) {
   if (typeof task !== 'string' || task.trim() === '') {
@@ -76,11 +77,15 @@ export function compileContext(scan, task, options = {}) {
     ...preRank.filter((f) => f.score > 0),
     ...preRank.filter((f) => f.score <= 0).sort((a, b) => sizeOf.get(a.path) - sizeOf.get(b.path) || byCodeUnit(a.path, b.path)),
   ].map((f) => f.path);
-  const { analyses, skipped: contentSkipped } = analyzeFiles(scan, reader, readOrder, { maxFiles: options.maxContentFiles ?? 5000, terms });
+  const v2 = options.relevanceV2 === true;
+  const { analyses, skipped: contentSkipped } = analyzeFiles(scan, reader, readOrder, {
+    maxFiles: options.maxContentFiles ?? 5000, terms, relationshipIndex: v2,
+  });
 
   // 2. Full scoring (every point carries a reason; see relevance.js for the scoring table).
-  const { ranked: allRanked, termInfo } = rankFiles({ candidates, terms, mentioned: mentionedPaths, intent, analyses });
-  const ranked = allRanked.filter((f) => f.score > 0).map((f) => ({ path: f.path, size: f.size, category: f.category, score: f.score, reasons: f.reasons }));
+  const { ranked: allRanked, termInfo } = rankFiles({ candidates, terms, mentioned: mentionedPaths, intent, analyses, structuralBoosts: !v2 });
+  const retrieval = retrieve(allRanked, analyses, taskInfo.text, v2);
+  const ranked = retrieval.ranked.map((f) => ({ path: f.path, size: f.size, category: f.category, score: f.score, reasons: f.reasons }));
   const selectedFiles = ranked.slice(0, top).map((f) => {
     const a = analyses.get(f.path);
     const matchedSymbols = (a?.symbols ?? []).filter((s) => terms.some((t) => splitWords(s.name).some((tok) => matchTerm(t, tok))));
@@ -89,7 +94,7 @@ export function compileContext(scan, task, options = {}) {
   });
 
   // 3. Applicable instruction sections.
-  const primary = selectedFiles.slice(0, 3).map((f) => f.path);
+  const primary = (v2 ? selectedFiles : selectedFiles.slice(0, 3)).map((f) => f.path);
   const omissions = [];
   const docs = [];
   const seenHashes = new Map();
@@ -178,12 +183,15 @@ export function compileContext(scan, task, options = {}) {
 
   selectedFiles.forEach((f, i) => {
     const lines = [`- \`${f.path}\` (score ${f.score}; ${fmtKiB(f.size)}${f.sha256 ? `; sha256 ${shortHash(f.sha256)}` : ''})`];
-    lines.push(`  - why: ${[...f.reasons].filter((r) => r.points > 0).sort((a, b) => b.points - a.points).slice(0, 4).map((r) => r.brief ?? r.detail).join('; ')}`);
+    const reasons = [...f.reasons].filter((r) => r.points > 0).sort((a, b) => b.points - a.points);
+    lines.push(`  - why: ${reasons.slice(0, v2 ? 1 : 4).map((r) => r.brief ?? r.detail).join('; ')}`);
     if (f.symbols.length) lines.push(`  - symbols: ${f.symbols.map((s) => `${s.name} (${s.kind}, line ${s.line})`).join(', ')}`);
     if (f.related.length) lines.push(`  - related: ${f.related.slice(0, 3).map((r) => `\`${r.path}\` (${r.relation})`).join(', ')}`);
     add({
       id: `file:${f.path}`, section: 'files', priority: i < 3 ? 30 + i : 60 + i, markdown: lines.join('\n'), file: f,
-      compact: `- \`${f.path}\` (score ${f.score}; reasons trimmed to fit budget)`,
+      compact: v2
+        ? `- \`${f.path}\` (score ${f.score}; sha256 ${shortHash(f.sha256)})`
+        : `- \`${f.path}\` (score ${f.score}; reasons trimmed to fit budget)`,
     });
   });
 
@@ -193,7 +201,7 @@ export function compileContext(scan, task, options = {}) {
     const note = c.cut ? `\n> [truncated: ${c.cut} more line${c.cut === 1 ? '' : 's'} at ${c.doc.path}:${c.section.startLine}-${c.section.endLine}]` : '';
     add({
       id: `instruction:${c.doc.path}:${c.section.startLine}`, section: 'instructions',
-      priority: c.matched > 0 ? 34 + i * 0.01 : 70 + i * 0.01,
+      priority: v2 ? 20 + i / (sectionCandidates.length + 1) : c.matched > 0 ? 34 + i * 0.01 : 70 + i * 0.01,
       markdown: `${head}\nWhy included: ${c.why}\n${body}${note}`,
       instruction: { path: c.doc.path, section: c.breadcrumb, startLine: c.section.startLine, endLine: c.section.endLine, sha256: c.doc.sha256, why: c.why, truncated: c.cut > 0, text: c.text },
     });
@@ -249,7 +257,11 @@ export function compileContext(scan, task, options = {}) {
   if (ranked.length > selectedFiles.length) {
     structural.push({ kind: 'files-over-top', what: `${ranked.length - selectedFiles.length} lower-scoring matching file${ranked.length - selectedFiles.length === 1 ? '' : 's'}`, reason: `only the top ${top} are listed (--top)` });
   }
-  structural.push({ kind: 'unmatched', what: `${candidates.length - ranked.length} of ${candidates.length} text files`, reason: 'no match to the task terms' });
+  if (v2) {
+    structural.push({ kind: 'retrieval', what: `${ranked.length} of ${candidates.length} text files`, reason: 'bounded candidate shortlist (up to 64)' });
+  } else {
+    structural.push({ kind: 'unmatched', what: `${candidates.length - ranked.length} of ${candidates.length} text files`, reason: 'no match to the task terms' });
+  }
 
   // 7. Pack within budget.
   const sectionTitles = {
@@ -378,6 +390,13 @@ export function compileContext(scan, task, options = {}) {
     instructions: included.filter((i) => i.instruction).map((i) => i.instruction),
     recommendations: recommendations.map((r) => ({ text: r.text, status: 'inferred', basedOn: r.basedOn })),
     omissions: result.omitted,
+    ...(options.retrievalDiagnostics && {
+      retrieval: {
+        candidates: retrieval.candidates.map((f) => f.path),
+        ranked: ranked.slice(0, 64),
+        index: retrieval.index ?? null,
+      },
+    }),
     rendered: result.text,
   };
 }

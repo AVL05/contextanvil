@@ -45,6 +45,7 @@ Options:
   --budget <size>        Output budget: 3000 or 3000t (estimated tokens, default 3000),
                          12000b / 12kb (bytes). Token counts are estimated as bytes/4.
   --top <n>              Maximum number of relevant files to list (default 8)
+  --relevance-v2         Try experimental relationship-based retrieval.
   --max-content-files <n>  Read at most n files for symbol and content matching (default 5000).
                          0 matches by path only. Lower is faster on huge repositories; files not read are matched by path only
                          and the omission is reported. Deterministic, unlike a time limit.

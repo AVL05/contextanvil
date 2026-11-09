@@ -65,7 +65,7 @@ export function termWeight(documentFrequency, total) {
  * @param {Map<string, object>} input.analyses Per-file symbols, imports and term counts (may be empty).
  * @returns {{ ranked: object[], termInfo: object[] }} All candidates sorted by score then path.
  */
-export function rankFiles({ candidates, terms, mentioned = [], intent, analyses }) {
+export function rankFiles({ candidates, terms, mentioned = [], intent, analyses, structuralBoosts = true }) {
   const total = Math.max(candidates.length, 1);
   const infos = candidates.map(({ path: rel, size }) => {
     const { category } = classifyFile(rel);
@@ -169,6 +169,7 @@ export function rankFiles({ candidates, terms, mentioned = [], intent, analyses 
 
   // Second pass: relation evidence derived from the first-pass strongest candidates.
   const byScore = (a, b) => b.score - a.score || (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
+  if (!structuralBoosts) return { ranked: scored.sort(byScore), termInfo };
   const firstPass = [...scored].sort(byScore);
   const top = firstPass.filter((f) => f.score >= STRONG_SCORE).slice(0, 3);
   const topPaths = new Set(top.map((f) => f.path));
