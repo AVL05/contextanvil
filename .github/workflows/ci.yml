@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        # 22 is the oldest supported line (engines.node >= 22); 24 is current LTS at the time of writing;
+        # lts/* follows whatever is the newest LTS when the job runs.
+        node: [22, 24, 'lts/*']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Environment
+        shell: bash
+        run: |
+          node --version
+          npm --version
+          git config --get core.autocrlf || echo "core.autocrlf unset"
+          node -e "console.log(process.platform, process.arch, require('os').tmpdir())"
+
+      - name: Install (no dependencies; verifies the lockfile)
+        run: npm ci
+
+      # Includes: path normalisation, symlink behaviour (tests skip themselves where the OS
+      # forbids creating symlinks), file permissions (POSIX only), ReDoS regressions, CLI exit
+      # codes via real child processes, and byte-for-byte determinism.
+      - name: Test
+        run: npm test
+
+      - name: CLI smoke test
+        shell: bash
+        run: |
+          node bin/contextanvil.js --version
+          node bin/contextanvil.js --help > /dev/null
+          node bin/contextanvil.js scan . > /dev/null
+          node bin/contextanvil.js context "update the scanner" . > /dev/null
+          node bin/contextanvil.js doctor .
+          # usage errors must exit 2, runtime errors 3
+          set +e
+          node bin/contextanvil.js nonsense > /dev/null 2>&1; test $? -eq 2 || { echo "expected exit 2"; exit 1; }
+          node bin/contextanvil.js scan ./does-not-exist > /dev/null 2>&1; test $? -eq 3 || { echo "expected exit 3"; exit 1; }
+
+      - name: Output is identical between two runs in separate processes
+        shell: bash
+        run: |
+          node bin/contextanvil.js scan . --json > run1.json
+          node bin/contextanvil.js scan . --json > run2.json
+          cmp run1.json run2.json
+          node bin/contextanvil.js context "update the scanner" . --json > pack1.json
+          node bin/contextanvil.js context "update the scanner" . --json > pack2.json
+          cmp pack1.json pack2.json
+
+      - name: Cross-platform determinism digest
+        shell: bash
+        run: node bench/digest.js > digest.json && cat digest.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ matrix.os }}-node-${{ matrix.node == 'lts/*' && 'lts' || matrix.node }}
+          path: digest.json
+
+  determinism-across-platforms:
+    name: Same output on every OS and Node version
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: digest-*
+          path: digests
+      - name: Compare digests
+        shell: bash
+        run: |
+          ls -R digests
+          first=$(ls digests/*/digest.json | head -1)
+          for f in digests/*/digest.json; do
+            if ! cmp -s "$first" "$f"; then
+              echo "DIFFERENT OUTPUT: $f vs $first"; cat "$first" "$f"; exit 1
+            fi
+          done
+          echo "All $(ls digests/*/digest.json | wc -l) digests are identical"
+
+  benchmark-smoke:
+    name: Benchmark harness runs
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      # Quality and determinism only. Timings from shared CI runners are noisy and are not asserted.
+      - run: node bench/run.js --quick --out bench-ci.json --md bench-ci.md
+      - run: |
+          node -e "
+          const r = require('./bench-ci.json');
+          if (!r.determinism.every((d) => d.crossProcessIdentical)) { console.error('non-deterministic output'); process.exit(1); }
+          console.log('benchmark ok; synthetic MRR', r.summary.synthetic.all.MRR, 'real MRR', r.summary.real.all.MRR);
+          "
+      - uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-quick
+          path: |
+            bench-ci.json
+            bench-ci.md

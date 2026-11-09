@@ -1,0 +1,42 @@
+{
+  "name": "contextanvil",
+  "version": "0.1.1",
+  "description": "Forge better context. Deterministic repository analysis and task-aware context compilation for AI coding agents.",
+  "keywords": [
+    "context-engineering",
+    "ai-agents",
+    "coding-agents",
+    "agents-md",
+    "claude-md",
+    "repository-analysis",
+    "cli"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "contextanvil": "./bin/contextanvil.js"
+  },
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "scan:self": "node bin/contextanvil.js scan .",
+    "doctor:self": "node bin/contextanvil.js doctor .",
+    "bench": "node bench/run.js --out bench/results/latest.json --md bench/results/latest.md",
+    "bench:quick": "node bench/run.js --quick --no-perf",
+    "bench:digest": "node bench/digest.js"
+  }
+}

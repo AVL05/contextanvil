@@ -1,0 +1,507 @@
+=== package.json ===
+{
+  "name": "shop-next",
+  "version": "0.4.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "stripe": "^16.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@testing-library/react": "^16.0.0",
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.3"
+  }
+}
+=== package-lock.json ===
+{ "lockfileVersion": 3, "packages": {} }
+=== tsconfig.json ===
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": { "@/*": ["./*"] }
+  }
+}
+=== next.config.mjs ===
+export default { reactStrictMode: true };
+=== .gitignore ===
+node_modules
+.next
+.env
+=== README.md ===
+# Shop
+
+A small storefront built with Next.js. Browse products, manage a cart and pay with Stripe.
+
+## Getting started
+
+Run `npm run dev` and open http://localhost:3000.
+=== AGENTS.md ===
+# Agent guide
+
+## Commands
+
+- Unit tests: `npm test`
+- Lint: `npm run lint`
+
+## Conventions
+
+Components live in `components/` and use PascalCase file names. Business logic lives in `lib/`, never inside components.
+=== docs/payments.md ===
+# Payments
+
+Payments use Stripe Checkout. Configure `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` in your environment.
+Order totals are computed server side by the cart module before a session is created.
+=== app/layout.tsx ===
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+}
+=== app/page.tsx ===
+import ProductGrid from '@/components/ProductGrid';
+import { listFeatured } from '@/lib/products/catalog';
+
+export default async function HomePage() {
+  const products = await listFeatured();
+  return <ProductGrid products={products} />;
+}
+=== app/products/page.tsx ===
+import ProductGrid from '@/components/ProductGrid';
+import { listProducts } from '@/lib/products/catalog';
+
+export default async function ProductsPage({ searchParams }: { searchParams: { page?: string } }) {
+  const page = Number(searchParams.page ?? '1');
+  const products = await listProducts({ page, pageSize: 24 });
+  return <ProductGrid products={products} />;
+}
+=== app/products/[id]/page.tsx ===
+import { getProduct } from '@/lib/products/catalog';
+import { formatCurrency } from '@/lib/format/currency';
+
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  const product = await getProduct(params.id);
+  return (
+    <article>
+      <h1>{product.name}</h1>
+      <p>{formatCurrency(product.priceCents)}</p>
+    </article>
+  );
+}
+=== app/cart/page.tsx ===
+import CartSummary from '@/components/CartSummary';
+import CartItemRow from '@/components/CartItemRow';
+import { useCart } from '@/hooks/useCart';
+
+export default function CartPage() {
+  const { items } = useCart();
+  return (
+    <section>
+      {items.map((item) => (
+        <CartItemRow key={item.productId} item={item} />
+      ))}
+      <CartSummary />
+    </section>
+  );
+}
+=== app/checkout/page.tsx ===
+import CheckoutForm from '@/components/CheckoutForm';
+
+export default function CheckoutPage() {
+  return <CheckoutForm />;
+}
+=== app/login/page.tsx ===
+import LoginForm from '@/components/LoginForm';
+
+export default function LoginPage() {
+  return <LoginForm />;
+}
+=== app/api/cart/route.ts ===
+import { NextResponse } from 'next/server';
+import { loadCart, saveCart } from '@/lib/cart/store';
+
+export async function GET() {
+  return NextResponse.json(await loadCart());
+}
+
+export async function PUT(request: Request) {
+  const body = await request.json();
+  await saveCart(body);
+  return NextResponse.json({ ok: true });
+}
+=== app/api/auth/login/route.ts ===
+import { NextResponse } from 'next/server';
+import { verifyPassword } from '@/lib/auth/password';
+import { createSession } from '@/lib/auth/session';
+import { findUserByEmail } from '@/lib/db';
+
+export async function POST(request: Request) {
+  const { email, password } = await request.json();
+  const user = await findUserByEmail(email);
+  if (!user || !(await verifyPassword(password, user.passwordHash))) {
+    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  }
+  const response = NextResponse.json({ ok: true });
+  await createSession(response, user.id);
+  return response;
+}
+=== app/api/checkout/route.ts ===
+import { NextResponse } from 'next/server';
+import { loadCart } from '@/lib/cart/store';
+import { cartTotals } from '@/lib/cart/totals';
+import { createCheckoutSession } from '@/lib/payments/stripe';
+
+export async function POST() {
+  const cart = await loadCart();
+  const totals = cartTotals(cart.items, cart.discountCode);
+  const session = await createCheckoutSession(cart.items, totals.totalCents);
+  return NextResponse.json({ url: session.url });
+}
+=== components/Header.tsx ===
+import Link from 'next/link';
+import NavMenu from '@/components/NavMenu';
+import { useCart } from '@/hooks/useCart';
+
+export default function Header() {
+  const { count } = useCart();
+  return (
+    <header className="site-header">
+      <Link href="/">Shop</Link>
+      <NavMenu />
+      <Link href="/cart">Cart ({count})</Link>
+    </header>
+  );
+}
+=== components/NavMenu.tsx ===
+import Link from 'next/link';
+
+const links = [
+  { href: '/products', label: 'Products' },
+  { href: '/about', label: 'About' },
+  { href: '/support', label: 'Support' },
+];
+
+export default function NavMenu() {
+  return (
+    <nav aria-label="Main">
+      <ul>
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link href={link.href}>{link.label}</Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+=== components/NavMenu.test.tsx ===
+import { render, screen } from '@testing-library/react';
+import NavMenu from './NavMenu';
+
+test('renders every navigation link', () => {
+  render(<NavMenu />);
+  expect(screen.getAllByRole('link')).toHaveLength(3);
+});
+=== components/Footer.tsx ===
+import Link from 'next/link';
+
+export default function Footer() {
+  return (
+    <footer>
+      <Link href="/privacy">Privacy</Link>
+      <Link href="/terms">Terms</Link>
+      <small>All rights reserved</small>
+    </footer>
+  );
+}
+=== components/ProductCard.tsx ===
+import Link from 'next/link';
+import { formatCurrency } from '@/lib/format/currency';
+import Button from '@/components/ui/Button';
+
+export default function ProductCard({ product }: { product: { id: string; name: string; priceCents: number } }) {
+  return (
+    <div className="product-card">
+      <Link href={`/products/${product.id}`}>{product.name}</Link>
+      <span>{formatCurrency(product.priceCents)}</span>
+      <Button>Add to cart</Button>
+    </div>
+  );
+}
+=== components/ProductGrid.tsx ===
+import ProductCard from '@/components/ProductCard';
+
+export default function ProductGrid({ products }: { products: { id: string; name: string; priceCents: number }[] }) {
+  return (
+    <div className="product-grid">
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+}
+=== components/CartSummary.tsx ===
+import { cartTotals } from '@/lib/cart/totals';
+import { formatCurrency } from '@/lib/format/currency';
+import { useCart } from '@/hooks/useCart';
+
+export default function CartSummary() {
+  const { items, discountCode } = useCart();
+  const totals = cartTotals(items, discountCode);
+  return (
+    <aside>
+      <p>Subtotal: {formatCurrency(totals.subtotalCents)}</p>
+      <p>Discount: {formatCurrency(totals.discountCents)}</p>
+      <p>Total: {formatCurrency(totals.totalCents)}</p>
+    </aside>
+  );
+}
+=== components/CartItemRow.tsx ===
+import { formatCurrency } from '@/lib/format/currency';
+
+export default function CartItemRow({ item }: { item: { productId: string; name: string; priceCents: number; quantity: number } }) {
+  return (
+    <div>
+      <span>{item.name}</span>
+      <span>
+        {item.quantity} x {formatCurrency(item.priceCents)}
+      </span>
+    </div>
+  );
+}
+=== components/LoginForm.tsx ===
+'use client';
+import { useState } from 'react';
+import Button from '@/components/ui/Button';
+
+export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  async function submit() {
+    await fetch('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+  }
+
+  return (
+    <form onSubmit={submit}>
+      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
+      <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" />
+      <Button type="submit">Log in</Button>
+    </form>
+  );
+}
+=== components/CheckoutForm.tsx ===
+'use client';
+import Button from '@/components/ui/Button';
+
+export default function CheckoutForm() {
+  async function pay() {
+    const response = await fetch('/api/checkout', { method: 'POST' });
+    const { url } = await response.json();
+    window.location.href = url;
+  }
+  return <Button onClick={pay}>Pay now</Button>;
+}
+=== components/ui/Button.tsx ===
+export default function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return <button className="btn" {...props} />;
+}
+=== components/ui/Modal.tsx ===
+export default function Modal({ open, children }: { open: boolean; children: React.ReactNode }) {
+  if (!open) return null;
+  return <div role="dialog">{children}</div>;
+}
+=== hooks/useCart.ts ===
+import { useEffect, useState } from 'react';
+import { loadCart } from '@/lib/cart/store';
+
+export function useCart() {
+  const [items, setItems] = useState<{ productId: string; name: string; priceCents: number; quantity: number }[]>([]);
+  const [discountCode, setDiscountCode] = useState<string | undefined>();
+  useEffect(() => {
+    loadCart().then((cart) => {
+      setItems(cart.items);
+      setDiscountCode(cart.discountCode);
+    });
+  }, []);
+  return { items, discountCode, count: items.reduce((n, i) => n + i.quantity, 0) };
+}
+=== hooks/useSession.ts ===
+import { useEffect, useState } from 'react';
+
+export function useSession() {
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => {
+    fetch('/api/auth/me').then((r) => r.json()).then((d) => setUserId(d.userId));
+  }, []);
+  return { userId };
+}
+=== lib/auth/session.ts ===
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+import { signToken, verifyToken } from '@/lib/auth/password';
+
+const SESSION_COOKIE = 'shop_session';
+const SESSION_MAX_AGE_SECONDS = 60 * 30;
+
+export async function createSession(response: NextResponse, userId: string) {
+  const token = await signToken({ userId });
+  response.cookies.set(SESSION_COOKIE, token, { httpOnly: true, maxAge: SESSION_MAX_AGE_SECONDS });
+}
+
+export async function readSession() {
+  const token = cookies().get(SESSION_COOKIE)?.value;
+  return token ? verifyToken(token) : null;
+}
+=== lib/auth/session.test.ts ===
+import { describe, expect, it } from 'vitest';
+
+describe('session', () => {
+  it('keeps the cookie for the configured lifetime', () => {
+    expect(60 * 30).toBe(1800);
+  });
+});
+=== lib/auth/password.ts ===
+import { randomBytes, scrypt, timingSafeEqual } from 'node:crypto';
+
+export async function hashPassword(password: string): Promise<string> {
+  const salt = randomBytes(16).toString('hex');
+  const key = await derive(password, salt);
+  return `${salt}:${key.toString('hex')}`;
+}
+
+export async function verifyPassword(password: string, stored: string): Promise<boolean> {
+  const [salt, hash] = stored.split(':');
+  const key = await derive(password, salt);
+  return timingSafeEqual(key, Buffer.from(hash, 'hex'));
+}
+
+export async function signToken(payload: object): Promise<string> {
+  return Buffer.from(JSON.stringify(payload)).toString('base64url');
+}
+
+export async function verifyToken(token: string) {
+  return JSON.parse(Buffer.from(token, 'base64url').toString());
+}
+
+function derive(password: string, salt: string): Promise<Buffer> {
+  return new Promise((resolve, reject) => scrypt(password, salt, 64, (err, key) => (err ? reject(err) : resolve(key))));
+}
+=== lib/cart/store.ts ===
+import { db } from '@/lib/db';
+
+export type CartItem = { productId: string; name: string; priceCents: number; quantity: number };
+export type Cart = { items: CartItem[]; discountCode?: string };
+
+export async function loadCart(): Promise<Cart> {
+  return (await db.get('cart')) ?? { items: [] };
+}
+
+export async function saveCart(cart: Cart): Promise<void> {
+  await db.set('cart', cart);
+}
+=== lib/cart/totals.ts ===
+import type { CartItem } from '@/lib/cart/store';
+
+const DISCOUNTS: Record<string, number> = { WELCOME10: 0.1, SPRING20: 0.2 };
+
+export function roundCents(value: number): number {
+  return Math.floor(value);
+}
+
+export function cartTotals(items: CartItem[], discountCode?: string) {
+  const subtotalCents = items.reduce((sum, item) => sum + item.priceCents * item.quantity, 0);
+  const rate = discountCode ? DISCOUNTS[discountCode] ?? 0 : 0;
+  const discountCents = roundCents(subtotalCents * rate);
+  return { subtotalCents, discountCents, totalCents: subtotalCents - discountCents };
+}
+=== lib/cart/totals.test.ts ===
+import { describe, expect, it } from 'vitest';
+import { cartTotals } from './totals';
+
+describe('cartTotals', () => {
+  it('applies a percentage discount', () => {
+    const totals = cartTotals([{ productId: 'a', name: 'A', priceCents: 1000, quantity: 1 }], 'WELCOME10');
+    expect(totals.discountCents).toBe(100);
+  });
+});
+=== lib/products/catalog.ts ===
+import { db } from '@/lib/db';
+
+export async function listProducts({ page, pageSize }: { page: number; pageSize: number }) {
+  const all = (await db.get('products')) ?? [];
+  return all.slice((page - 1) * pageSize, page * pageSize);
+}
+
+export async function listFeatured() {
+  return listProducts({ page: 1, pageSize: 8 });
+}
+
+export async function getProduct(id: string) {
+  const all = (await db.get('products')) ?? [];
+  return all.find((p: { id: string }) => p.id === id);
+}
+=== lib/payments/stripe.ts ===
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '');
+
+export async function createCheckoutSession(items: { name: string; priceCents: number; quantity: number }[], totalCents: number) {
+  return stripe.checkout.sessions.create({
+    mode: 'payment',
+    success_url: `${process.env.APP_URL}/thanks`,
+    line_items: items.map((i) => ({ quantity: i.quantity, price_data: { currency: 'usd', unit_amount: i.priceCents, product_data: { name: i.name } } })),
+    metadata: { totalCents: String(totalCents) },
+  });
+}
+=== lib/format/currency.ts ===
+export function formatCurrency(cents: number, currency = 'USD', locale = 'en-US'): string {
+  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(cents / 100);
+}
+=== lib/db.ts ===
+const store = new Map<string, unknown>();
+
+export const db = {
+  async get(key: string) {
+    return store.get(key) as any;
+  },
+  async set(key: string, value: unknown) {
+    store.set(key, value);
+  },
+};
+
+export async function findUserByEmail(email: string) {
+  return (await db.get(`user:${email}`)) as { id: string; passwordHash: string } | undefined;
+}
+=== e2e/checkout.spec.ts ===
+import { test, expect } from '@playwright/test';
+
+test('a customer can pay for a cart', async ({ page }) => {
+  await page.goto('/products');
+  await page.getByText('Add to cart').first().click();
+  await page.goto('/checkout');
+  await expect(page.getByText('Pay now')).toBeVisible();
+});

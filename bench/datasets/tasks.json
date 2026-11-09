@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "notes": [
+    "Relevant sets are the files a developer would need to read or modify to complete the task, written by hand BEFORE any ranking change was made and without looking at ranker output.",
+    "Files that a task would create (and that do not exist yet) cannot be listed; where a task is normally done by editing an existing registry, template or caller, those existing files are the relevant ones.",
+    "Each task has a split. 'dev' tasks were used while developing ranking changes. 'holdout' tasks were not inspected per-task during development; only their aggregate metrics were looked at, and only to confirm that dev improvements generalise.",
+    "Labels are one person's judgement and the sets are small; treat differences of a few points as noise.",
+    "Disclosure: the first baseline run printed the per-task table for ALL tasks, so the holdout failures of the baseline ranker were seen once before any change was made. Holdout is therefore not perfectly blind. Afterwards the runner hides holdout per-task rows (--show-holdout reveals them) and ranking changes were designed from dev failures and general principles only."
+  ],
+  "datasets": [
+    {
+      "id": "shop-next",
+      "kind": "synthetic",
+      "description": "Next.js App Router storefront (TypeScript, 43 files, tsconfig path aliases, Vitest + Playwright).",
+      "source": { "bundle": "fixtures/shop-next.bundle" },
+      "tasks": [
+        { "id": "sn-nav-hamburger", "split": "dev", "task": "Add a mobile hamburger menu to the main navigation",
+          "relevant": ["components/NavMenu.tsx", "components/Header.tsx", "components/NavMenu.test.tsx"] },
+        { "id": "sn-cart-rounding", "split": "dev", "task": "Fix cart total rounding error when applying discounts",
+          "relevant": ["lib/cart/totals.ts", "lib/cart/totals.test.ts"] },
+        { "id": "sn-session-expiry", "split": "dev", "task": "Users get logged out too early, the session cookie should last longer",
+          "relevant": ["lib/auth/session.ts", "lib/auth/session.test.ts"] },
+        { "id": "sn-password-strength", "split": "dev", "task": "Validate password strength on the login form",
+          "relevant": ["components/LoginForm.tsx", "lib/auth/password.ts"] },
+        { "id": "sn-checkout-tests", "split": "dev", "task": "Write tests for the checkout flow",
+          "relevant": ["e2e/checkout.spec.ts", "components/CheckoutForm.tsx", "app/api/checkout/route.ts"] },
+        { "id": "sn-currency-eur", "split": "holdout", "task": "Show prices in euros for customers in Europe",
+          "relevant": ["lib/format/currency.ts", "lib/payments/stripe.ts"] },
+        { "id": "sn-stripe-webhook", "split": "holdout", "task": "Handle Stripe webhook events for failed payments",
+          "relevant": ["lib/payments/stripe.ts", "app/api/checkout/route.ts", "docs/payments.md"] },
+        { "id": "sn-infinite-scroll", "split": "holdout", "task": "Add infinite scrolling to the products page",
+          "relevant": ["app/products/page.tsx", "components/ProductGrid.tsx", "lib/products/catalog.ts"] },
+        { "id": "sn-docs-env", "split": "holdout", "task": "Document the required environment variables",
+          "relevant": ["docs/payments.md", "README.md", "lib/payments/stripe.ts"] },
+        { "id": "sn-usecart-refactor", "split": "holdout", "task": "Refactor the useCart hook to load data through the cart API route",
+          "relevant": ["hooks/useCart.ts", "app/api/cart/route.ts", "lib/cart/store.ts"] }
+      ]
+    },
+    {
+      "id": "orders-laravel",
+      "kind": "synthetic",
+      "description": "Laravel order management app (PHP, 37 files, PSR-4, services, policies, Blade views, PHPUnit).",
+      "source": { "bundle": "fixtures/orders-laravel.bundle" },
+      "tasks": [
+        { "id": "ol-discount", "split": "dev", "task": "Apply a percentage discount code to orders",
+          "relevant": ["app/Services/PricingService.php", "app/Models/Order.php", "app/Http/Requests/StoreOrderRequest.php", "tests/Unit/PricingServiceTest.php"] },
+        { "id": "ol-admin-delete", "split": "dev", "task": "Only admins should be allowed to delete orders",
+          "relevant": ["app/Policies/OrderPolicy.php", "app/Http/Middleware/EnsureUserIsAdmin.php", "app/Http/Controllers/OrderController.php"] },
+        { "id": "ol-pagination", "split": "dev", "task": "Add pagination to the orders list page",
+          "relevant": ["app/Http/Controllers/OrderController.php", "resources/views/orders/index.blade.php"] },
+        { "id": "ol-qty-validation", "split": "dev", "task": "Validate quantity limits when creating an order",
+          "relevant": ["app/Http/Requests/StoreOrderRequest.php", "app/Services/InventoryService.php"] },
+        { "id": "ol-invoice-email", "split": "holdout", "task": "Email the invoice PDF to the customer after an order ships",
+          "relevant": ["app/Services/InvoiceGenerator.php", "app/Mail/OrderConfirmationMail.php", "app/Jobs/SendOrderConfirmation.php"] },
+        { "id": "ol-restock", "split": "holdout", "task": "Restore stock when an order is cancelled",
+          "relevant": ["app/Services/InventoryService.php", "app/Models/Order.php", "tests/Feature/OrderTest.php"] },
+        { "id": "ol-prune", "split": "holdout", "task": "Change the abandoned orders cleanup to 30 days",
+          "relevant": ["app/Console/Commands/PruneAbandonedOrders.php"] },
+        { "id": "ol-email-subject", "split": "holdout", "task": "Change the subject of the order confirmation email",
+          "relevant": ["app/Mail/OrderConfirmationMail.php"] }
+      ]
+    },
+    {
+      "id": "plugin-cli",
+      "kind": "synthetic",
+      "description": "Node ESM linter with a rule registry, parsers and reporters (JavaScript, 31 files, node:test).",
+      "source": { "bundle": "fixtures/plugin-cli.bundle" },
+      "tasks": [
+        { "id": "pc-todo-rule", "split": "dev", "task": "Add a new rule that forbids TODO comments",
+          "relevant": ["src/rules/index.js", "docs/rules.md"] },
+        { "id": "pc-sarif", "split": "dev", "task": "Add SARIF output format",
+          "relevant": ["src/cli.js", "src/report/json.js"] },
+        { "id": "pc-ignore", "split": "dev", "task": "Ignore patterns are not applied to nested directories",
+          "relevant": ["src/fs/ignore.js", "src/fs/walk.js"] },
+        { "id": "pc-maxlines-default", "split": "dev", "task": "Raise the default max lines limit to 500",
+          "relevant": ["src/config/schema.js", "src/rules/max-lines.js"] },
+        { "id": "pc-markdown", "split": "holdout", "task": "Support heading checks in markdown files",
+          "relevant": ["src/parsers/markdown.js", "src/parsers/index.js"] },
+        { "id": "pc-config-invalid", "split": "holdout", "task": "Show an error when the config file contains invalid JSON instead of silently using defaults",
+          "relevant": ["src/config/load.js", "test/config.test.js"] },
+        { "id": "pc-no-color", "split": "holdout", "task": "Respect the NO_COLOR environment variable in text output",
+          "relevant": ["src/util/colors.js", "src/report/text.js"] },
+        { "id": "pc-ts-novar", "split": "holdout", "task": "Make the no-var rule work for TypeScript files",
+          "relevant": ["src/rules/no-var.js", "src/parsers/typescript.js", "test/rules/no-var.test.js"] }
+      ]
+    },
+    {
+      "id": "contextanvil-0.1.0",
+      "kind": "real",
+      "description": "ContextAnvil itself, frozen at v0.1.0 (57 files, zero-dependency Node ESM CLI). Not synthetic, but the author of the tool also wrote the labels.",
+      "source": { "snapshot": "snapshots/contextanvil-0.1.0.json" },
+      "snapshotNotes": "Two README lines that discussed the 'Vue detection' ranking example were removed (make-snapshot --drop) so documentation cannot leak the answer.",
+      "tasks": [
+        { "id": "rs-vue", "split": "dev", "task": "Add Vue detection to the scanner",
+          "relevant": ["src/detectors/node.js", "test/detectors.test.js"] },
+        { "id": "rs-jwt", "split": "dev", "task": "Redact JWT tokens in output",
+          "relevant": ["src/core/secrets.js", "test/secrets.test.js"] },
+        { "id": "rs-license", "split": "dev", "task": "Doctor should warn when the repository has no license file",
+          "relevant": ["src/doctor.js", "test/doctor.test.js"] },
+        { "id": "rs-quiet", "split": "dev", "task": "Add a --quiet option to the CLI",
+          "relevant": ["src/cli/index.js", "src/cli/help.js", "test/cli.test.js"] },
+        { "id": "rs-python", "split": "holdout", "task": "Add Python project detection from pyproject.toml",
+          "relevant": ["src/detectors/index.js", "src/detectors/php.js", "test/detectors.test.js"] },
+        { "id": "rs-limits", "split": "holdout", "task": "Raise the default maximum file size limit",
+          "relevant": ["src/core/limits.js", "src/cli/help.js"] },
+        { "id": "rs-budget", "split": "holdout", "task": "Fix the output budget so the pack never exceeds the limit",
+          "relevant": ["src/compiler/budget.js", "src/compiler/compile.js", "test/compiler.test.js"] },
+        { "id": "rs-symlink", "split": "holdout", "task": "Follow symlinks inside the repository safely",
+          "relevant": ["src/core/walker.js", "src/core/reader.js", "test/scanner-safety.test.js"] }
+      ]
+    }
+  ]
+}

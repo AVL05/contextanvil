@@ -1,0 +1,1493 @@
+{
+  "meta": {
+    "label": "baseline: v0.1.0 as delivered (before Phase 1.1)",
+    "engineVersion": "0.1.0",
+    "node": "v24.22.2",
+    "platform": "win32-x64",
+    "cpus": 16,
+    "cpuModel": "12th Gen Intel(R) Core(TM) i7-12650H",
+    "quick": false,
+    "runsPerTiming": 7
+  },
+  "ranking": [
+    {
+      "id": "shop-next",
+      "kind": "synthetic",
+      "files": 43,
+      "repoTextBytes": 14507,
+      "tasks": [
+        {
+          "id": "sn-nav-hamburger",
+          "split": "dev",
+          "task": "Add a mobile hamburger menu to the main navigation",
+          "relevant": [
+            "components/NavMenu.tsx",
+            "components/Header.tsx",
+            "components/NavMenu.test.tsx"
+          ],
+          "top5": [
+            "components/NavMenu.tsx",
+            "components/NavMenu.test.tsx",
+            "app/layout.tsx",
+            "components/Header.tsx"
+          ],
+          "ranks": {
+            "components/NavMenu.tsx": 1,
+            "components/Header.tsx": 4,
+            "components/NavMenu.test.tsx": 2
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.6,
+            "R@3": 0.6666666666666666,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.6666666666666666
+          },
+          "packBytes": 4259,
+          "packRecall": 1
+        },
+        {
+          "id": "sn-cart-rounding",
+          "split": "dev",
+          "task": "Fix cart total rounding error when applying discounts",
+          "relevant": [
+            "lib/cart/totals.ts",
+            "lib/cart/totals.test.ts"
+          ],
+          "top5": [
+            "lib/cart/totals.ts",
+            "app/cart/page.tsx",
+            "lib/cart/totals.test.ts",
+            "components/CartSummary.tsx",
+            "hooks/useCart.ts"
+          ],
+          "ranks": {
+            "lib/cart/totals.ts": 1,
+            "lib/cart/totals.test.ts": 3
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.4,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.5
+          },
+          "packBytes": 6318,
+          "packRecall": 1
+        },
+        {
+          "id": "sn-session-expiry",
+          "split": "dev",
+          "task": "Users get logged out too early, the session cookie should last longer",
+          "relevant": [
+            "lib/auth/session.ts",
+            "lib/auth/session.test.ts"
+          ],
+          "top5": [
+            "hooks/useSession.ts",
+            "lib/auth/session.ts",
+            "lib/db.ts",
+            "lib/payments/stripe.ts",
+            "app/api/cart/route.ts"
+          ],
+          "ranks": {
+            "lib/auth/session.ts": 2,
+            "lib/auth/session.test.ts": 6
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.5,
+            "R@5": 0.5,
+            "R@8": 1,
+            "MRR": 0.5,
+            "R-precision": 0.5
+          },
+          "packBytes": 5410,
+          "packRecall": 1
+        },
+        {
+          "id": "sn-password-strength",
+          "split": "dev",
+          "task": "Validate password strength on the login form",
+          "relevant": [
+            "components/LoginForm.tsx",
+            "lib/auth/password.ts"
+          ],
+          "top5": [
+            "components/LoginForm.tsx",
+            "components/CheckoutForm.tsx",
+            "lib/auth/password.ts",
+            "app/login/page.tsx",
+            "lib/format/currency.ts"
+          ],
+          "ranks": {
+            "components/LoginForm.tsx": 1,
+            "lib/auth/password.ts": 3
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.4,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.5
+          },
+          "packBytes": 5365,
+          "packRecall": 1
+        },
+        {
+          "id": "sn-checkout-tests",
+          "split": "dev",
+          "task": "Write tests for the checkout flow",
+          "relevant": [
+            "e2e/checkout.spec.ts",
+            "components/CheckoutForm.tsx",
+            "app/api/checkout/route.ts"
+          ],
+          "top5": [
+            "components/CheckoutForm.tsx",
+            "app/checkout/page.tsx",
+            "e2e/checkout.spec.ts",
+            "lib/payments/stripe.ts",
+            "app/api/checkout/route.ts"
+          ],
+          "ranks": {
+            "e2e/checkout.spec.ts": 3,
+            "components/CheckoutForm.tsx": 1,
+            "app/api/checkout/route.ts": 5
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.6,
+            "R@3": 0.6666666666666666,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.6666666666666666
+          },
+          "packBytes": 4427,
+          "packRecall": 1
+        },
+        {
+          "id": "sn-currency-eur",
+          "split": "holdout",
+          "task": "Show prices in euros for customers in Europe",
+          "relevant": [
+            "lib/format/currency.ts",
+            "lib/payments/stripe.ts"
+          ],
+          "top5": [
+            "app/products/[id]/page.tsx",
+            "components/CartItemRow.tsx",
+            "components/ProductCard.tsx",
+            "components/ProductGrid.tsx",
+            "hooks/useCart.ts"
+          ],
+          "ranks": {
+            "lib/format/currency.ts": null,
+            "lib/payments/stripe.ts": 8
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0,
+            "P@5": 0,
+            "R@3": 0,
+            "R@5": 0,
+            "R@8": 0.5,
+            "MRR": 0.125,
+            "R-precision": 0
+          },
+          "packBytes": 5158,
+          "packRecall": 0.5
+        },
+        {
+          "id": "sn-stripe-webhook",
+          "split": "holdout",
+          "task": "Handle Stripe webhook events for failed payments",
+          "relevant": [
+            "lib/payments/stripe.ts",
+            "app/api/checkout/route.ts",
+            "docs/payments.md"
+          ],
+          "top5": [
+            "lib/payments/stripe.ts",
+            "docs/payments.md",
+            "components/CheckoutForm.tsx",
+            "app/api/checkout/route.ts",
+            "README.md"
+          ],
+          "ranks": {
+            "lib/payments/stripe.ts": 1,
+            "app/api/checkout/route.ts": 4,
+            "docs/payments.md": 2
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.6,
+            "R@3": 0.6666666666666666,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.6666666666666666
+          },
+          "packBytes": 4145,
+          "packRecall": 1
+        },
+        {
+          "id": "sn-infinite-scroll",
+          "split": "holdout",
+          "task": "Add infinite scrolling to the products page",
+          "relevant": [
+            "app/products/page.tsx",
+            "components/ProductGrid.tsx",
+            "lib/products/catalog.ts"
+          ],
+          "top5": [
+            "app/products/[id]/page.tsx",
+            "app/products/page.tsx",
+            "app/cart/page.tsx",
+            "app/page.tsx",
+            "app/checkout/page.tsx"
+          ],
+          "ranks": {
+            "app/products/page.tsx": 2,
+            "components/ProductGrid.tsx": 8,
+            "lib/products/catalog.ts": 9
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.3333333333333333,
+            "R@5": 0.3333333333333333,
+            "R@8": 0.6666666666666666,
+            "MRR": 0.5,
+            "R-precision": 0.3333333333333333
+          },
+          "packBytes": 5556,
+          "packRecall": 0.6666666666666666
+        },
+        {
+          "id": "sn-docs-env",
+          "split": "holdout",
+          "task": "Document the required environment variables",
+          "relevant": [
+            "docs/payments.md",
+            "README.md",
+            "lib/payments/stripe.ts"
+          ],
+          "top5": [
+            "docs/payments.md"
+          ],
+          "ranks": {
+            "docs/payments.md": 1,
+            "README.md": null,
+            "lib/payments/stripe.ts": null
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.3333333333333333,
+            "R@5": 0.3333333333333333,
+            "R@8": 0.3333333333333333,
+            "MRR": 1,
+            "R-precision": 0.3333333333333333
+          },
+          "packBytes": 2977,
+          "packRecall": 0.3333333333333333
+        },
+        {
+          "id": "sn-usecart-refactor",
+          "split": "holdout",
+          "task": "Refactor the useCart hook to load data through the cart API route",
+          "relevant": [
+            "hooks/useCart.ts",
+            "app/api/cart/route.ts",
+            "lib/cart/store.ts"
+          ],
+          "top5": [
+            "app/api/cart/route.ts",
+            "lib/cart/store.ts",
+            "app/api/checkout/route.ts",
+            "hooks/useCart.ts",
+            "app/api/auth/login/route.ts"
+          ],
+          "ranks": {
+            "hooks/useCart.ts": 4,
+            "app/api/cart/route.ts": 1,
+            "lib/cart/store.ts": 2
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.6,
+            "R@3": 0.6666666666666666,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.6666666666666666
+          },
+          "packBytes": 6174,
+          "packRecall": 1
+        }
+      ],
+      "aggregate": {
+        "dev": {
+          "tasks": 5,
+          "P@1": 0.8,
+          "P@3": 0.6,
+          "P@5": 0.44,
+          "R@3": 0.767,
+          "R@5": 0.9,
+          "R@8": 1,
+          "MRR": 0.9,
+          "R-precision": 0.567,
+          "packRecall": 1,
+          "packBytes": 5156
+        },
+        "holdout": {
+          "tasks": 5,
+          "P@1": 0.6,
+          "P@3": 0.4,
+          "P@5": 0.32,
+          "R@3": 0.4,
+          "R@5": 0.533,
+          "R@8": 0.7,
+          "MRR": 0.725,
+          "R-precision": 0.4,
+          "packRecall": 0.7,
+          "packBytes": 4802
+        },
+        "all": {
+          "tasks": 10,
+          "P@1": 0.7,
+          "P@3": 0.5,
+          "P@5": 0.38,
+          "R@3": 0.583,
+          "R@5": 0.717,
+          "R@8": 0.85,
+          "MRR": 0.813,
+          "R-precision": 0.483,
+          "packRecall": 0.85,
+          "packBytes": 4979
+        }
+      }
+    },
+    {
+      "id": "orders-laravel",
+      "kind": "synthetic",
+      "files": 37,
+      "repoTextBytes": 8946,
+      "tasks": [
+        {
+          "id": "ol-discount",
+          "split": "dev",
+          "task": "Apply a percentage discount code to orders",
+          "relevant": [
+            "app/Services/PricingService.php",
+            "app/Models/Order.php",
+            "app/Http/Requests/StoreOrderRequest.php",
+            "tests/Unit/PricingServiceTest.php"
+          ],
+          "top5": [
+            "app/Console/Commands/PruneAbandonedOrders.php",
+            "app/Http/Controllers/OrderController.php",
+            "app/Http/Requests/StoreOrderRequest.php",
+            "app/Jobs/SendOrderConfirmation.php",
+            "app/Mail/OrderConfirmationMail.php"
+          ],
+          "ranks": {
+            "app/Services/PricingService.php": 13,
+            "app/Models/Order.php": 6,
+            "app/Http/Requests/StoreOrderRequest.php": 3,
+            "tests/Unit/PricingServiceTest.php": null
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.25,
+            "R@5": 0.25,
+            "R@8": 0.5,
+            "MRR": 0.3333333333333333,
+            "R-precision": 0.25
+          },
+          "packBytes": 4776,
+          "packRecall": 0.5
+        },
+        {
+          "id": "ol-admin-delete",
+          "split": "dev",
+          "task": "Only admins should be allowed to delete orders",
+          "relevant": [
+            "app/Policies/OrderPolicy.php",
+            "app/Http/Middleware/EnsureUserIsAdmin.php",
+            "app/Http/Controllers/OrderController.php"
+          ],
+          "top5": [
+            "app/Models/User.php",
+            "app/Policies/OrderPolicy.php",
+            "app/Console/Commands/PruneAbandonedOrders.php",
+            "app/Http/Controllers/OrderController.php",
+            "app/Http/Middleware/EnsureUserIsAdmin.php"
+          ],
+          "ranks": {
+            "app/Policies/OrderPolicy.php": 2,
+            "app/Http/Middleware/EnsureUserIsAdmin.php": 5,
+            "app/Http/Controllers/OrderController.php": 4
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.6,
+            "R@3": 0.3333333333333333,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 0.5,
+            "R-precision": 0.3333333333333333
+          },
+          "packBytes": 4232,
+          "packRecall": 1
+        },
+        {
+          "id": "ol-pagination",
+          "split": "dev",
+          "task": "Add pagination to the orders list page",
+          "relevant": [
+            "app/Http/Controllers/OrderController.php",
+            "resources/views/orders/index.blade.php"
+          ],
+          "top5": [
+            "app/Console/Commands/PruneAbandonedOrders.php",
+            "app/Http/Controllers/OrderController.php",
+            "app/Http/Requests/StoreOrderRequest.php",
+            "app/Jobs/SendOrderConfirmation.php",
+            "app/Mail/OrderConfirmationMail.php"
+          ],
+          "ranks": {
+            "app/Http/Controllers/OrderController.php": 2,
+            "resources/views/orders/index.blade.php": 15
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.5,
+            "R@5": 0.5,
+            "R@8": 0.5,
+            "MRR": 0.5,
+            "R-precision": 0.5
+          },
+          "packBytes": 4000,
+          "packRecall": 0.5
+        },
+        {
+          "id": "ol-qty-validation",
+          "split": "dev",
+          "task": "Validate quantity limits when creating an order",
+          "relevant": [
+            "app/Http/Requests/StoreOrderRequest.php",
+            "app/Services/InventoryService.php"
+          ],
+          "top5": [
+            "app/Http/Requests/StoreOrderRequest.php",
+            "app/Models/OrderItem.php",
+            "app/Console/Commands/PruneAbandonedOrders.php",
+            "app/Http/Controllers/OrderController.php",
+            "app/Jobs/SendOrderConfirmation.php"
+          ],
+          "ranks": {
+            "app/Http/Requests/StoreOrderRequest.php": 1,
+            "app/Services/InventoryService.php": 19
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.5,
+            "R@5": 0.5,
+            "R@8": 0.5,
+            "MRR": 1,
+            "R-precision": 0.5
+          },
+          "packBytes": 4107,
+          "packRecall": 0.5
+        },
+        {
+          "id": "ol-invoice-email",
+          "split": "holdout",
+          "task": "Email the invoice PDF to the customer after an order ships",
+          "relevant": [
+            "app/Services/InvoiceGenerator.php",
+            "app/Mail/OrderConfirmationMail.php",
+            "app/Jobs/SendOrderConfirmation.php"
+          ],
+          "top5": [
+            "resources/views/emails/order-confirmation.blade.php",
+            "app/Http/Controllers/InvoiceController.php",
+            "app/Jobs/SendOrderConfirmation.php",
+            "app/Mail/OrderConfirmationMail.php",
+            "app/Models/Order.php"
+          ],
+          "ranks": {
+            "app/Services/InvoiceGenerator.php": 6,
+            "app/Mail/OrderConfirmationMail.php": 4,
+            "app/Jobs/SendOrderConfirmation.php": 3
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.4,
+            "R@3": 0.3333333333333333,
+            "R@5": 0.6666666666666666,
+            "R@8": 1,
+            "MRR": 0.3333333333333333,
+            "R-precision": 0.3333333333333333
+          },
+          "packBytes": 4313,
+          "packRecall": 1
+        },
+        {
+          "id": "ol-restock",
+          "split": "holdout",
+          "task": "Restore stock when an order is cancelled",
+          "relevant": [
+            "app/Services/InventoryService.php",
+            "app/Models/Order.php",
+            "tests/Feature/OrderTest.php"
+          ],
+          "top5": [
+            "app/Models/Order.php",
+            "tests/Feature/OrderTest.php",
+            "app/Console/Commands/PruneAbandonedOrders.php",
+            "app/Http/Controllers/OrderController.php",
+            "app/Http/Requests/StoreOrderRequest.php"
+          ],
+          "ranks": {
+            "app/Services/InventoryService.php": 19,
+            "app/Models/Order.php": 1,
+            "tests/Feature/OrderTest.php": 2
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.4,
+            "R@3": 0.6666666666666666,
+            "R@5": 0.6666666666666666,
+            "R@8": 0.6666666666666666,
+            "MRR": 1,
+            "R-precision": 0.6666666666666666
+          },
+          "packBytes": 4416,
+          "packRecall": 0.6666666666666666
+        },
+        {
+          "id": "ol-prune",
+          "split": "holdout",
+          "task": "Change the abandoned orders cleanup to 30 days",
+          "relevant": [
+            "app/Console/Commands/PruneAbandonedOrders.php"
+          ],
+          "top5": [
+            "app/Console/Commands/PruneAbandonedOrders.php",
+            "app/Http/Controllers/OrderController.php",
+            "app/Http/Requests/StoreOrderRequest.php",
+            "app/Jobs/SendOrderConfirmation.php",
+            "app/Mail/OrderConfirmationMail.php"
+          ],
+          "ranks": {
+            "app/Console/Commands/PruneAbandonedOrders.php": 1
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 1
+          },
+          "packBytes": 4184,
+          "packRecall": 1
+        },
+        {
+          "id": "ol-email-subject",
+          "split": "holdout",
+          "task": "Change the subject of the order confirmation email",
+          "relevant": [
+            "app/Mail/OrderConfirmationMail.php"
+          ],
+          "top5": [
+            "resources/views/emails/order-confirmation.blade.php",
+            "app/Jobs/SendOrderConfirmation.php",
+            "app/Mail/OrderConfirmationMail.php",
+            "app/Console/Commands/PruneAbandonedOrders.php",
+            "app/Http/Controllers/OrderController.php"
+          ],
+          "ranks": {
+            "app/Mail/OrderConfirmationMail.php": 3
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 0.3333333333333333,
+            "R-precision": 0
+          },
+          "packBytes": 4554,
+          "packRecall": 1
+        }
+      ],
+      "aggregate": {
+        "dev": {
+          "tasks": 4,
+          "P@1": 0.25,
+          "P@3": 0.333,
+          "P@5": 0.3,
+          "R@3": 0.396,
+          "R@5": 0.563,
+          "R@8": 0.625,
+          "MRR": 0.583,
+          "R-precision": 0.396,
+          "packRecall": 0.625,
+          "packBytes": 4279
+        },
+        "holdout": {
+          "tasks": 4,
+          "P@1": 0.5,
+          "P@3": 0.417,
+          "P@5": 0.3,
+          "R@3": 0.75,
+          "R@5": 0.833,
+          "R@8": 0.917,
+          "MRR": 0.667,
+          "R-precision": 0.5,
+          "packRecall": 0.917,
+          "packBytes": 4367
+        },
+        "all": {
+          "tasks": 8,
+          "P@1": 0.375,
+          "P@3": 0.375,
+          "P@5": 0.3,
+          "R@3": 0.573,
+          "R@5": 0.698,
+          "R@8": 0.771,
+          "MRR": 0.625,
+          "R-precision": 0.448,
+          "packRecall": 0.771,
+          "packBytes": 4323
+        }
+      }
+    },
+    {
+      "id": "plugin-cli",
+      "kind": "synthetic",
+      "files": 31,
+      "repoTextBytes": 7520,
+      "tasks": [
+        {
+          "id": "pc-todo-rule",
+          "split": "dev",
+          "task": "Add a new rule that forbids TODO comments",
+          "relevant": [
+            "src/rules/index.js",
+            "docs/rules.md"
+          ],
+          "top5": [
+            "docs/rules.md",
+            "src/rules/index.js",
+            "src/rules/require-license-header.js",
+            "src/rules/max-lines.js",
+            "src/rules/naming-convention.js"
+          ],
+          "ranks": {
+            "src/rules/index.js": 2,
+            "docs/rules.md": 1
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.4,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 1
+          },
+          "packBytes": 3801,
+          "packRecall": 1
+        },
+        {
+          "id": "pc-sarif",
+          "split": "dev",
+          "task": "Add SARIF output format",
+          "relevant": [
+            "src/cli.js",
+            "src/report/json.js"
+          ],
+          "top5": [
+            "src/cli.js",
+            "README.md"
+          ],
+          "ranks": {
+            "src/cli.js": 1,
+            "src/report/json.js": null
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.5,
+            "R@5": 0.5,
+            "R@8": 0.5,
+            "MRR": 1,
+            "R-precision": 0.5
+          },
+          "packBytes": 2555,
+          "packRecall": 0.5
+        },
+        {
+          "id": "pc-ignore",
+          "split": "dev",
+          "task": "Ignore patterns are not applied to nested directories",
+          "relevant": [
+            "src/fs/ignore.js",
+            "src/fs/walk.js"
+          ],
+          "top5": [
+            "src/fs/ignore.js",
+            "src/fs/walk.js",
+            "src/config/schema.js",
+            "src/engine.js",
+            "README.md"
+          ],
+          "ranks": {
+            "src/fs/ignore.js": 1,
+            "src/fs/walk.js": 2
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.4,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 1
+          },
+          "packBytes": 3239,
+          "packRecall": 1
+        },
+        {
+          "id": "pc-maxlines-default",
+          "split": "dev",
+          "task": "Raise the default max lines limit to 500",
+          "relevant": [
+            "src/config/schema.js",
+            "src/rules/max-lines.js"
+          ],
+          "top5": [
+            "src/rules/max-lines.js",
+            "src/config/schema.js",
+            "docs/rules.md",
+            "src/rules/index.js",
+            "src/rules/naming-convention.js"
+          ],
+          "ranks": {
+            "src/config/schema.js": 2,
+            "src/rules/max-lines.js": 1
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.4,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 1
+          },
+          "packBytes": 4136,
+          "packRecall": 1
+        },
+        {
+          "id": "pc-markdown",
+          "split": "holdout",
+          "task": "Support heading checks in markdown files",
+          "relevant": [
+            "src/parsers/markdown.js",
+            "src/parsers/index.js"
+          ],
+          "top5": [
+            "src/parsers/markdown.js",
+            "src/engine.js",
+            "src/parsers/index.js",
+            "src/rules/max-lines.js",
+            "src/rules/naming-convention.js"
+          ],
+          "ranks": {
+            "src/parsers/markdown.js": 1,
+            "src/parsers/index.js": 3
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.4,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.5
+          },
+          "packBytes": 3916,
+          "packRecall": 1
+        },
+        {
+          "id": "pc-config-invalid",
+          "split": "holdout",
+          "task": "Show an error when the config file contains invalid JSON instead of silently using defaults",
+          "relevant": [
+            "src/config/load.js",
+            "test/config.test.js"
+          ],
+          "top5": [
+            "src/config/schema.js",
+            "src/config/load.js",
+            "src/report/json.js",
+            "test/config.test.js",
+            "src/cli.js"
+          ],
+          "ranks": {
+            "src/config/load.js": 2,
+            "test/config.test.js": 4
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.4,
+            "R@3": 0.5,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 0.5,
+            "R-precision": 0.5
+          },
+          "packBytes": 4418,
+          "packRecall": 1
+        },
+        {
+          "id": "pc-no-color",
+          "split": "holdout",
+          "task": "Respect the NO_COLOR environment variable in text output",
+          "relevant": [
+            "src/util/colors.js",
+            "src/report/text.js"
+          ],
+          "top5": [
+            "src/report/text.js",
+            "src/util/colors.js",
+            "src/rules/no-var.js",
+            "test/rules/no-var.test.js",
+            "src/cli.js"
+          ],
+          "ranks": {
+            "src/util/colors.js": 2,
+            "src/report/text.js": 1
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.4,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 1
+          },
+          "packBytes": 4208,
+          "packRecall": 1
+        },
+        {
+          "id": "pc-ts-novar",
+          "split": "holdout",
+          "task": "Make the no-var rule work for TypeScript files",
+          "relevant": [
+            "src/rules/no-var.js",
+            "src/parsers/typescript.js",
+            "test/rules/no-var.test.js"
+          ],
+          "top5": [
+            "src/rules/no-var.js",
+            "test/rules/no-var.test.js",
+            "docs/rules.md",
+            "src/rules/index.js",
+            "src/parsers/typescript.js"
+          ],
+          "ranks": {
+            "src/rules/no-var.js": 1,
+            "src/parsers/typescript.js": 5,
+            "test/rules/no-var.test.js": 2
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.6666666666666666,
+            "P@5": 0.6,
+            "R@3": 0.6666666666666666,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.6666666666666666
+          },
+          "packBytes": 4444,
+          "packRecall": 1
+        }
+      ],
+      "aggregate": {
+        "dev": {
+          "tasks": 4,
+          "P@1": 1,
+          "P@3": 0.583,
+          "P@5": 0.35,
+          "R@3": 0.875,
+          "R@5": 0.875,
+          "R@8": 0.875,
+          "MRR": 1,
+          "R-precision": 0.875,
+          "packRecall": 0.875,
+          "packBytes": 3433
+        },
+        "holdout": {
+          "tasks": 4,
+          "P@1": 0.75,
+          "P@3": 0.583,
+          "P@5": 0.45,
+          "R@3": 0.792,
+          "R@5": 1,
+          "R@8": 1,
+          "MRR": 0.875,
+          "R-precision": 0.667,
+          "packRecall": 1,
+          "packBytes": 4247
+        },
+        "all": {
+          "tasks": 8,
+          "P@1": 0.875,
+          "P@3": 0.583,
+          "P@5": 0.4,
+          "R@3": 0.833,
+          "R@5": 0.938,
+          "R@8": 0.938,
+          "MRR": 0.938,
+          "R-precision": 0.771,
+          "packRecall": 0.938,
+          "packBytes": 3840
+        }
+      }
+    },
+    {
+      "id": "contextanvil-0.1.0",
+      "kind": "real",
+      "files": 57,
+      "repoTextBytes": 256550,
+      "tasks": [
+        {
+          "id": "rs-vue",
+          "split": "dev",
+          "task": "Add Vue detection to the scanner",
+          "relevant": [
+            "src/detectors/node.js",
+            "test/detectors.test.js"
+          ],
+          "top5": [
+            "src/scanner.js",
+            "test/scanner-safety.test.js",
+            "src/cli/index.js",
+            "src/detectors/node.js",
+            "src/index.js"
+          ],
+          "ranks": {
+            "src/detectors/node.js": 4,
+            "test/detectors.test.js": 25
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0,
+            "P@5": 0.2,
+            "R@3": 0,
+            "R@5": 0.5,
+            "R@8": 0.5,
+            "MRR": 0.25,
+            "R-precision": 0
+          },
+          "packBytes": 7967,
+          "packRecall": 0.5
+        },
+        {
+          "id": "rs-jwt",
+          "split": "dev",
+          "task": "Redact JWT tokens in output",
+          "relevant": [
+            "src/core/secrets.js",
+            "test/secrets.test.js"
+          ],
+          "top5": [
+            "src/index.js",
+            "src/core/secrets.js",
+            "src/compiler/budget.js",
+            "src/doctor.js",
+            "CHANGELOG.md"
+          ],
+          "ranks": {
+            "src/core/secrets.js": 2,
+            "test/secrets.test.js": 18
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.5,
+            "R@5": 0.5,
+            "R@8": 0.5,
+            "MRR": 0.5,
+            "R-precision": 0.5
+          },
+          "packBytes": 7604,
+          "packRecall": 0.5
+        },
+        {
+          "id": "rs-license",
+          "split": "dev",
+          "task": "Doctor should warn when the repository has no license file",
+          "relevant": [
+            "src/doctor.js",
+            "test/doctor.test.js"
+          ],
+          "top5": [
+            "src/index.js",
+            "src/doctor.js",
+            "src/core/reader.js",
+            "src/core/walker.js",
+            "src/render/text.js"
+          ],
+          "ranks": {
+            "src/doctor.js": 2,
+            "test/doctor.test.js": 7
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.5,
+            "R@5": 0.5,
+            "R@8": 1,
+            "MRR": 0.5,
+            "R-precision": 0.5
+          },
+          "packBytes": 8959,
+          "packRecall": 1
+        },
+        {
+          "id": "rs-quiet",
+          "split": "dev",
+          "task": "Add a --quiet option to the CLI",
+          "relevant": [
+            "src/cli/index.js",
+            "src/cli/help.js",
+            "test/cli.test.js"
+          ],
+          "top5": [
+            "src/cli/index.js",
+            "test/cli.test.js",
+            "src/cli/help.js",
+            "src/core/walker.js",
+            "src/detectors/node.js"
+          ],
+          "ranks": {
+            "src/cli/index.js": 1,
+            "src/cli/help.js": 3,
+            "test/cli.test.js": 2
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 1,
+            "P@5": 0.6,
+            "R@3": 1,
+            "R@5": 1,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 1
+          },
+          "packBytes": 8015,
+          "packRecall": 1
+        },
+        {
+          "id": "rs-python",
+          "split": "holdout",
+          "task": "Add Python project detection from pyproject.toml",
+          "relevant": [
+            "src/detectors/index.js",
+            "src/detectors/php.js",
+            "test/detectors.test.js"
+          ],
+          "top5": [
+            "src/detectors/config-files.js",
+            "src/detectors/conventions.js",
+            "src/detectors/instructions.js",
+            "src/detectors/languages.js",
+            "src/detectors/node.js"
+          ],
+          "ranks": {
+            "src/detectors/index.js": null,
+            "src/detectors/php.js": 6,
+            "test/detectors.test.js": 22
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0,
+            "P@5": 0,
+            "R@3": 0,
+            "R@5": 0,
+            "R@8": 0.3333333333333333,
+            "MRR": 0.16666666666666666,
+            "R-precision": 0
+          },
+          "packBytes": 7795,
+          "packRecall": 0.3333333333333333
+        },
+        {
+          "id": "rs-limits",
+          "split": "holdout",
+          "task": "Raise the default maximum file size limit",
+          "relevant": [
+            "src/core/limits.js",
+            "src/cli/help.js"
+          ],
+          "top5": [
+            "src/core/limits.js",
+            "src/compiler/budget.js",
+            "src/index.js",
+            "src/core/walker.js",
+            "src/compiler/terms.js"
+          ],
+          "ranks": {
+            "src/core/limits.js": 1,
+            "src/cli/help.js": 6
+          },
+          "metrics": {
+            "P@1": 1,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.5,
+            "R@5": 0.5,
+            "R@8": 1,
+            "MRR": 1,
+            "R-precision": 0.5
+          },
+          "packBytes": 8810,
+          "packRecall": 1
+        },
+        {
+          "id": "rs-budget",
+          "split": "holdout",
+          "task": "Fix the output budget so the pack never exceeds the limit",
+          "relevant": [
+            "src/compiler/budget.js",
+            "src/compiler/compile.js",
+            "test/compiler.test.js"
+          ],
+          "top5": [
+            "src/index.js",
+            "src/core/limits.js",
+            "src/compiler/budget.js",
+            "src/compiler/compile.js",
+            "src/doctor.js"
+          ],
+          "ranks": {
+            "src/compiler/budget.js": 3,
+            "src/compiler/compile.js": 4,
+            "test/compiler.test.js": 20
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.4,
+            "R@3": 0.3333333333333333,
+            "R@5": 0.6666666666666666,
+            "R@8": 0.6666666666666666,
+            "MRR": 0.3333333333333333,
+            "R-precision": 0.3333333333333333
+          },
+          "packBytes": 8314,
+          "packRecall": 0.6666666666666666
+        },
+        {
+          "id": "rs-symlink",
+          "split": "holdout",
+          "task": "Follow symlinks inside the repository safely",
+          "relevant": [
+            "src/core/walker.js",
+            "src/core/reader.js",
+            "test/scanner-safety.test.js"
+          ],
+          "top5": [
+            "test/helpers.js",
+            "src/core/walker.js",
+            "src/core/paths.js",
+            "src/index.js",
+            "src/scanner.js"
+          ],
+          "ranks": {
+            "src/core/walker.js": 2,
+            "src/core/reader.js": 7,
+            "test/scanner-safety.test.js": 16
+          },
+          "metrics": {
+            "P@1": 0,
+            "P@3": 0.3333333333333333,
+            "P@5": 0.2,
+            "R@3": 0.3333333333333333,
+            "R@5": 0.3333333333333333,
+            "R@8": 0.6666666666666666,
+            "MRR": 0.5,
+            "R-precision": 0.3333333333333333
+          },
+          "packBytes": 9533,
+          "packRecall": 0.6666666666666666
+        }
+      ],
+      "aggregate": {
+        "dev": {
+          "tasks": 4,
+          "P@1": 0.25,
+          "P@3": 0.417,
+          "P@5": 0.3,
+          "R@3": 0.5,
+          "R@5": 0.625,
+          "R@8": 0.75,
+          "MRR": 0.563,
+          "R-precision": 0.5,
+          "packRecall": 0.75,
+          "packBytes": 8136
+        },
+        "holdout": {
+          "tasks": 4,
+          "P@1": 0.25,
+          "P@3": 0.25,
+          "P@5": 0.2,
+          "R@3": 0.292,
+          "R@5": 0.375,
+          "R@8": 0.667,
+          "MRR": 0.5,
+          "R-precision": 0.292,
+          "packRecall": 0.667,
+          "packBytes": 8613
+        },
+        "all": {
+          "tasks": 8,
+          "P@1": 0.25,
+          "P@3": 0.333,
+          "P@5": 0.25,
+          "R@3": 0.396,
+          "R@5": 0.5,
+          "R@8": 0.708,
+          "MRR": 0.531,
+          "R-precision": 0.396,
+          "packRecall": 0.708,
+          "packBytes": 8375
+        }
+      }
+    }
+  ],
+  "performance": [
+    {
+      "id": "shop-next",
+      "files": 43,
+      "scanMsMedian": 11.9,
+      "compileMsMedian": 10.6,
+      "coldProcessScanMs": 24.2,
+      "coldProcessMaxRssMB": 49
+    },
+    {
+      "id": "orders-laravel",
+      "files": 37,
+      "scanMsMedian": 11.9,
+      "compileMsMedian": 7.8,
+      "coldProcessScanMs": 24.2,
+      "coldProcessMaxRssMB": 48.4
+    },
+    {
+      "id": "plugin-cli",
+      "files": 31,
+      "scanMsMedian": 6.4,
+      "compileMsMedian": 6.4,
+      "coldProcessScanMs": 17.8,
+      "coldProcessMaxRssMB": 47.7
+    },
+    {
+      "id": "contextanvil-0.1.0",
+      "files": 57,
+      "scanMsMedian": 8.9,
+      "compileMsMedian": 16.5,
+      "coldProcessScanMs": 19.2,
+      "coldProcessMaxRssMB": 51.7
+    }
+  ],
+  "scale": [
+    {
+      "files": 502,
+      "scanMs": 35,
+      "compileMs": 175,
+      "doctorMs": 2,
+      "maxRssMB": 51
+    },
+    {
+      "files": 2002,
+      "scanMs": 62,
+      "compileMs": 588,
+      "doctorMs": 2,
+      "maxRssMB": 64
+    },
+    {
+      "files": 5002,
+      "scanMs": 127,
+      "compileMs": 696,
+      "doctorMs": 2,
+      "maxRssMB": 70
+    }
+  ],
+  "determinism": [
+    {
+      "id": "shop-next",
+      "crossProcessIdentical": true
+    },
+    {
+      "id": "orders-laravel",
+      "crossProcessIdentical": true
+    },
+    {
+      "id": "plugin-cli",
+      "crossProcessIdentical": true
+    },
+    {
+      "id": "contextanvil-0.1.0",
+      "crossProcessIdentical": true
+    }
+  ],
+  "local": [
+    {
+      "id": "local-1",
+      "files": 357,
+      "scanMs": 45,
+      "compileMs": 91,
+      "maxRssMB": 67
+    },
+    {
+      "id": "local-2",
+      "files": 695,
+      "scanMs": 78,
+      "compileMs": 193,
+      "maxRssMB": 72
+    }
+  ],
+  "summary": {
+    "synthetic": {
+      "dev": {
+        "tasks": 13,
+        "P@1": 0.692,
+        "P@3": 0.513,
+        "P@5": 0.369,
+        "R@3": 0.686,
+        "R@5": 0.788,
+        "R@8": 0.846,
+        "MRR": 0.833,
+        "R-precision": 0.609,
+        "packRecall": 0.846,
+        "packBytes": 4356
+      },
+      "holdout": {
+        "tasks": 13,
+        "P@1": 0.615,
+        "P@3": 0.462,
+        "P@5": 0.354,
+        "R@3": 0.628,
+        "R@5": 0.769,
+        "R@8": 0.859,
+        "MRR": 0.753,
+        "R-precision": 0.513,
+        "packRecall": 0.859,
+        "packBytes": 4497
+      },
+      "all": {
+        "tasks": 26,
+        "P@1": 0.654,
+        "P@3": 0.487,
+        "P@5": 0.362,
+        "R@3": 0.657,
+        "R@5": 0.779,
+        "R@8": 0.853,
+        "MRR": 0.793,
+        "R-precision": 0.561,
+        "packRecall": 0.853,
+        "packBytes": 4426
+      }
+    },
+    "real": {
+      "dev": {
+        "tasks": 4,
+        "P@1": 0.25,
+        "P@3": 0.417,
+        "P@5": 0.3,
+        "R@3": 0.5,
+        "R@5": 0.625,
+        "R@8": 0.75,
+        "MRR": 0.563,
+        "R-precision": 0.5,
+        "packRecall": 0.75,
+        "packBytes": 8136
+      },
+      "holdout": {
+        "tasks": 4,
+        "P@1": 0.25,
+        "P@3": 0.25,
+        "P@5": 0.2,
+        "R@3": 0.292,
+        "R@5": 0.375,
+        "R@8": 0.667,
+        "MRR": 0.5,
+        "R-precision": 0.292,
+        "packRecall": 0.667,
+        "packBytes": 8613
+      },
+      "all": {
+        "tasks": 8,
+        "P@1": 0.25,
+        "P@3": 0.333,
+        "P@5": 0.25,
+        "R@3": 0.396,
+        "R@5": 0.5,
+        "R@8": 0.708,
+        "MRR": 0.531,
+        "R-precision": 0.396,
+        "packRecall": 0.708,
+        "packBytes": 8375
+      }
+    }
+  }
+}

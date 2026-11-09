@@ -1,0 +1,257 @@
+=== package.json ===
+{
+  "name": "nitlint",
+  "version": "1.3.0",
+  "type": "module",
+  "bin": { "nitlint": "./bin/nitlint.js" },
+  "main": "./src/engine.js",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test" }
+}
+=== package-lock.json ===
+{ "lockfileVersion": 3, "packages": {} }
+=== .gitignore ===
+node_modules
+=== README.md ===
+# nitlint
+
+A small, rule-based linter. Rules are plain modules registered in `src/rules/index.js`; reporters render the results.
+
+## Usage
+
+Run `nitlint src/` to lint a directory. Use `--format json` for machine-readable output.
+=== AGENTS.md ===
+# Agent guide
+
+## Testing
+
+Run `npm test`. Every rule needs a test under `test/rules`.
+
+## Conventions
+
+Rules export `meta` and `check`. Keep rules free of file system access; the engine passes parsed source in.
+=== docs/rules.md ===
+# Rules
+
+| Rule | Description |
+| ---- | ----------- |
+| no-console | Disallow console calls |
+| no-var | Prefer let and const |
+| max-lines | Limit file length |
+| naming-convention | Enforce identifier casing |
+| require-license-header | Require a license header comment |
+=== bin/nitlint.js ===
+#!/usr/bin/env node
+import { main } from '../src/cli.js';
+
+process.exitCode = await main(process.argv.slice(2));
+=== src/cli.js ===
+import { loadConfig } from './config/load.js';
+import { lintFiles } from './engine.js';
+import { renderText } from './report/text.js';
+import { renderJson } from './report/json.js';
+import { log } from './util/log.js';
+
+export async function main(argv) {
+  const format = argv.includes('--format') ? argv[argv.indexOf('--format') + 1] : 'text';
+  const config = await loadConfig(process.cwd());
+  const results = await lintFiles(argv.filter((a) => !a.startsWith('--')), config);
+  const output = format === 'json' ? renderJson(results) : renderText(results);
+  log(output);
+  return results.some((r) => r.messages.length > 0) ? 1 : 0;
+}
+=== src/engine.js ===
+import { walk } from './fs/walk.js';
+import { parseSource } from './parsers/index.js';
+import { rules } from './rules/index.js';
+
+export async function lintFiles(targets, config) {
+  const results = [];
+  for (const file of await walk(targets, config.ignore)) {
+    const ast = await parseSource(file);
+    const messages = [];
+    for (const [name, rule] of Object.entries(rules)) {
+      if (config.rules[name] === 'off') continue;
+      messages.push(...rule.check(ast, config.rules[name]));
+    }
+    results.push({ file, messages });
+  }
+  return results;
+}
+=== src/config/load.js ===
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { defaults } from './schema.js';
+
+export async function loadConfig(cwd) {
+  const file = path.join(cwd, '.nitlintrc.json');
+  try {
+    const raw = JSON.parse(await fs.readFile(file, 'utf8'));
+    return { ...defaults, ...raw, rules: { ...defaults.rules, ...raw.rules } };
+  } catch {
+    return defaults;
+  }
+}
+=== src/config/schema.js ===
+export const defaults = {
+  ignore: ['node_modules', 'dist'],
+  rules: {
+    'no-console': 'warn',
+    'no-var': 'error',
+    'max-lines': { max: 300 },
+    'naming-convention': 'warn',
+    'require-license-header': 'off',
+  },
+};
+=== src/fs/walk.js ===
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { isIgnored } from './ignore.js';
+
+export async function walk(targets, ignore) {
+  const files = [];
+  for (const target of targets) {
+    for (const entry of await fs.readdir(target, { withFileTypes: true })) {
+      const full = path.join(target, entry.name);
+      if (isIgnored(full, ignore)) continue;
+      if (entry.isDirectory()) files.push(...(await walk([full], ignore)));
+      else files.push(full);
+    }
+  }
+  return files;
+}
+=== src/fs/ignore.js ===
+export function isIgnored(file, patterns) {
+  return patterns.some((pattern) => file.split('/').includes(pattern));
+}
+=== src/parsers/index.js ===
+import fs from 'node:fs/promises';
+import { parseJavascript } from './javascript.js';
+import { parseTypescript } from './typescript.js';
+import { parseMarkdown } from './markdown.js';
+
+export async function parseSource(file) {
+  const text = await fs.readFile(file, 'utf8');
+  if (file.endsWith('.ts')) return parseTypescript(text, file);
+  if (file.endsWith('.md')) return parseMarkdown(text, file);
+  return parseJavascript(text, file);
+}
+=== src/parsers/javascript.js ===
+export function parseJavascript(text, file) {
+  return { file, text, lines: text.split('\n'), language: 'javascript' };
+}
+=== src/parsers/typescript.js ===
+export function parseTypescript(text, file) {
+  return { file, text, lines: text.split('\n'), language: 'typescript' };
+}
+=== src/parsers/markdown.js ===
+export function parseMarkdown(text, file) {
+  return { file, text, lines: text.split('\n'), language: 'markdown', headings: text.split('\n').filter((l) => l.startsWith('#')) };
+}
+=== src/rules/index.js ===
+import noConsole from './no-console.js';
+import noVar from './no-var.js';
+import maxLines from './max-lines.js';
+import namingConvention from './naming-convention.js';
+import requireLicenseHeader from './require-license-header.js';
+
+export const rules = {
+  'no-console': noConsole,
+  'no-var': noVar,
+  'max-lines': maxLines,
+  'naming-convention': namingConvention,
+  'require-license-header': requireLicenseHeader,
+};
+=== src/rules/no-console.js ===
+export default {
+  meta: { description: 'Disallow console calls' },
+  check(ast) {
+    return ast.lines.flatMap((line, i) => (line.includes('console.') ? [{ line: i + 1, message: 'Unexpected console call' }] : []));
+  },
+};
+=== src/rules/no-var.js ===
+export default {
+  meta: { description: 'Prefer let and const' },
+  check(ast) {
+    if (ast.language !== 'javascript') return [];
+    return ast.lines.flatMap((line, i) => (/^\s*var\s/.test(line) ? [{ line: i + 1, message: 'Unexpected var' }] : []));
+  },
+};
+=== src/rules/max-lines.js ===
+export default {
+  meta: { description: 'Limit file length' },
+  check(ast, options = { max: 300 }) {
+    return ast.lines.length > options.max ? [{ line: 1, message: `File has ${ast.lines.length} lines` }] : [];
+  },
+};
+=== src/rules/naming-convention.js ===
+export default {
+  meta: { description: 'Enforce identifier casing' },
+  check(ast) {
+    return ast.lines.flatMap((line, i) => (/\bconst [A-Z][a-z]+_[a-z]+/.test(line) ? [{ line: i + 1, message: 'Use camelCase' }] : []));
+  },
+};
+=== src/rules/require-license-header.js ===
+export default {
+  meta: { description: 'Require a license header comment' },
+  check(ast) {
+    return ast.text.startsWith('/*') ? [] : [{ line: 1, message: 'Missing license header' }];
+  },
+};
+=== src/report/text.js ===
+import { color } from '../util/colors.js';
+
+export function renderText(results) {
+  return results
+    .flatMap((r) => r.messages.map((m) => `${r.file}:${m.line} ${color('red', m.message)}`))
+    .join('\n');
+}
+=== src/report/json.js ===
+export function renderJson(results) {
+  return JSON.stringify(results, null, 2);
+}
+=== src/util/colors.js ===
+const CODES = { red: 31, green: 32, yellow: 33 };
+
+export function color(name, text) {
+  return `\u001b[${CODES[name]}m${text}\u001b[0m`;
+}
+=== src/util/log.js ===
+export function log(message) {
+  process.stdout.write(`${message}\n`);
+}
+=== test/rules/no-console.test.js ===
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import rule from '../../src/rules/no-console.js';
+
+test('reports console calls', () => {
+  const ast = { lines: ['console.log(1)'], language: 'javascript' };
+  assert.equal(rule.check(ast).length, 1);
+});
+=== test/rules/no-var.test.js ===
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import rule from '../../src/rules/no-var.js';
+
+test('reports var declarations', () => {
+  const ast = { lines: ['var a = 1'], language: 'javascript' };
+  assert.equal(rule.check(ast).length, 1);
+});
+=== test/engine.test.js ===
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { rules } from '../src/rules/index.js';
+
+test('registry exposes every documented rule', () => {
+  assert.equal(Object.keys(rules).length, 5);
+});
+=== test/config.test.js ===
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { loadConfig } from '../src/config/load.js';
+
+test('falls back to defaults when no config file exists', async () => {
+  const config = await loadConfig('/nonexistent');
+  assert.equal(config.rules['no-var'], 'error');
+});

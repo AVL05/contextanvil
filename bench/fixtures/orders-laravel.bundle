@@ -1,0 +1,475 @@
+=== composer.json ===
+{
+  "name": "acme/orders",
+  "require": { "php": "^8.2", "laravel/framework": "^11.0" },
+  "require-dev": { "phpunit/phpunit": "^11.0", "laravel/pint": "^1.13" },
+  "autoload": { "psr-4": { "App\\": "app/", "Database\\Seeders\\": "database/seeders/" } },
+  "scripts": { "test": "php artisan test" }
+}
+=== artisan ===
+#!/usr/bin/env php
+<?php
+// console entry point
+=== phpunit.xml ===
+<?xml version="1.0"?>
+<phpunit><testsuites><testsuite name="Feature"><directory>tests/Feature</directory></testsuite></testsuites></phpunit>
+=== .gitignore ===
+/vendor
+.env
+=== README.md ===
+# Orders
+
+Order management for a small online shop. Customers place orders, admins manage them and invoices are generated as PDFs.
+=== AGENTS.md ===
+# Agent guide
+
+## Testing
+
+Run `composer test`. Feature tests cover HTTP behaviour, unit tests cover services.
+
+## Conventions
+
+Controllers stay thin. Pricing and stock rules live in `app/Services`. Authorization lives in policies.
+=== routes/web.php ===
+<?php
+
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\OrderController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware('auth')->group(function () {
+    Route::resource('orders', OrderController::class);
+    Route::get('orders/{order}/invoice', [InvoiceController::class, 'show'])->name('orders.invoice');
+});
+=== routes/api.php ===
+<?php
+
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('products', [ProductController::class, 'index']);
+=== app/Models/User.php ===
+<?php
+
+namespace App\Models;
+
+class User
+{
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+}
+=== app/Models/Order.php ===
+<?php
+
+namespace App\Models;
+
+class Order
+{
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_SHIPPED = 'shipped';
+    public const STATUS_CANCELLED = 'cancelled';
+
+    protected $fillable = ['user_id', 'status', 'subtotal_cents', 'total_cents'];
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function cancel(): void
+    {
+        $this->status = self::STATUS_CANCELLED;
+        $this->save();
+    }
+}
+=== app/Models/OrderItem.php ===
+<?php
+
+namespace App\Models;
+
+class OrderItem
+{
+    protected $fillable = ['order_id', 'product_id', 'quantity', 'unit_price_cents'];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+}
+=== app/Models/Product.php ===
+<?php
+
+namespace App\Models;
+
+class Product
+{
+    protected $fillable = ['name', 'sku', 'price_cents', 'stock'];
+}
+=== app/Http/Controllers/OrderController.php ===
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreOrderRequest;
+use App\Models\Order;
+use App\Services\InventoryService;
+use App\Services\PricingService;
+
+class OrderController extends Controller
+{
+    public function __construct(private PricingService $pricing, private InventoryService $inventory)
+    {
+    }
+
+    public function index()
+    {
+        $orders = Order::where('user_id', auth()->id())->latest()->get();
+
+        return view('orders.index', ['orders' => $orders]);
+    }
+
+    public function store(StoreOrderRequest $request)
+    {
+        $order = Order::create(['user_id' => auth()->id(), 'status' => Order::STATUS_PENDING]);
+        $this->inventory->reserve($request->items());
+        $order->total_cents = $this->pricing->total($request->items());
+        $order->save();
+
+        return redirect()->route('orders.show', $order);
+    }
+
+    public function show(Order $order)
+    {
+        $this->authorize('view', $order);
+
+        return view('orders.show', ['order' => $order]);
+    }
+
+    public function destroy(Order $order)
+    {
+        $this->authorize('delete', $order);
+        $order->cancel();
+
+        return redirect()->route('orders.index');
+    }
+}
+=== app/Http/Controllers/ProductController.php ===
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+
+class ProductController extends Controller
+{
+    public function index()
+    {
+        return Product::query()->orderBy('name')->get();
+    }
+}
+=== app/Http/Controllers/InvoiceController.php ===
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Order;
+use App\Services\InvoiceGenerator;
+
+class InvoiceController extends Controller
+{
+    public function show(Order $order, InvoiceGenerator $generator)
+    {
+        $this->authorize('view', $order);
+
+        return response($generator->render($order), 200, ['Content-Type' => 'application/pdf']);
+    }
+}
+=== app/Http/Controllers/Auth/LoginController.php ===
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+
+class LoginController extends Controller
+{
+    public function login()
+    {
+        // authenticate the user
+    }
+}
+=== app/Http/Controllers/Controller.php ===
+<?php
+
+namespace App\Http\Controllers;
+
+abstract class Controller
+{
+}
+=== app/Http/Requests/StoreOrderRequest.php ===
+<?php
+
+namespace App\Http\Requests;
+
+class StoreOrderRequest
+{
+    public function rules(): array
+    {
+        return [
+            'items' => ['required', 'array', 'min:1'],
+            'items.*.product_id' => ['required', 'exists:products,id'],
+            'items.*.quantity' => ['required', 'integer', 'min:1'],
+        ];
+    }
+
+    public function items(): array
+    {
+        return $this->validated()['items'];
+    }
+}
+=== app/Http/Middleware/EnsureUserIsAdmin.php ===
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class EnsureUserIsAdmin
+{
+    public function handle($request, Closure $next)
+    {
+        abort_unless($request->user()?->isAdmin(), 403);
+
+        return $next($request);
+    }
+}
+=== app/Services/PricingService.php ===
+<?php
+
+namespace App\Services;
+
+use App\Models\Product;
+
+class PricingService
+{
+    public function total(array $items): int
+    {
+        $total = 0;
+        foreach ($items as $item) {
+            $product = Product::find($item['product_id']);
+            $total += $product->price_cents * $item['quantity'];
+        }
+
+        return $total;
+    }
+
+    public function applyTax(int $cents, float $rate): int
+    {
+        return (int) round($cents * (1 + $rate));
+    }
+}
+=== app/Services/InventoryService.php ===
+<?php
+
+namespace App\Services;
+
+use App\Models\Product;
+
+class InventoryService
+{
+    public function reserve(array $items): void
+    {
+        foreach ($items as $item) {
+            Product::where('id', $item['product_id'])->decrement('stock', $item['quantity']);
+        }
+    }
+}
+=== app/Services/InvoiceGenerator.php ===
+<?php
+
+namespace App\Services;
+
+use App\Models\Order;
+
+class InvoiceGenerator
+{
+    public function render(Order $order): string
+    {
+        $lines = [];
+        foreach ($order->items as $item) {
+            $lines[] = sprintf('%s x %d', $item->product->name, $item->quantity);
+        }
+
+        return implode("\n", $lines);
+    }
+}
+=== app/Policies/OrderPolicy.php ===
+<?php
+
+namespace App\Policies;
+
+use App\Models\Order;
+use App\Models\User;
+
+class OrderPolicy
+{
+    public function view(User $user, Order $order): bool
+    {
+        return $user->isAdmin() || $order->user_id === $user->id;
+    }
+
+    public function delete(User $user, Order $order): bool
+    {
+        return $order->user_id === $user->id;
+    }
+}
+=== app/Jobs/SendOrderConfirmation.php ===
+<?php
+
+namespace App\Jobs;
+
+use App\Mail\OrderConfirmationMail;
+use App\Models\Order;
+use Illuminate\Support\Facades\Mail;
+
+class SendOrderConfirmation
+{
+    public function __construct(private Order $order)
+    {
+    }
+
+    public function handle(): void
+    {
+        Mail::to($this->order->user->email)->send(new OrderConfirmationMail($this->order));
+    }
+}
+=== app/Mail/OrderConfirmationMail.php ===
+<?php
+
+namespace App\Mail;
+
+use App\Models\Order;
+
+class OrderConfirmationMail
+{
+    public function __construct(public Order $order)
+    {
+    }
+
+    public function build()
+    {
+        return $this->subject('Your order has been received')->view('emails.order-confirmation');
+    }
+}
+=== app/Console/Commands/PruneAbandonedOrders.php ===
+<?php
+
+namespace App\Console\Commands;
+
+use App\Models\Order;
+
+class PruneAbandonedOrders
+{
+    protected $signature = 'orders:prune';
+
+    public function handle(): void
+    {
+        Order::where('status', Order::STATUS_PENDING)->where('created_at', '<', now()->subDays(7))->delete();
+    }
+}
+=== database/migrations/2024_01_10_000000_create_products_table.php ===
+<?php
+// creates the products table: name, sku, price_cents, stock
+=== database/migrations/2024_02_01_000000_create_orders_table.php ===
+<?php
+// creates the orders and order_items tables
+=== database/migrations/2024_03_15_000000_add_status_index_to_orders.php ===
+<?php
+// adds an index on orders.status
+=== resources/views/layouts/app.blade.php ===
+<html>
+  <body>
+    <nav>Orders</nav>
+    @yield('content')
+  </body>
+</html>
+=== resources/views/orders/index.blade.php ===
+@extends('layouts.app')
+@section('content')
+  @foreach ($orders as $order)
+    <a href="{{ route('orders.show', $order) }}">Order #{{ $order->id }}</a>
+  @endforeach
+@endsection
+=== resources/views/orders/show.blade.php ===
+@extends('layouts.app')
+@section('content')
+  <h1>Order #{{ $order->id }}</h1>
+  <p>Status: {{ $order->status }}</p>
+@endsection
+=== resources/views/emails/order-confirmation.blade.php ===
+<p>Thanks for your order #{{ $order->id }}.</p>
+=== config/services.php ===
+<?php
+
+return [
+    'mail' => ['from' => env('MAIL_FROM', 'orders@example.test')],
+];
+=== tests/Feature/OrderTest.php ===
+<?php
+
+namespace Tests\Feature;
+
+use PHPUnit\Framework\TestCase;
+
+class OrderTest extends TestCase
+{
+    public function test_user_can_create_an_order(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    public function test_cancelling_an_order_marks_it_cancelled(): void
+    {
+        $this->assertTrue(true);
+    }
+}
+=== tests/Feature/InvoiceTest.php ===
+<?php
+
+namespace Tests\Feature;
+
+use PHPUnit\Framework\TestCase;
+
+class InvoiceTest extends TestCase
+{
+    public function test_invoice_lists_every_item(): void
+    {
+        $this->assertTrue(true);
+    }
+}
+=== tests/Unit/PricingServiceTest.php ===
+<?php
+
+namespace Tests\Unit;
+
+use PHPUnit\Framework\TestCase;
+
+class PricingServiceTest extends TestCase
+{
+    public function test_total_sums_item_prices(): void
+    {
+        $this->assertTrue(true);
+    }
+}

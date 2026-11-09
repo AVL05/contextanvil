@@ -1,0 +1,7 @@
+# Test fixtures are deliberately messy sample projects. They would drown the
+# real signal when ContextAnvil analyses its own repository.
+test/fixtures/
+
+# Frozen benchmark inputs and recorded results are data, not project code.
+bench/snapshots/
+bench/results/

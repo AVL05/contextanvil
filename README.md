@@ -1,0 +1,381 @@
+# ContextAnvil
+
+**Forge better context.**
+
+ContextAnvil is a context-engineering toolkit for AI coding agents. It reads a repository, works out what
+is in it, and compiles a small, source-grounded context pack for the task at hand, then checks the
+repository's agent-facing context (AGENTS.md, CLAUDE.md and friends) for problems.
+
+It is deterministic, offline and read-only. It needs no API key, no cloud service and no language model.
+
+> **Status: v0.1.1, early development.** Scan, context and doctor are implemented and tested on Windows only. It is
+> not published to npm yet, and the CI workflow for Linux and macOS **has not run on GitHub yet**, so those platforms
+> are unverified. See [Limitations](#limitations), the [benchmarks](bench/README.md) and the [roadmap](docs/roadmap.md).
+
+## Why
+
+Coding agents work better when they start from accurate, relevant context, and worse when they re-discover
+a repository each session, read the wrong files, or follow instructions that no longer match the code.
+ContextAnvil is built around three ideas:
+
+- **Understand**: discover languages, frameworks, scripts, entry points, conventions and existing agent
+  instructions, and record *where each fact came from*.
+- **Forge**: compile focused context for a specific task within an explicit budget, explaining why each item
+  is included and listing what was left out.
+- **Verify**: detect instructions that contradict each other, reference things that no longer exist, or
+  contain secrets and hidden or hijacking text.
+
+What it deliberately does differently from memory and indexing tools: analysis is **deterministic** (same
+input, same bytes), every claim is **cited** (path, line, content digest), facts are separated from
+**inferences**, budgets are **measured** rather than assumed, ranking decisions are **explained**, and nothing in a
+scanned repository can instruct the tool.
+
+## Use cases
+
+- Give an agent a compact starting pack for a task: `contextanvil context "Fix the login redirect" .`
+- Check in CI that `AGENTS.md` still matches the repository: `contextanvil doctor .`
+- Audit an unfamiliar repository before letting an agent loose in it.
+- Get a source-cited overview of a codebase for onboarding.
+- Build your own tooling on the JSON output or the library API.
+
+## Install and run
+
+ContextAnvil is not on npm yet. Run it from a clone. Requires **Node.js 22 or later**; there are no
+dependencies to install.
+
+```bash
+git clone <this repository>
+cd contextanvil
+npm test
+node bin/contextanvil.js --help
+```
+
+There is no install step; a global `contextanvil` command will exist once the package is published.
+
+## Commands
+
+```text
+contextanvil scan [path]                 Analyse a repository and report what was found
+contextanvil context "<task>" [path]     Compile focused context for a task
+contextanvil doctor [path]               Diagnose missing, conflicting, stale or unsafe context
+contextanvil --help | --version
+```
+
+`path` defaults to the current directory. Every command accepts `--json`. Shared options:
+`--max-files <n>`, `--max-depth <n>`, `--max-file-size <size>`, `--no-gitignore`.
+
+Exit codes: `0` success, `1` doctor findings at or above `--fail-on`, `2` usage error, `3` runtime error.
+
+### `scan`
+
+The output below is real, from the sample project in `test/fixtures/next-app` (trimmed to the first
+sections):
+
+```text
+$ contextanvil scan test/fixtures/next-app
+ContextAnvil scan (v0.1.1)
+Root: test/fixtures/next-app
+Indexed 15 files in 4 directories (2.3 KiB).
+Excluded: nothing.
+Legend: [status/confidence] source. "observed" = read from a file, "inferred" = heuristic.
+
+LANGUAGES (BY FILE EXTENSION)
+  - TypeScript: 7 files (.ts, .tsx) by extension  [observed/high] app/layout.tsx
+  - JavaScript: 1 file (.mjs) by extension  [observed/high] next.config.mjs
+
+FRAMEWORKS AND LIBRARIES
+  - Next.js ^14.2.3 (App Router) (declared in dependencies)  [observed/high] package.json:13
+  - React ^18.3.1 (declared in dependencies)  [observed/high] package.json:14
+
+TEST FRAMEWORKS
+  - Jest ^29.7.0 (declared in devDependencies)  [observed/high] package.json:19
+  - React Testing Library ^16.0.0 (declared in devDependencies)  [observed/high] package.json:18
+
+PACKAGE MANAGER
+  - Package manager: npm (lockfile present)  [observed/high] package-lock.json
+
+ENTRY POINTS
+  - Next.js framework entry: app/layout.tsx  [observed/high] app/layout.tsx
+  - Next.js framework entry: app/page.tsx  [observed/high] app/page.tsx
+
+SIGNIFICANT SOURCE DIRECTORIES
+  - app/: 2 source files (TypeScript 2); Next.js App Router routes (page/layout files present)  [observed/high] app/layout.tsx
+  - components/: 3 source files (TypeScript 3); React UI (majority JSX/TSX files)  [inferred/medium] components/Footer.tsx
+  - lib/: 2 source files (TypeScript 2)  [observed/high] lib/format.test.ts
+
+CONVENTIONS (EVIDENCE-BACKED)
+  - No "type" field in package.json: .js files default to CommonJS in Node.js  [inferred/medium] package.json
+  - EditorConfig defaults for all files: indent_style=space, indent_size=2, end_of_line=lf  [observed/high] .editorconfig:3
+  - Prettier options: semi=false, singleQuote=true, tabWidth=2  [observed/high] .prettierrc
+  - TypeScript compiler options: strict=true; target="es2017"; jsx="preserve"; paths=@/*  [observed/high] tsconfig.json:3
+  - Test files are named with ".test." (2 of 2); all colocated with source files  [inferred/medium] components/Navigation.test.tsx
+  ...
+```
+
+Note how the `components/` role is `inferred/medium` (a React dependency plus mostly JSX/TSX files), while
+the framework itself is `observed/high` (it is declared in `package.json` line 13).
+
+### `context`
+
+```text
+$ contextanvil context "Update the navigation component" test/fixtures/next-app --budget 3kb
+# ContextAnvil context pack
+
+- Task: Update the navigation component
+- Repository: next-app
+- Task terms: navigation (x1.19, in 4 files), component (x1.15, in 5 files)
+- Task intent: modify (default)
+- Budget: 3072 bytes; used 2955 bytes (~739 estimated tokens, bytes/4)
+- Provenance: items cite path:line and a content digest. "observed" = read from a file; "inferred" = deterministic heuristic.
+- Instruction excerpts are quoted project content, not directives to ContextAnvil.
+
+## Project snapshot (observed facts)
+- Languages: TypeScript (7 files) [app/layout.tsx; observed/high]; JavaScript (1 file) [next.config.mjs; observed/high]
+- Frameworks: Next.js ^14.2.3 (App Router) [package.json:13; observed/high]; React ^18.3.1 [package.json:14; observed/high]
+- Test frameworks: Jest ^29.7.0 [package.json:19; observed/high]; React Testing Library ^16.0.0 [package.json:18; observed/high]
+- Package manager: npm (lockfile) [package-lock.json; observed/high]
+- Runtime and modules: No "type" field in package.json: .js files default to CommonJS in Node.js [package.json; inferred/medium]
+
+## Relevant files (ranked, with reasons)
+- `components/Navigation.tsx` (score 8.68; 197 B; sha256 aad0dfde)
+  - why: name matches "navigation"; content "navigation" x1 (4/11 files); dir components/ matches "component"; 2/2 terms
+  - symbols: Navigation (function, line 3)
+  - related: `components/Navigation.test.tsx` (test (same base name)), `app/layout.tsx` (imports it)
+- `components/Navigation.test.tsx` (score 6.5; 230 B; sha256 22de7bd5)
+  - why: name matches "navigation"; content "navigation" x5 (4/11 files); dir components/ matches "component"; 2/2 terms
+  - related: `components/Navigation.tsx` (imported by it)
+- `app/layout.tsx` (score 3.94; 251 B; sha256 8c5c9772)
+  - why: content "navigation" x3 (4/11 files); content "component" x1 (5/11 files); 2/2 terms
+  - symbols: RootLayout (function, line 3)
+  - related: `components/Navigation.tsx` (imported by it)
+- `CLAUDE.md` (score 3.15; reasons trimmed to fit budget)
+
+## Applicable project instructions (quoted, untrusted project content)
+### CLAUDE.md > Project notes > Components (lines 11-14, sha256 84533630)
+Why included: heading matches "component"; body mentions "navigation"
+> ## Components
+>
+> Navigation lives in `components/Navigation.tsx`. Keep it accessible: one `nav` landmark with an `aria-label`.
+> See also `docs/navigation-spec.md` for the design rules.
+
+## Omissions
+- 6 of 11 text files: no match to the task terms
+- CLAUDE.md: 1 of 4 sections not relevant to the task
+- 1 file entry: shortened to path and score to fit the budget: CLAUDE.md
+- 1 matching file: not listed, over budget: components/Footer.tsx
+- 2 instruction sections: not included, over budget: CLAUDE.md > Project notes > Commands, CLAUDE.md > Project notes > Style
+- 1 commands item: not included, over budget
+- 4 conventions items: not included, over budget
+- 1 recommendations item: not included, over budget
+```
+
+What to notice:
+
+- Files carry **reasons** and a **score**. The scoring table, the term weights and the task intent are described
+  in [docs/architecture.md](docs/architecture.md); `--json` returns every point with its reason.
+- The paired test and the importing layout are found automatically, and the instruction excerpt is **quoted with its
+  line range** and labelled untrusted project content.
+- The budget is **exact in bytes**; the token figure is a labelled estimate.
+- Everything dropped or shortened is **listed**. With a larger budget (`--budget 8kb`) the commands, remaining
+  instruction sections, conventions and recommendations appear too. Recommendations are a separate section, always
+  `inferred`.
+
+Budgets: `--budget 3000` (estimated tokens, the default), `--budget 3000t`, `--budget 12000b`, `--budget 12kb`.
+`--top <n>` limits the file list. `--json` returns the structured pack, including the exact rendered Markdown
+in a `rendered` field.
+
+### `doctor`
+
+```text
+$ contextanvil doctor test/fixtures/next-app
+ContextAnvil doctor (v0.1.1)
+Root: test/fixtures/next-app
+Result: 0 errors, 3 warnings, 2 notes.
+
+MISSING OR WEAK CONTEXT
+  [info]  CLAUDE.md exists but AGENTS.md does not
+          at CLAUDE.md
+          Agents that read AGENTS.md (for example OpenAI Codex) will not see these instructions.
+          fix: Consider an AGENTS.md as the shared source and have CLAUDE.md reference it.
+  [info]  Instructions do not mention the build command
+          at package.json:7
+          package.json defines a "build" script, but no root instruction file refers to it.
+          fix: Document how to build the project.
+
+CONTRADICTIONS
+  [warn]  Instructions mention different package managers
+          at CLAUDE.md:7, CLAUDE.md:9
+          Commands for npm, pnpm appear in the instruction files. Agents may run the wrong one.
+          fix: Standardise on one package manager across all instruction files.
+
+OUTDATED REFERENCES
+  [warn]  CLAUDE.md references docs/navigation-spec.md, which does not exist
+          at CLAUDE.md:14
+          The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).
+          fix: Fix the path or remove the reference.
+  [warn]  CLAUDE.md references script "lint:fix" that package.json does not define
+          at CLAUDE.md:9
+          "npm run lint:fix" appears in the instructions but package.json has no such script. Heuristic: medium confidence.
+          fix: Update the instruction or add the script.
+```
+
+That sample project has those problems on purpose. The ContextAnvil repository itself reports
+`No problems found.`, and CI runs `doctor` on it. Use `--fail-on error|warning|never` to
+control the exit code (default `warning`).
+
+Checks cover: missing or oversized instruction files; conflicting package managers and lockfiles; scripts
+and paths mentioned in instructions that do not exist; manifest entry points that do not exist; secrets,
+terminal control characters, hidden Unicode characters, hidden HTML or comments, encoded blobs and
+agent-hijacking phrases in instruction files; sensitive files not covered by ignore rules; install-time scripts;
+and agent hook / MCP configuration that can run commands.
+
+## How well does the ranking work?
+
+There is a benchmark, and it is deliberately modest. On 34 hand-labelled tasks over three synthetic repositories and one
+frozen real repository (the author's own), comparing v0.1.0 with v0.1.1 on the same harness:
+
+| Tasks | Metric | v0.1.0 | v0.1.1 |
+| ----- | ------ | ------ | ------ |
+| 26 synthetic | first result is relevant (P@1) | 0.65 | 0.85 |
+| | mean reciprocal rank | 0.79 | 0.92 |
+| | all relevant files ranked first (R-precision) | 0.56 | 0.70 |
+| 8 real | first result is relevant (P@1) | 0.25 | 0.75 |
+| | mean reciprocal rank | 0.53 | 0.79 |
+| | all relevant files ranked first (R-precision) | 0.40 | 0.42 |
+
+Caveats that matter: the labels and the ranker share an author; the sets are small (a difference of a few hundredths is
+noise); on the four held-out tasks of the real repository R-precision went *down* (0.29 to 0.21) even though other
+metrics went up; and none of this measures whether an AI agent does better with the pack. Full method, per-dataset
+results, timings, memory and known weak cases: [bench/README.md](bench/README.md). Reproduce with `npm run bench:quick`.
+
+## What it detects
+
+JavaScript, TypeScript, React, Next.js (App and Pages router), Node.js (package.json, scripts, entry points,
+npm/pnpm/yarn/bun lockfiles, Jest, Vitest, Mocha, Playwright, Cypress and the built-in `node:test` runner),
+PHP and Laravel (composer.json, PSR-4, Artisan, routes, PHPUnit/Pest, Pint), and a set of common
+configuration files. Languages are also counted for Python, Go, Rust, Ruby, Java, Vue and Svelte by file
+extension only. Agent instruction files: AGENTS.md, CLAUDE.md, GEMINI.md, Copilot instructions, Cursor rules,
+Windsurf rules. Conventions are reported only with evidence (EditorConfig, Prettier JSON config, tsconfig,
+test naming and layout, file naming style).
+
+Adding a language or framework means adding one detector module; see
+[CONTRIBUTING.md](CONTRIBUTING.md#adding-a-detector).
+
+## Architecture
+
+```text
+files on disk (read-only) -> core (walker, ignore, reader, sanitize) -> detectors -> scanner -> ScanResult
+                                                                                     |-> compiler -> context pack
+                                                                                     '-> doctor   -> findings
+                                                               CLI / future MCP server / future dashboard
+```
+
+All logic lives in a library with three functions that return plain JSON-serialisable data, so a CLI, an
+MCP server and a dashboard can share it. The exported names and result shapes are pinned by tests.
+
+```js
+import { scanRepository, compileContext, diagnose } from './src/index.js';
+
+const scan = scanRepository('.');
+const pack = compileContext(scan, 'Update the navigation component', { budget: '3kb' });
+console.log(pack.rendered);
+const report = diagnose(scan);
+```
+
+Details: [docs/architecture.md](docs/architecture.md), [ADR 0001](docs/decisions/0001-architecture.md),
+[ADR 0002 (ranking)](docs/decisions/0002-relevance-ranking.md).
+
+## Safety model
+
+- Read-only: nothing in a scanned directory is created, modified or deleted.
+- Nothing from the repository is executed: scripts and JavaScript/PHP config files are recorded, never run.
+- Nothing is transmitted: no network calls, no telemetry, no dependencies.
+- `.env`, key files and similar are listed by path and never opened. Anything shown from a file is redacted for
+  common secret formats, and control and invisible characters are made visible.
+- Symlinks that leave the repository are not followed; limits bound traversal and read volume; patterns and regular
+  expressions applied to repository text are bounded.
+- Text from the repository is treated as untrusted data and quoted, never obeyed.
+
+Version 0.1.1 fixed two denial-of-service bugs found in 0.1.0 (regular-expression backtracking on crafted text and on a
+crafted `.gitignore`) and several smaller issues; the review, its findings and the remaining limitations are in
+[docs/security.md](docs/security.md). It has not been independently audited. Reporting: [SECURITY.md](SECURITY.md).
+
+## Supported environments
+
+- Node.js 22 or later.
+- **Verified locally**: Windows 11, Node.js 24.22.2, full test suite: 126 tests, 125 passed, 1 skipped (a POSIX file-permission
+  test that cannot run on Windows), 0 failed. Tests that need symlinks skip themselves where the operating system forbids
+  creating them; on this machine they ran.
+- **Prepared but not yet verified remotely**: Ubuntu and macOS, and Node.js 22, 24 and the current LTS, in
+  [.github/workflows/ci.yml](.github/workflows/ci.yml). It also compares a digest of the complete output across all of
+  those combinations. Until that workflow has run on GitHub, treat Linux, macOS and Node 22 as untested.
+- Output is ASCII-only so legacy Windows consoles render it correctly.
+
+## Limitations
+
+- **Relevance is lexical and structural.** Task matching uses file names, directories, declared symbols, word matches,
+  rarity of terms, project structure and import relations. It does not understand synonyms or domain meaning: "show
+  prices in euros" will not find the file that says `currency` unless other words overlap, and tasks whose vocabulary
+  is absent from the repository stay hard. Known weak cases are listed in [bench/README.md](bench/README.md).
+- **Accuracy is measured on a small, author-labelled benchmark** (see above). It is not evidence about repositories in
+  general, and it says nothing about AI agent outcomes. **There are no agent-based experiments**: no claim is made that
+  using ContextAnvil reduces tokens, cost or errors.
+- **Import relations are JavaScript, TypeScript and PHP only** (relative imports, `tsconfig`/`jsconfig` path aliases,
+  PSR-4 `use` statements, Laravel `view()` calls).
+- **Static analysis only.** Because nothing is executed, runtime-registered routes, generated code and
+  JavaScript-based configuration (`prettier.config.js`, `eslint.config.js`) are not understood.
+- **Monorepos:** only the root `package.json` / `composer.json` is analysed in depth; nested manifests are
+  listed.
+- **Token counts are estimates** (bytes / 4). There is no tokenizer. On small repositories a pack can be most of the
+  repository's text, and v0.1.1 packs are larger than v0.1.0 packs because they carry more explanation.
+- **Performance**: scanning is fast (tens of milliseconds for hundreds of files), but compiling a context for several
+  thousand files takes seconds (2.3 s for 5,000 generated files on the development machine) and about 100 MB of memory.
+  Synchronous, single-threaded, no deadline.
+- **Secret detection is heuristic** and not a replacement for a dedicated scanner.
+- **Heuristic doctor checks** (stale references, hijacking phrases) can produce false positives and false
+  negatives; they are labelled as such.
+- **Race conditions**: the window between checking and reading a file is narrowed, not closed; do not scan a tree that an
+  untrusted process is modifying.
+- **Default exclusions** apply by directory name (`vendor`, `dist`, `build`, `out`, ...), and `.git/info/exclude`
+  is not read.
+- **No incremental state:** every run re-scans. No manifests, diffs or file generation yet.
+- Version 0.1.1 has had no outside users. Expect rough edges and report them.
+
+## Roadmap
+
+What exists today is described above. Everything below is **planned and not implemented**; details in
+[docs/roadmap.md](docs/roadmap.md):
+
+2. Persistent context manifests, incremental updates, diffs, and safe generation of instruction files.
+3. An MCP server exposing repository context and project rules.
+4. A visual dashboard for project understanding, evidence inspection and conflict resolution.
+5. Reproducible agent benchmarks comparing agent workflows with and without ContextAnvil.
+
+Every phase must keep provider independence and user control.
+
+## Development
+
+```bash
+npm test                                   # full suite (Node's built-in runner)
+node --test test/compiler.test.js          # one file
+npm run scan:self && npm run doctor:self   # ContextAnvil analysing itself
+npm run bench:quick                        # ranking accuracy benchmark (seconds)
+```
+
+Layout: `src/core` (safe access), `src/detectors`, `src/scanner.js`, `src/compiler`, `src/doctor.js`,
+`src/render` and `src/cli` (presentation), `test/` with `test/fixtures/` sample projects, `bench/` (benchmarks).
+
+## Contributing
+
+Contributions are welcome; please read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md) first.
+Security issues: [SECURITY.md](SECURITY.md).
+
+## Name
+
+"ContextAnvil" was checked against npm, GitHub, search results and DNS on 2026-11-09 and no existing project
+using it was found; this is not a trademark clearance. The `contextanvil.com` domain was registered by a third
+party shortly before that check and shows no website; no domain has been registered for this project.
+
+## License
+
+[MIT](LICENSE)
