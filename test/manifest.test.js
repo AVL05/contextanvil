@@ -11,7 +11,8 @@ import { BIN, FAKE, makeRepo, treeDigest, trySymlink } from './helpers.js';
 function setup(t, files) {
   const repo = makeRepo(files);
   t.after(repo.cleanup);
-  return { ...repo, output: path.join(fs.realpathSync.native(repo.base), 'snapshot.json') };
+  const base = fs.realpathSync.native(repo.base);
+  return { base, root: path.join(base, 'repo'), output: path.join(base, 'snapshot.json') };
 }
 
 function resigned(manifest) {
@@ -105,7 +106,14 @@ test('atomic create, injected publish failure and concurrent replacement preserv
   }), /Could not publish/);
   assert.equal(readManifest(repo.output).text, original.text);
   assert.deepEqual(fs.readdirSync(repo.base).sort(), ['repo', 'snapshot.json']);
-  assert.equal(writeManifest(repo.output, next, original), true);
+  let attempts = 0;
+  assert.equal(writeManifest(repo.output, next, original, {
+    replace(from, to) {
+      if (++attempts === 1) throw Object.assign(new Error('simulated busy file'), { code: 'EBUSY' });
+      fs.renameSync(from, to);
+    },
+  }), true);
+  assert.ok(attempts >= 2);
   assert.throws(() => writeManifest(repo.output, first, original), /changed since/);
   const lock = path.join(repo.base, '.snapshot.json.contextanvil-lock');
   fs.writeFileSync(lock, '');

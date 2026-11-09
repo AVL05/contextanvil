@@ -31,6 +31,7 @@ const sameFile = (a, b) => a.dev === b.dev && a.ino === b.ino;
 const sameRevision = (a, b) => sameFile(a, b) && a.size === b.size
   && a.mtimeNs === b.mtimeNs && a.ctimeNs === b.ctimeNs;
 const stat = (target) => fs.lstatSync(target, { bigint: true });
+const busy = (error) => ['EBUSY', 'EACCES', 'EPERM'].includes(error.code);
 
 function readFile(target) {
   const original = stat(target);
@@ -119,23 +120,31 @@ export function writeManifest(input, snapshot, expected, { replace = fs.renameSy
     fs.fsyncSync(tempFd);
     fs.closeSync(tempFd);
     tempFd = undefined;
-    if (path.relative(parent, realpath(parent)) !== '' || !sameFile(directory, stat(parent))) {
-      throw storageError('Manifest directory changed during the write.');
-    }
-    if (expected) {
-      assertCurrent(target, expected);
-      replace(temporary, target);
-    } else {
-      // A rename would overwrite an existing target. A same-directory hard link
-      // publishes the flushed file atomically and fails if the name is occupied.
-      fs.linkSync(temporary, target);
+    for (const delay of [10, 25, 50, 100, 0]) {
+      if (path.relative(parent, realpath(parent)) !== '' || !sameFile(directory, stat(parent))) {
+        throw storageError('Manifest directory changed during the write.');
+      }
+      try {
+        if (expected) {
+          assertCurrent(target, expected);
+          replace(temporary, target);
+        } else {
+          // Unlike rename, a hard link fails if the name is occupied.
+          fs.linkSync(temporary, target);
+        }
+        break;
+      } catch (error) {
+        // Windows file scanners can briefly hold handles that block publication.
+        if (!delay || !busy(error)) throw error;
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, delay);
+      }
     }
     syncDirectory(parent);
     return true;
   } catch (error) {
     if (error instanceof ContextAnvilError) throw error;
     if (error.code === 'EEXIST') throw storageError('Manifest destination or update lock already exists.');
-    if (['EBUSY', 'EACCES', 'EPERM'].includes(error.code)) {
+    if (busy(error)) {
       throw storageError('Could not publish the manifest because a file is busy or access was denied. Retry after releasing it.');
     }
     throw storageError('Could not publish the manifest. Check the destination and filesystem permissions.');
