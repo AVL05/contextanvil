@@ -63,6 +63,16 @@ function run() {
     ];
   }
   checkRoot();
+  // Keep warning counts independent of the item and wire limits.
+  const warningCounts = new Map();
+  for (const { code, level } of scan.diagnostics) {
+    if (level === 'warning' || level === 'warn' || level === 'error') {
+      warningCounts.set(code, (warningCounts.get(code) ?? 0) + 1);
+    }
+  }
+  common.warningCount = [...warningCounts.values()].reduce((sum, count) => sum + count, 0);
+  common.warningCodes = [...warningCounts.keys()].sort().slice(0, 12);
+  common.omittedWarningCodes = Math.max(0, warningCounts.size - common.warningCodes.length);
   return { common, items };
 }
 

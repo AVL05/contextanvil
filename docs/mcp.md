@@ -47,6 +47,8 @@ and accept 2,048 to 16,384 bytes. This bounds the serialized MCP tool result
 before the JSON-RPC envelope. The same budget is passed to the compiler.
 Other tool results are limited to 24 KiB. At most 128 items are projected
 and `omittedItems` counts records dropped at the adapter boundary.
+Warning totals, a bounded list of warning codes, and the number of omitted
+codes remain available when individual warning items are dropped.
 Input buffering is capped at 64 KiB.
 
 A request uses a fresh worker. The server accepts one active analysis at a
@@ -63,6 +65,8 @@ Termination can wait on native I/O. The server handles protocol traffic while
 the worker is busy, and releases the analysis slot when the worker exits.
 Timed-out or cancelled work returns no partial pack. Scanner limits can
 produce a normal result with coverage and omission notices.
+Each request reads live data. Root identity checks can detect root replacement,
+but a scan does not provide a transactional view of in-place source edits.
 
 Only protocol messages go to stdout. Startup and transport errors go to
 stderr without local paths. Tool failures use short, path-free messages.

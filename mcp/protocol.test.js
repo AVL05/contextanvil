@@ -59,12 +59,17 @@ test('real SDK client discovers and calls read-only tools with grounded evidence
   }
   assert.ok((await call(client, 'get_task_context', { task: '', budgetBytes: 1 })).isError);
   assert.equal(treeDigest(repo.root), before);
+  const old = context.items.find((item) => item.path === 'src/navigation.js').sha256;
+  fs.appendFileSync(path.join(repo.root, 'src/navigation.js'), '\n// Updated between calls.\n');
+  const fresh = payload(await call(client, 'get_task_context', { task: 'Update Navigation', budgetBytes: 4096 }));
+  assert.notEqual(fresh.items.find((item) => item.path === 'src/navigation.js').sha256, old);
 });
 
 test('large result stays within the wire budget and concurrent calls have no queue', { timeout: 30000 }, async (t) => {
   const files = Object.fromEntries(Array.from({ length: 550 }, (_, i) => [
     'p' + i + '/AGENTS.md', '# Project rules\nUse tests.\n',
   ]));
+  files['package.json'] = '{invalid';
   const repo = makeRepo(files);
   t.after(repo.cleanup);
   const client = await connect(t, repo.root);
@@ -74,6 +79,7 @@ test('large result stays within the wire budget and concurrent calls have no que
   assert.match(busy?.content[0].text ?? '', /busy/);
   assert.ok(Buffer.byteLength(JSON.stringify(output)) <= 24 * 1024);
   assert.ok(payload(output).omittedItems > 0);
+  assert.ok(payload(output).warningCount > 0);
 });
 
 test('timeout stops analysis while protocol remains available', { timeout: 30000 }, async (t) => {
@@ -81,6 +87,17 @@ test('timeout stops analysis while protocol remains available', { timeout: 30000
   t.after(repo.cleanup);
   const client = await connect(t, repo.root, ['--timeout-ms', '1']);
   assert.match((await call(client, 'project_scan')).content[0].text, /timed out/);
+  let timedOutAgain = false;
+  for (let i = 0; i < 30; i++) {
+    const result = await call(client, 'project_scan');
+    if (result.content[0].text.includes('timed out')) {
+      timedOutAgain = true;
+      break;
+    }
+    assert.match(result.content[0].text, /busy/);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  }
+  assert.ok(timedOutAgain);
   assert.equal((await client.listTools()).tools.length, 3);
 });
 
