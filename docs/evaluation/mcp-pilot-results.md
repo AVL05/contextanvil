@@ -1,5 +1,8 @@
 # Phase 3.1 MCP pilot
 
+See the [Phase 3.2 discovery evaluation](mcp-discovery-results.md) for the
+follow-up with independent upstream tasks and separate guided arms.
+
 ## Decision
 
 **NO-GO for merge.** Keep the adapter experimental. Claude Code used

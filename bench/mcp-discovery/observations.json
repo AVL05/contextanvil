@@ -1,0 +1,372 @@
+[
+  {
+    "task": "express-etag",
+    "arm": "A",
+    "model": "claude-sonnet-5-5",
+    "connected": false,
+    "advertisedMcpTools": [],
+    "exitCode": 0,
+    "sessionError": false,
+    "elapsedMs": 43031,
+    "firstEssentialMs": 17588,
+    "firstEssentialSource": "read",
+    "discovered": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "essentialDiscovered": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "relevantDiscovered": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "changed": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "toolSequence": [
+      "Grep",
+      "Read",
+      "Edit",
+      "Edit",
+      "Grep",
+      "Edit",
+      "Grep",
+      "Bash"
+    ],
+    "toolCalls": 8,
+    "exploratoryCalls": 3,
+    "reads": 1,
+    "mcpCalls": 0,
+    "mcpBytes": 0,
+    "mcpPaths": [],
+    "toolErrors": [
+      "Edit",
+      "Bash"
+    ],
+    "usage": {
+      "input_tokens": 14,
+      "cache_creation_input_tokens": 7971,
+      "cache_read_input_tokens": 53360,
+      "output_tokens": 2661
+    },
+    "rubricPassed": true,
+    "httpBehaviorPassed": true
+  },
+  {
+    "task": "express-etag",
+    "arm": "B",
+    "model": "claude-sonnet-5-5",
+    "connected": true,
+    "advertisedMcpTools": [
+      "mcp__contextanvil__context_doctor",
+      "mcp__contextanvil__get_task_context",
+      "mcp__contextanvil__project_scan"
+    ],
+    "exitCode": 0,
+    "sessionError": false,
+    "elapsedMs": 51552,
+    "firstEssentialMs": 21494,
+    "firstEssentialSource": "search",
+    "discovered": [
+      "History.md",
+      "lib/application.js",
+      "lib/request.js",
+      "lib/response.js",
+      "lib/utils.js",
+      "package.json",
+      "test/config.js",
+      "test/express.static.js",
+      "test/req.fresh.js",
+      "test/req.stale.js",
+      "test/res.send.js",
+      "test/res.sendFile.js",
+      "test/utils.js"
+    ],
+    "essentialDiscovered": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "relevantDiscovered": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "changed": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "toolSequence": [
+      "Grep",
+      "Grep",
+      "Read",
+      "Edit",
+      "Grep",
+      "Edit",
+      "Bash"
+    ],
+    "toolCalls": 7,
+    "exploratoryCalls": 3,
+    "reads": 1,
+    "mcpCalls": 0,
+    "mcpBytes": 0,
+    "mcpPaths": [],
+    "toolErrors": [
+      "Bash"
+    ],
+    "usage": {
+      "input_tokens": 14,
+      "cache_creation_input_tokens": 7736,
+      "cache_read_input_tokens": 57619,
+      "output_tokens": 2694
+    },
+    "rubricPassed": true,
+    "httpBehaviorPassed": true
+  },
+  {
+    "task": "express-etag",
+    "arm": "C",
+    "model": "claude-sonnet-5-5",
+    "connected": true,
+    "advertisedMcpTools": [
+      "mcp__contextanvil__context_doctor",
+      "mcp__contextanvil__get_task_context",
+      "mcp__contextanvil__project_scan"
+    ],
+    "exitCode": 0,
+    "sessionError": false,
+    "elapsedMs": 34936,
+    "firstEssentialMs": 7811,
+    "firstEssentialSource": "mcp",
+    "discovered": [
+      "History.md",
+      "lib/application.js",
+      "lib/response.js",
+      "lib/utils.js",
+      "test/express.json.js",
+      "test/express.static.js",
+      "test/express.urlencoded.js",
+      "test/res.send.js"
+    ],
+    "essentialDiscovered": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "relevantDiscovered": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "changed": [
+      "lib/response.js",
+      "test/res.send.js"
+    ],
+    "toolSequence": [
+      "mcp__contextanvil__get_task_context",
+      "Grep",
+      "Read",
+      "Edit",
+      "Grep",
+      "Read",
+      "Edit"
+    ],
+    "toolCalls": 7,
+    "exploratoryCalls": 2,
+    "reads": 2,
+    "mcpCalls": 1,
+    "mcpBytes": 4094,
+    "mcpPaths": [
+      "History.md",
+      "lib/application.js",
+      "lib/response.js",
+      "lib/utils.js",
+      "test/express.json.js",
+      "test/express.static.js",
+      "test/express.urlencoded.js",
+      "test/res.send.js"
+    ],
+    "toolErrors": [],
+    "usage": {
+      "input_tokens": 14,
+      "cache_creation_input_tokens": 9756,
+      "cache_read_input_tokens": 65630,
+      "output_tokens": 2008
+    },
+    "rubricPassed": false,
+    "httpBehaviorPassed": true
+  },
+  {
+    "task": "laravel-reconnect",
+    "arm": "A",
+    "model": "claude-sonnet-5-5",
+    "connected": false,
+    "advertisedMcpTools": [],
+    "exitCode": 0,
+    "sessionError": false,
+    "elapsedMs": 49526,
+    "firstEssentialMs": 25632,
+    "firstEssentialSource": "search",
+    "discovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "essentialDiscovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "relevantDiscovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "changed": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "toolSequence": [
+      "Grep",
+      "Glob",
+      "Read",
+      "Grep",
+      "Read",
+      "Edit",
+      "Edit",
+      "Grep"
+    ],
+    "toolCalls": 8,
+    "exploratoryCalls": 4,
+    "reads": 2,
+    "mcpCalls": 0,
+    "mcpBytes": 0,
+    "mcpPaths": [],
+    "toolErrors": [
+      "Grep"
+    ],
+    "usage": {
+      "input_tokens": 14,
+      "cache_creation_input_tokens": 10580,
+      "cache_read_input_tokens": 56832,
+      "output_tokens": 2673
+    },
+    "rubricPassed": false,
+    "httpBehaviorPassed": null
+  },
+  {
+    "task": "laravel-reconnect",
+    "arm": "B",
+    "model": "claude-sonnet-5-5",
+    "connected": true,
+    "advertisedMcpTools": [
+      "mcp__contextanvil__context_doctor",
+      "mcp__contextanvil__get_task_context",
+      "mcp__contextanvil__project_scan"
+    ],
+    "exitCode": 0,
+    "sessionError": false,
+    "elapsedMs": 68984,
+    "firstEssentialMs": 24428,
+    "firstEssentialSource": "search",
+    "discovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "src/Illuminate/Database/ConnectionInterface.php",
+      "src/Illuminate/Database/DatabaseTransactionsManager.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "essentialDiscovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "relevantDiscovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "changed": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "toolSequence": [
+      "Grep",
+      "Read",
+      "Edit",
+      "Grep",
+      "Read",
+      "Edit",
+      "Bash"
+    ],
+    "toolCalls": 7,
+    "exploratoryCalls": 2,
+    "reads": 2,
+    "mcpCalls": 0,
+    "mcpBytes": 0,
+    "mcpPaths": [],
+    "toolErrors": [
+      "Bash"
+    ],
+    "usage": {
+      "input_tokens": 14,
+      "cache_creation_input_tokens": 11516,
+      "cache_read_input_tokens": 71013,
+      "output_tokens": 3156
+    },
+    "rubricPassed": false,
+    "httpBehaviorPassed": null
+  },
+  {
+    "task": "laravel-reconnect",
+    "arm": "C",
+    "model": "claude-sonnet-5-5",
+    "connected": true,
+    "advertisedMcpTools": [
+      "mcp__contextanvil__context_doctor",
+      "mcp__contextanvil__get_task_context",
+      "mcp__contextanvil__project_scan"
+    ],
+    "exitCode": 0,
+    "sessionError": false,
+    "elapsedMs": 64245,
+    "firstEssentialMs": 43304,
+    "firstEssentialSource": "search",
+    "discovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "src/Illuminate/Events/Dispatcher.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "essentialDiscovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "relevantDiscovered": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "changed": [
+      "src/Illuminate/Database/Concerns/ManagesTransactions.php",
+      "tests/Database/DatabaseConnectionTest.php"
+    ],
+    "toolSequence": [
+      "mcp__contextanvil__get_task_context",
+      "Grep",
+      "Glob",
+      "Read",
+      "Edit",
+      "Grep",
+      "Edit"
+    ],
+    "toolCalls": 7,
+    "exploratoryCalls": 3,
+    "reads": 1,
+    "mcpCalls": 1,
+    "mcpBytes": 30,
+    "mcpPaths": [],
+    "toolErrors": [
+      "mcp__contextanvil__get_task_context"
+    ],
+    "usage": {
+      "input_tokens": 14,
+      "cache_creation_input_tokens": 9809,
+      "cache_read_input_tokens": 57474,
+      "output_tokens": 2409
+    },
+    "rubricPassed": false,
+    "httpBehaviorPassed": null
+  }
+]
