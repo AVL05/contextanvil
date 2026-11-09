@@ -1,9 +1,16 @@
 # Changelog
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/),
-and the project aims to follow [Semantic Versioning](https://semver.org/) once it reaches 1.0.
+and versions follow [Semantic Versioning](https://semver.org/). Before 1.0,
+public interfaces are subject to change.
 
-## [Unreleased]
+## [0.2.0-beta.1] - Unpublished release candidate
+
+The first public npm beta candidate supports Node.js 22 and later under MIT.
+It includes repository instruction audits, traceable context reports and
+explicit manifest snapshots. The planned npm tag is `beta`.
+
+### Fixed and packaged
 
 - Keep manifest option errors machine-readable in JSON mode.
 - Redact detected secrets and neutralize unsafe characters in fact identifiers.
@@ -13,7 +20,9 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
   canonical source hashes, fact provenance, and atomic external publication.
   Refreshes reconstruct from live files and skip writes when unchanged.
 
-Phase 1.2: cross-platform validation and independent evaluation.
+Manifest refresh reads live content and reconstructs the snapshot. It can
+skip an identical write. Detection and ranking are heuristic, and reports
+can contain sensitive paths or context. See [security limitations](docs/security.md).
 
 ### Verified
 
@@ -30,7 +39,9 @@ Phase 1.2: cross-platform validation and independent evaluation.
   over v0.1.0 is mostly not distinguishable from noise.
 - `bench/engines/v0.1.0/`: the frozen baseline engine, so before/after comparisons are reproducible.
 - `bench/profile.js`, `docs/performance.md`: where compile time goes (file reads, not computation).
-- `docs/design/deadlines-and-partial-results.md` and `docs/design/phase-2-manifests.md`: designs only, nothing implemented.
+- Manifest creation, verification, comparison and update are implemented as
+  described in `docs/design/phase-2-manifests.md`. Scan deadlines remain design
+  work in `docs/design/deadlines-and-partial-results.md`.
 - `--max-content-files <n>` for `context`: a deterministic bound on file reads.
 
 ### Changed

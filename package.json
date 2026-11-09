@@ -1,6 +1,6 @@
 {
   "name": "contextanvil",
-  "version": "0.1.1",
+  "version": "0.2.0-beta.1",
   "description": "Audit repository instructions, compile traceable context, and verify repository snapshots offline.",
   "repository": {
     "type": "git",
@@ -20,6 +20,11 @@
     "cli"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "tag": "beta",
+    "access": "public"
+  },
   "type": "module",
   "bin": {
     "contextanvil": "./bin/contextanvil.js"

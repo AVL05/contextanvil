@@ -14,8 +14,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  package:
+    name: Build npm release candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - name: Pack and record SHA-256
+        shell: bash
+        run: |
+          out="$RUNNER_TEMP/npm-candidate"
+          mkdir -p "$out"
+          npm pack --json --ignore-scripts --pack-destination "$out" > "$out/pack.json"
+          cd "$out"
+          sha256sum -- *.tgz | tee SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: npm-candidate
+          path: ${{ runner.temp }}/npm-candidate
+          if-no-files-found: error
+
   test:
     name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    needs: package
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     strategy:
@@ -64,16 +90,22 @@ jobs:
           node bin/contextanvil.js nonsense > /dev/null 2>&1; test $? -eq 2 || { echo "expected exit 2"; exit 1; }
           node bin/contextanvil.js scan ./does-not-exist > /dev/null 2>&1; test $? -eq 3 || { echo "expected exit 3"; exit 1; }
 
-      - name: Install and smoke-test the npm tarball
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: npm-candidate
+          path: ${{ runner.temp }}/npm-candidate
+
+      - name: Install and smoke-test the exact npm tarball
         shell: bash
         run: |
-          artifact=$(npm pack --silent --ignore-scripts --pack-destination "$RUNNER_TEMP")
+          out="$RUNNER_TEMP/npm-candidate"
+          artifact=$(node -p "require('./package.json').name + '-' + require('./package.json').version + '.tgz'")
+          node -e "const fs=require('node:fs'); const crypto=require('node:crypto'); const [file,sums]=process.argv.slice(1); if (crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') !== fs.readFileSync(sums,'utf8').split(/\s/)[0]) process.exit(1)" "$out/$artifact" "$out/SHA256SUMS"
           install="$RUNNER_TEMP/contextanvil-package"
           mkdir -p "$install"
-          npm install --prefix "$install" --ignore-scripts --offline --no-audit --no-save --package-lock=false "$RUNNER_TEMP/$artifact"
-          cd "$install"
-          npm exec --offline -- contextanvil --version
-          node --input-type=module -e "import { scanRepository } from 'contextanvil'; if (typeof scanRepository !== 'function') process.exit(1)"
+          npm install --prefix "$install" --ignore-scripts --offline --no-audit --no-save --package-lock=false "$out/$artifact"
+          (cd "$install" && npm exec --offline -- contextanvil --version)
+          node bench/release-smoke.js "$install"
 
       - name: Output is identical between two runs in separate processes
         shell: bash

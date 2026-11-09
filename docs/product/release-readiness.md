@@ -1,26 +1,48 @@
 # First public npm beta readiness
 
-**NO-GO for publication.** The consolidation candidate is suitable for
-review and offline tarball testing. A working private security-reporting
-route, publishing ownership verification, and a versioned beta artifact
-still need maintainer sign-off.
+**NO-GO for merging PR #9 or publishing the beta.** The versioned candidate
+is `contextanvil@0.2.0-beta.1`, MIT, for Node.js 22+. A working private
+security-reporting route and an authorized npm publisher still need
+verification. The intended registry tag is `beta`.
 
 ## Evidence
 
 | Area | Assessment |
 | --- | --- |
-| Distribution | The inspected tarball had 43 entries and occupied 82,689 bytes compressed. The allowlist covers the CLI, library, README, license, changelog, security policy and two runtime reference documents. Tests, benchmarks, frozen corpora and experiments are excluded |
-| Installation | Node 22 or later, ESM library and one CLI bin. The tarball was installed offline on Windows. The installed command, public ESM import, doctor JSON and manifest create/verify were exercised. CI tests installation of the actual tarball on the platform matrix |
+| Distribution | The inspected tarball had 43 entries and occupied 83,357 bytes compressed. The [inventory](rc-package-inventory.json) records its SHA-256 and paths. Tests, benchmarks, frozen corpora and experiments are excluded |
+| Installation | The exact local tarball was installed offline on Windows. The npm CLI shim, version and help, scan, doctor, context, full manifest lifecycle, representative errors and public ESM exports passed. CI builds a canonical Ubuntu tarball and verifies its SHA-256 before installing it in each matrix job |
 | npm name | On 2026-11-09 the public registry returned HTTP 404 and `npm view contextanvil` returned E404. This shows no public package was visible. It does not reserve the name, verify publishing permissions, or provide trademark clearance |
 | License and attribution | The GitHub repository and package declare MIT. The tarball includes the contributor copyright and license. Frozen benchmark material and the experimental branches are outside the npm payload |
 | Dependencies | Root lockfile has zero external production and development dependencies. The production npm audit reported zero advisories. That audit does not inspect first-party code or detect every vulnerability |
-| Security reporting | `SECURITY.md` points to GitHub private vulnerability reporting. The repository's reporting status was verified as disabled. Enable and verify a working private route before inviting users to report issues |
-| Versioning | Source remains `0.1.1` with unreleased manifest and consolidation changes. Propose `0.2.0-beta.1` and the `beta` dist-tag after approval. Finalize the changelog and update package and lockfile together in the release PR |
-| CI | Stable main passed the Linux, macOS and Windows matrix with Node 22, 24 and current LTS, including the output digest and benchmark smoke test. Require the same checks plus the installed-package smoke on the exact beta candidate |
+| Security reporting | GitHub's private vulnerability reporting endpoint returned `enabled: false` on 2026-11-09. The [security policy](../../SECURITY.md) records the status and the maintainer gate |
+| npm identity | `npm whoami` against the public registry returned `ENEEDAUTH`. Account ownership, 2FA, token scope and permission to publish the name could not be verified. No trusted publisher is configured by this repository's CI |
+| Versioning | Package metadata and lockfile agree on `0.2.0-beta.1`. The changelog describes the unpublished candidate. `publishConfig` selects the public npm registry, public access and the `beta` tag |
+| CI | Linux, macOS and Windows run Node 22, 24 and current LTS. The installed-package smoke extends the existing tests, determinism digest and benchmark smoke without replacing them |
 
 References: [stable main CI](https://github.com/AVL05/contextanvil/actions/runs/42638297218),
 [npm pack](https://docs.npmjs.com/cli/v11/commands/npm-pack/) and
 [npm distribution tags](https://docs.npmjs.com/adding-dist-tags-to-packages/).
+
+## Artifact and publisher checks
+
+The local artifact was built with Node 24.22.2 and npm 11.19.1 using
+`npm pack --ignore-scripts` and installed from a temporary directory
+without registry access. A second pack inspection matched its recorded
+SHA-1. The inventory records the stronger SHA-256 for transfer verification.
+The installed npm shim is the supported executable entry point. The package
+exports the ESM API and package metadata. Inspection found no lifecycle
+scripts, private workstation paths, or runtime network or child-process
+imports. The secret-pattern scan flagged two historical example credential
+URLs in documentation, both placeholders. This was a scoped artifact review,
+not a comprehensive secret audit.
+
+An approved publisher must use a method permitted by npm. For an interactive
+first release, verify the account and its 2FA before approval. Noninteractive
+publication requires separately configured credentials or trusted publishing
+with appropriate permission. The package settings specify the intended
+destination and tag and do not confer permission. See
+[npm publishing authentication requirements](https://docs.npmjs.com/requiring-2fa-for-package-publishing-and-settings-modification/)
+and [trusted publishing](https://docs.npmjs.com/trusted-publishers/).
 
 ## Compatibility contract for a beta
 
@@ -60,14 +82,12 @@ compare-and-swap semantics against arbitrary external writers.
 
 1. Establish and verify private vulnerability intake and responsible
    maintainers. Review the supported-version statement for the first beta.
-2. Verify control of the npm publishing identity, recheck the name and
-   agree on the beta version and dist-tag. Do not advertise registry install
-   commands before the artifact exists.
-3. Cut a candidate from reviewed main, finalize the changelog, inspect the
-   exact tarball, run cross-platform CI, and repeat the installed-package
-   smoke with doctor and manifest verification on a clean fixture.
-4. Review the privacy and filesystem caveats in the packaged docs and decide
-   which limitations are acceptable for a public beta.
+2. Authenticate the intended npm maintainer and verify publishing authority
+   and 2FA or another approved authentication method. Recheck registry
+   visibility immediately before an authorized publish.
+3. Review the exact candidate and CI artifact, then explicitly approve the
+   merge and publication separately. If packaged bytes change after the
+   reporting policy is updated, rebuild, inspect and rerun the candidate checks.
 
 Prioritize finding quality and first-run audit feedback during the beta.
 More detectors, new retrieval signals and agent integrations can wait for

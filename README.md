@@ -8,7 +8,7 @@ and compare a recorded snapshot with the live tree.
 
 It is deterministic and offline. Repository analysis is read-only. It needs no API key, no cloud service and no language model.
 
-> **Status: pre-beta, available from source.** Scan, doctor, context and manifests are implemented.
+> **Status: `0.2.0-beta.1` release candidate, unpublished.** Scan, doctor, context and manifests are implemented.
 > See the [roadmap](docs/roadmap.md), [security limits](docs/security.md) and
 > [release readiness assessment](docs/product/release-readiness.md).
 
@@ -48,9 +48,13 @@ node bin/contextanvil.js doctor . --fail-on never
 ```
 
 Use `node bin/contextanvil.js --help` to see the other commands. Examples below
-use `contextanvil` as shorthand for `node bin/contextanvil.js`. For a local
-package preview, run `npm pack --ignore-scripts` and install the resulting
-tarball in a separate directory.
+use `contextanvil` as shorthand for `node bin/contextanvil.js`. To test the
+unpublished candidate, run `npm pack --ignore-scripts` in the checkout, then
+install the resulting `contextanvil-0.2.0-beta.1.tgz` by absolute path in a
+separate consumer directory. Use `npm exec --offline -- contextanvil --version`
+there to check the installed command. Once the candidate has been published,
+registry users can request the exact version with
+`npm install contextanvil@0.2.0-beta.1`. The intended registry tag is `beta`.
 
 ## Commands
 
