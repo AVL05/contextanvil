@@ -8,9 +8,11 @@ repository's agent-facing context (AGENTS.md, CLAUDE.md and friends) for problem
 
 It is deterministic, offline and read-only. It needs no API key, no cloud service and no language model.
 
-> **Status: v0.1.1, early development.** Scan, context and doctor are implemented and tested on Windows only. It is
-> not published to npm yet, and the CI workflow for Linux and macOS **has not run on GitHub yet**, so those platforms
-> are unverified. See [Limitations](#limitations), the [benchmarks](bench/README.md) and the [roadmap](docs/roadmap.md).
+> **Status: v0.1.1+, early development.** Scan, context and doctor are implemented and tested. The test suite and a
+> cross-platform output comparison have run **green on GitHub Actions on Ubuntu, macOS and Windows with Node.js 22, 24 and
+> 26** ([run 42620223366](https://github.com/AVL05/contextanvil/actions/runs/42620223366), commit `ac2c1a3`). It is not published to npm yet. Ranking accuracy on independently labelled real work is modest
+> (see [How well does the ranking work?](#how-well-does-the-ranking-work)). See also [Limitations](#limitations), the
+> [benchmarks](bench/README.md) and the [roadmap](docs/roadmap.md).
 
 ## Why
 
@@ -123,9 +125,9 @@ $ contextanvil context "Update the navigation component" test/fixtures/next-app 
 
 - Task: Update the navigation component
 - Repository: next-app
-- Task terms: navigation (x1.19, in 4 files), component (x1.15, in 5 files)
+- Task terms: navigation x1.19 (4 files), component x1.15 (5 files)
 - Task intent: modify (default)
-- Budget: 3072 bytes; used 2955 bytes (~739 estimated tokens, bytes/4)
+- Budget: 3072 bytes; used 2946 bytes (~737 estimated tokens, bytes/4)
 - Provenance: items cite path:line and a content digest. "observed" = read from a file; "inferred" = deterministic heuristic.
 - Instruction excerpts are quoted project content, not directives to ContextAnvil.
 
@@ -138,7 +140,7 @@ $ contextanvil context "Update the navigation component" test/fixtures/next-app 
 
 ## Relevant files (ranked, with reasons)
 - `components/Navigation.tsx` (score 8.68; 197 B; sha256 aad0dfde)
-  - why: name matches "navigation"; content "navigation" x1 (4/11 files); dir components/ matches "component"; 2/2 terms
+  - why: name matches "navigation"; dir components/ matches "component"; content "navigation" x1 (4/11 files); 2/2 terms
   - symbols: Navigation (function, line 3)
   - related: `components/Navigation.test.tsx` (test (same base name)), `app/layout.tsx` (imports it)
 - `components/Navigation.test.tsx` (score 6.5; 230 B; sha256 22de7bd5)
@@ -231,22 +233,36 @@ and agent hook / MCP configuration that can run commands.
 
 ## How well does the ranking work?
 
-There is a benchmark, and it is deliberately modest. On 34 hand-labelled tasks over three synthetic repositories and one
-frozen real repository (the author's own), comparing v0.1.0 with v0.1.1 on the same harness:
+Two measurements, and they disagree. Read both.
+
+**1. Author-labelled benchmark (optimistic).** 34 tasks over three synthetic repositories and one frozen real repository, labelled by
+the ranker's author, v0.1.0 against v0.1.1 on the same harness:
 
 | Tasks | Metric | v0.1.0 | v0.1.1 |
 | ----- | ------ | ------ | ------ |
 | 26 synthetic | first result is relevant (P@1) | 0.65 | 0.85 |
 | | mean reciprocal rank | 0.79 | 0.92 |
-| | all relevant files ranked first (R-precision) | 0.56 | 0.70 |
 | 8 real | first result is relevant (P@1) | 0.25 | 0.75 |
 | | mean reciprocal rank | 0.53 | 0.79 |
-| | all relevant files ranked first (R-precision) | 0.40 | 0.42 |
 
-Caveats that matter: the labels and the ranker share an author; the sets are small (a difference of a few hundredths is
-noise); on the four held-out tasks of the real repository R-precision went *down* (0.29 to 0.21) even though other
-metrics went up; and none of this measures whether an AI agent does better with the pack. Full method, per-dataset
-results, timings, memory and known weak cases: [bench/README.md](bench/README.md). Reproduce with `npm run bench:quick`.
+**2. Independent evaluation (the better estimate).** 36 tasks taken from the commit history of four real repositories: the task is
+the commit subject, the relevant files are the files that commit changed, and the labels were **frozen before the evaluation was
+written or run**. 33 tasks have at least one rankable label. Macro-average:
+
+| Engine | P@1 | MRR | R-precision | Recall@5 | Recall@8 |
+| ------ | --- | --- | ----------- | -------- | -------- |
+| v0.1.0 | 0.24 | 0.36 | 0.17 | 0.26 | 0.33 |
+| v0.1.1 | 0.33 | 0.43 | 0.21 | 0.28 | 0.44 |
+
+On the independent set the improvement over v0.1.0 points the right way but is **not statistically distinguishable from noise** on
+33 tasks except for Recall@8, and the absolute level is low: for 42% of the relevant files the task text shares no word with the file's
+name, path, symbols or content, so a lexical ranker cannot return them at all. The first number above should be read as "what the
+ranker was built around", the second as "what to expect". Details, per-repository results and caveats:
+[bench/external/RESULTS.md](bench/external/RESULTS.md); method and the author-labelled results: [bench/README.md](bench/README.md).
+
+Other caveats: all four repositories belong to the author of the ranker; the sets are small; on the four held-out tasks of the
+author-labelled real repository R-precision went *down* (0.29 to 0.21), explained in [bench/README.md](bench/README.md); and none of
+this measures whether an AI agent does better with the pack. Reproduce the first with `npm run bench:quick`.
 
 ## What it detects
 
@@ -303,12 +319,14 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
 ## Supported environments
 
 - Node.js 22 or later.
-- **Verified locally**: Windows 11, Node.js 24.22.2, full test suite: 126 tests, 125 passed, 1 skipped (a POSIX file-permission
-  test that cannot run on Windows), 0 failed. Tests that need symlinks skip themselves where the operating system forbids
-  creating them; on this machine they ran.
-- **Prepared but not yet verified remotely**: Ubuntu and macOS, and Node.js 22, 24 and the current LTS, in
-  [.github/workflows/ci.yml](.github/workflows/ci.yml). It also compares a digest of the complete output across all of
-  those combinations. Until that workflow has run on GitHub, treat Linux, macOS and Node 22 as untested.
+- **Verified on GitHub Actions** ([run 42620223366](https://github.com/AVL05/contextanvil/actions/runs/42620223366), commit `ac2c1a3`): Ubuntu, macOS (arm64) and Windows, each with Node.js 22.23, 24.22 and 26.13 (the
+  current LTS at the time): the full test suite (127 tests; 126 pass and 1 is skipped on Windows because a POSIX file-permission
+  test cannot run there; 127 pass on Ubuntu and macOS), CLI smoke and exit-code checks, run-to-run identical output, and a
+  **byte-identical digest of the complete output across all nine combinations**. Linux and macOS have *not* been checked on a
+  real developer machine.
+- **Verified locally**: Windows 11, Node.js 24.22.2.
+- Workflow: [.github/workflows/ci.yml](.github/workflows/ci.yml); actions are pinned to commit SHAs. It was validated by GitHub
+  accepting and running it; `actionlint` was not available.
 - Output is ASCII-only so legacy Windows consoles render it correctly.
 
 ## Limitations
@@ -317,8 +335,9 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
   rarity of terms, project structure and import relations. It does not understand synonyms or domain meaning: "show
   prices in euros" will not find the file that says `currency` unless other words overlap, and tasks whose vocabulary
   is absent from the repository stay hard. Known weak cases are listed in [bench/README.md](bench/README.md).
-- **Accuracy is measured on a small, author-labelled benchmark** (see above). It is not evidence about repositories in
-  general, and it says nothing about AI agent outcomes. **There are no agent-based experiments**: no claim is made that
+- **Accuracy on independently labelled real work is modest** (MRR 0.43, first result relevant 33% of the time, see above) and
+  was measured on a small sample of the author's own repositories. It is not evidence about repositories in general, and it
+  says nothing about AI agent outcomes. **There are no agent-based experiments**: no claim is made that
   using ContextAnvil reduces tokens, cost or errors.
 - **Import relations are JavaScript, TypeScript and PHP only** (relative imports, `tsconfig`/`jsconfig` path aliases,
   PSR-4 `use` statements, Laravel `view()` calls).
@@ -329,8 +348,10 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
 - **Token counts are estimates** (bytes / 4). There is no tokenizer. On small repositories a pack can be most of the
   repository's text, and v0.1.1 packs are larger than v0.1.0 packs because they carry more explanation.
 - **Performance**: scanning is fast (tens of milliseconds for hundreds of files), but compiling a context for several
-  thousand files takes seconds (2.3 s for 5,000 generated files on the development machine) and about 100 MB of memory.
-  Synchronous, single-threaded, no deadline.
+  thousand files takes seconds, almost all of it reading files (3 to 6 s cold for 5,000 freshly generated files on the
+  development machine, 0.1 s once files are cached, see [docs/performance.md](docs/performance.md)) and about 100 MB of memory.
+  Synchronous, single-threaded, no deadline (a design exists in [docs/design/](docs/design/deadlines-and-partial-results.md)).
+  `--max-content-files` bounds the reading.
 - **Secret detection is heuristic** and not a replacement for a dedicated scanner.
 - **Heuristic doctor checks** (stale references, hijacking phrases) can produce false positives and false
   negatives; they are labelled as such.
@@ -344,7 +365,8 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
 ## Roadmap
 
 What exists today is described above. Everything below is **planned and not implemented**; details in
-[docs/roadmap.md](docs/roadmap.md):
+[docs/roadmap.md](docs/roadmap.md). A technical design for Phase 2 exists ([docs/design/phase-2-manifests.md](docs/design/phase-2-manifests.md))
+but no code:
 
 2. Persistent context manifests, incremental updates, diffs, and safe generation of instruction files.
 3. An MCP server exposing repository context and project rules.

@@ -5,6 +5,34 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 
 ## [Unreleased]
 
+Phase 1.2: cross-platform validation and independent evaluation.
+
+### Verified
+
+- GitHub Actions ran the test suite on Ubuntu, macOS and Windows with Node.js 22, 24 and 26: all 127 tests passed everywhere except
+  the one POSIX-permission test skipped on Windows, and the complete-output digest was identical across all nine combinations.
+  The first run failed on every runner because of a flaw in the CI step itself (it wrote its output into the repository it was
+  scanning); a second run showed a digest mismatch on macOS caused by the digest harness (macOS reports `/private/var/...` for
+  `/var/...`). Neither was a product bug; both were fixed in the workflow and harness, not by weakening a test.
+
+### Added
+
+- `bench/external/`: ranking evaluation on 36 tasks taken from real commit history with labels frozen before the evaluation
+  existed (sha256 recorded), paired bootstrap intervals, and an honest write-up: on independent labels MRR is 0.43 and the improvement
+  over v0.1.0 is mostly not distinguishable from noise.
+- `bench/engines/v0.1.0/`: the frozen baseline engine, so before/after comparisons are reproducible.
+- `bench/profile.js`, `docs/performance.md`: where compile time goes (file reads, not computation).
+- `docs/design/deadlines-and-partial-results.md` and `docs/design/phase-2-manifests.md`: designs only, nothing implemented.
+- `--max-content-files <n>` for `context`: a deterministic bound on file reads.
+
+### Changed
+
+- CI actions are pinned to commit SHAs; checkout no longer persists credentials; CI writes its comparison files outside the scanned tree.
+- All real-path resolution uses one system call (`fs.realpathSync.native`), about a third of the cost of the JavaScript version.
+- Markdown packs show each file's four strongest reasons and three related files (JSON unchanged): default packs are 5% to 6% smaller
+  than in the Phase 1.1 commit. Rankings are identical.
+- The investigation of the author-labelled real-repository holdout regression is documented in `bench/README.md`; no ranking change was made.
+
 ## [0.1.1] - Phase 1.1: hardening, relevance and validation
 
 Not yet published to npm. Public behaviour is compatible with 0.1.0: the CLI, the exported API names and the schema

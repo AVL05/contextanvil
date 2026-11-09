@@ -190,12 +190,12 @@ no timestamps, no randomness, no locale-dependent comparison, scores rounded to 
 path. Tests verify this, including that a copy of a repository in a different location produces the same
 facts. CI additionally computes a digest of the complete output for all benchmark repositories on every
 operating system and Node.js version and fails if any two differ (`bench/digest.js`). That cross-platform check
-has not yet run remotely; see the README.
+ran green on GitHub Actions on Ubuntu, macOS and Windows with Node.js 22, 24 and 26 (see the README).
 
 ## Performance and limits
 
 Scanning is synchronous. Defaults: 20,000 files, depth 25, 20,000 entries per directory, 512 KiB per file,
-64 MiB read in total, 5,000 files read for symbol and content matching. When a limit is hit the result says so;
+64 MiB read in total, 5,000 files read for symbol and content matching (`--max-content-files`). Real-path resolution uses one native system call; compile time is dominated by file reads (`docs/performance.md`). When a limit is hit the result says so;
 it is never silent. There is no wall-clock limit. Measured timings and memory are in
 [bench/README.md](../bench/README.md); see `docs/roadmap.md` for planned incremental scanning.
 

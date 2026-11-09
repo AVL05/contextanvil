@@ -5,3 +5,4 @@ test/fixtures/
 # Frozen benchmark inputs and recorded results are data, not project code.
 bench/snapshots/
 bench/results/
+bench/engines/

@@ -1,0 +1,982 @@
+{
+  "selection": "bench/external/select.js (rules in the file header)",
+  "repos": {
+    "portfolio": {
+      "url": "https://github.com/AVL05/Portfolio",
+      "head": "69110df849192124ac36d75c29f78bfd9e154131"
+    },
+    "alexgallery": {
+      "url": "https://github.com/AVL05/alexgallery",
+      "head": "8ae6e3c77404a4114bbfa992aa255c6ff354dca2"
+    },
+    "lumaflow-studio": {
+      "url": "https://github.com/AVL05/lumaflow-studio",
+      "head": "8d26885fcde3e78d01120dea027f0782090130dd"
+    },
+    "premium-frontend-showcase": {
+      "url": "https://github.com/AVL05/premium-frontend-director-showcase",
+      "head": "1469b2b73a57829bd8aade0166c6b34c9176463d"
+    }
+  },
+  "tasks": [
+    {
+      "id": "portfolio-98928bc",
+      "repo": "portfolio",
+      "commit": "98928bc70355bbfb7860ef6734217579984b2137",
+      "parent": "ef722eb3136309de162c11cc5e224747a7695fd1",
+      "subject": "fix(e2e): stop reduced-motion pause cancelling viewer playback and settle hero plate state",
+      "task": "stop reduced-motion pause cancelling viewer playback and settle hero plate state",
+      "relevant": [
+        {
+          "path": "components/hero.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/project-showcase.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/e2e/frontend-redesign.spec.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/e2e/m2-selected-work.spec.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-7ec2062",
+      "repo": "portfolio",
+      "commit": "7ec2062f9ae890fc42bfefaa6bf54bb96fb704c1",
+      "parent": "821a26ab4a88408556eec939815144c97f657884",
+      "subject": "docs(release): record production deployment and public validation",
+      "task": "record production deployment and public validation",
+      "relevant": [
+        {
+          "path": "docs/RELEASE_2_1.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-69cd9b3",
+      "repo": "portfolio",
+      "commit": "69cd9b38e76a9fd1b6f940e10efe0190963c4927",
+      "parent": "73b666a1f54fe05afc51cbe402664ad0c27f1913",
+      "subject": "refactor(portfolio): refine skills and profile copy",
+      "task": "refine skills and profile copy",
+      "relevant": [
+        {
+          "path": "components/skills.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/locales/en.json",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/locales/es.json",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/page-content.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/home-refinement.test.mjs",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-68ffaf5",
+      "repo": "portfolio",
+      "commit": "68ffaf521bc822eab1acf503095cb909cf4c6603",
+      "parent": "f90eaff53a9539ff15423f0003cc4967f4f58ad0",
+      "subject": "fix(ui): sync cursor with pointer preferences",
+      "task": "sync cursor with pointer preferences",
+      "relevant": [
+        {
+          "path": "components/custom-cursor.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/ui-quality.test.mjs",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-a8b5eac",
+      "repo": "portfolio",
+      "commit": "a8b5eac800b1beef0263d78456333fa9ba4a7708",
+      "parent": "6aebc5a825959cb83712c439e13f25cb5241d87c",
+      "subject": "fix(security): patch Next.js to 16.3.4 and sharp to 0.35.4",
+      "task": "patch Next.js to 16.3.4 and sharp to 0.35.4",
+      "relevant": [
+        {
+          "path": "package.json",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-dffaf64",
+      "repo": "portfolio",
+      "commit": "dffaf64d7fc809cb11e546893e93b97053047119",
+      "parent": "bb3b6f9508d7842c74b429952749b4f0e7949b87",
+      "subject": "chore(repo): remove obsolete files and update favicon",
+      "task": "remove obsolete files and update favicon",
+      "relevant": [
+        {
+          "path": ".gitignore",
+          "status": "M",
+          "rankable": false
+        },
+        {
+          "path": ".impeccable/design.json",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": ".vscode/settings.json",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "CLAUDE.md",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "README.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/RAW_VIVES_PROMOTION_COPY.md",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "tests/e2e/portfolio.spec.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/ui-quality.test.mjs",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-afbaa07",
+      "repo": "portfolio",
+      "commit": "afbaa0719257051a2467702c13156ba424bda4c5",
+      "parent": "179911453eb26384cd5a60bc87857e6efd00576f",
+      "subject": "fix(navigation): restore direct section anchors",
+      "task": "restore direct section anchors",
+      "relevant": [
+        {
+          "path": "components/navigation.tsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-47a3b13",
+      "repo": "portfolio",
+      "commit": "47a3b13323e400b7ec730e37fb7f1fdbffdf59d2",
+      "parent": "551d7ecb1fee0f998d088f03996e4847d4a43451",
+      "subject": "feat(photography): add mobile archive swipe",
+      "task": "add mobile archive swipe",
+      "relevant": [
+        {
+          "path": "components/photography.tsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-fea3616",
+      "repo": "portfolio",
+      "commit": "fea361607cd80a48158aef2271bd8e9deb0ea1d2",
+      "parent": "d4eac6bcede15f10a1c9457ecbeaf68c0ea9ebc5",
+      "subject": "fix(graphics): normalize theme colors for Three.js",
+      "task": "normalize theme colors for Three.js",
+      "relevant": [
+        {
+          "path": "components/hero-webgl.tsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "portfolio-6c4f57a",
+      "repo": "portfolio",
+      "commit": "6c4f57a4c9375fc064146c36fcc445eef969f890",
+      "parent": "757fd995880a1184f34989be2e5c45570677e182",
+      "subject": "docs(portfolio): document raw.vives integration",
+      "task": "document raw.vives integration",
+      "relevant": [
+        {
+          "path": "README.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "docs/RAW_VIVES_PORTFOLIO_INTEGRATION.md",
+        "docs/RAW_VIVES_PROMOTION_COPY.md"
+      ]
+    },
+    {
+      "id": "portfolio-74574e8",
+      "repo": "portfolio",
+      "commit": "74574e864260194f37f224e5eb3bb45cae945235",
+      "parent": "c087c3fbd463154b4abec9af877b815670984196",
+      "subject": "feat(projects): add raw.vives case study",
+      "task": "add raw.vives case study",
+      "relevant": [
+        {
+          "path": "components/photography.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/projects.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/language-context.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/locales/en.json",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/locales/es.json",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "app/proyectos/raw-vives/page.tsx",
+        "components/raw-vives-case-study.tsx"
+      ]
+    },
+    {
+      "id": "portfolio-d88bace",
+      "repo": "portfolio",
+      "commit": "d88baceb511d699f7907e82e2b53ee088b257647",
+      "parent": "5b47660c42cf78f36a71e98eb298b43cdb28b8d8",
+      "subject": "fix(contact): restore web3forms browser submission",
+      "task": "restore web3forms browser submission",
+      "relevant": [
+        {
+          "path": "app/api/contact/route.ts",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "components/contact.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "next.config.mjs",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-8ae6e3c",
+      "repo": "alexgallery",
+      "commit": "8ae6e3c77404a4114bbfa992aa255c6ff354dca2",
+      "parent": "1bcecb42cec7035c13526173baa538b5a8858605",
+      "subject": "fix(hero): show the title and label from the first paint",
+      "task": "show the title and label from the first paint",
+      "relevant": [
+        {
+          "path": "components/hero/use-hero-motion.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/motion/photo-motion.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-8fc389d",
+      "repo": "alexgallery",
+      "commit": "8fc389d9766fed1171cacef7e318514226b6803a",
+      "parent": "9c0ddea347046cd82bde02556324b6b78c7436ea",
+      "subject": "docs: prepare RAW.VIVES cinematic Premium redesign and reset legacy design state",
+      "task": "prepare RAW.VIVES cinematic Premium redesign and reset legacy design state",
+      "relevant": [
+        {
+          "path": ".github/dependabot.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".impeccable/design.json",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "AGENTS.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "DESIGN.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "PRODUCT.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "README.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/RAW_VIVES_DESIGN_SYSTEM.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "docs/RAW_VIVES_CINEMATIC_BRIEF.md"
+      ]
+    },
+    {
+      "id": "alexgallery-22e6c84",
+      "repo": "alexgallery",
+      "commit": "22e6c840c0954a60335256b8b1a70e79ea3651d8",
+      "parent": "9eb763558d955be4b2003f00252687efee3ffc21",
+      "subject": "feat(photos): add El oficio en las manos",
+      "task": "add El oficio en las manos",
+      "relevant": [
+        {
+          "path": "lib/gallery-data.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/images-data.json",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/photo-detail/content.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/archive/archive-system.test.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/hero/hero-system.test.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/home/home-narrative.test.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/photo-detail/photo-detail-system.test.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/series/photo-series-system.test.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-4452000",
+      "repo": "alexgallery",
+      "commit": "4452000235e3716e0bf6e11e2e9800c7be5d564a",
+      "parent": "14764ef563c101e6801c83b3a9bd64418619d3b1",
+      "subject": "fix(a11y): isolate content during intro",
+      "task": "isolate content during intro",
+      "relevant": [
+        {
+          "path": "components/intro/intro-overlay.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/intro/intro-skip-button.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/e2e/smoke.spec.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/intro/intro-system.test.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-1db0da1",
+      "repo": "alexgallery",
+      "commit": "1db0da1c75cc814bc2b45548be66bcccfd3fcdac",
+      "parent": "8f05c3ce2f59a54550ed071f14068e186443a3a4",
+      "subject": "docs(repo): consolidate repository instructions",
+      "task": "consolidate repository instructions",
+      "relevant": [
+        {
+          "path": "AGENTS.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "CLAUDE.md",
+          "status": "D",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-bce9ea7",
+      "repo": "alexgallery",
+      "commit": "bce9ea7b21f0432c2bfc3a56db745ee875e852b5",
+      "parent": "c4a971c2581fa42dd60a178232013bcb9556e284",
+      "subject": "fix(v2): harden production experience",
+      "task": "harden production experience",
+      "relevant": [
+        {
+          "path": "components/archive/archive-page.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/graphics/hero-frames-scene.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/graphics/photo-frame-preview.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "hooks/use-archive-state.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/archive/archive-system.test.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-54ac3d5",
+      "repo": "alexgallery",
+      "commit": "54ac3d546daa279f99b3268535cea0da6485b4ed",
+      "parent": "3a41a7260d52aebc5a5b99f20c3c7f7ba1e0f443",
+      "subject": "chore(v2): final qa and cleanup",
+      "task": "final qa and cleanup",
+      "relevant": [
+        {
+          "path": "components/ui/layout.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/ui/metadata.tsx",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "components/ui/optimized-image.tsx",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "docs/RAW_VIVES_ARCHITECTURE.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/RAW_VIVES_ARCHIVE_SYSTEM.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/RAW_VIVES_DESIGN_SYSTEM.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/RAW_VIVES_GRAPHICS_SYSTEM.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-b7cbdee",
+      "repo": "alexgallery",
+      "commit": "b7cbdee2d8df4e36dc6e42351b5995f444896c58",
+      "parent": "d0ba8c97b2d47ffda4acdfd246e2cef69375476d",
+      "subject": "perf(v2): add adaptive 3d quality",
+      "task": "add adaptive 3d quality",
+      "relevant": [
+        {
+          "path": "components/graphics/hero-frames-scene.tsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "lib/graphics/quality.ts",
+        "tests/graphics/hero-quality-system.test.ts"
+      ]
+    },
+    {
+      "id": "alexgallery-76418b0",
+      "repo": "alexgallery",
+      "commit": "76418b0489e06a336dd2b2b0220b92cdc63c4bb5",
+      "parent": "220cf75c6519863df007ecc3113cf7a7c89bf9d8",
+      "subject": "refactor(v2): unify motion system",
+      "task": "unify motion system",
+      "relevant": [
+        {
+          "path": "components/archive/archive-item.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/archive/archive-preview.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/photo-detail/photo-detail-navigation.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/photo-detail/photo-detail-related.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/series/series-essay.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/series/series-index-page.tsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-c7c7d25",
+      "repo": "alexgallery",
+      "commit": "c7c7d251c58b839954b095e4da1b565a21596093",
+      "parent": "0a1754de797dd40bc632da22329a08ece0ab4c62",
+      "subject": "feat(v2): prepare optimized photo frame asset",
+      "task": "prepare optimized photo frame asset",
+      "relevant": [
+        {
+          "path": "app/layout.tsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "components/graphics/photo-frame-3d.tsx",
+        "components/graphics/photo-frame-development-tools.tsx",
+        "components/graphics/photo-frame-preview.tsx",
+        "lib/graphics/photo-frame.ts",
+        "public/models/raw-vives/photo-frame-v2.glb",
+        "tests/graphics/photo-frame-system.test.ts"
+      ]
+    },
+    {
+      "id": "alexgallery-fb560b8",
+      "repo": "alexgallery",
+      "commit": "fb560b8583a70c173e2136351ed8616ea9c319fc",
+      "parent": "0eea81c008bb22a06890a130617a107619e36c41",
+      "subject": "feat(content): update Instagram and simplify gallery copy",
+      "task": "update Instagram and simplify gallery copy",
+      "relevant": [
+        {
+          "path": "app/layout.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/contact.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/footer.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "components/photo-detail/photo-detail-header.tsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "dictionaries/en.json",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "dictionaries/es.json",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/series/config.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "alexgallery-c14b568",
+      "repo": "alexgallery",
+      "commit": "c14b568ca5274ae891ba0d68b23840ec60887955",
+      "parent": "52eda8049b5c4b99a91417eac5fdbea923fd696d",
+      "subject": "docs(deploy): record cloudflare pages project endpoint",
+      "task": "record cloudflare pages project endpoint",
+      "relevant": [
+        {
+          "path": "docs/RAW_VIVES_DEPLOYMENT.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-8d26885",
+      "repo": "lumaflow-studio",
+      "commit": "8d26885fcde3e78d01120dea027f0782090130dd",
+      "parent": "9e647d64872b40cbf3653889c5ab6a6882252135",
+      "subject": "docs(integration): record local E2E result and its baseline comparison",
+      "task": "record local E2E result and its baseline comparison",
+      "relevant": [
+        {
+          "path": "docs/plans/2026-11-06-consolidation-release-assessment.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-1cd2fdc",
+      "repo": "lumaflow-studio",
+      "commit": "1cd2fdc8b0429567da42eb327cd6ec5f42210d55",
+      "parent": "d9ed3bc1415d3b5be534114596bf8414f53d5fba",
+      "subject": "docs(integration): drop SEO sections duplicated by the branch merge",
+      "task": "drop SEO sections duplicated by the branch merge",
+      "relevant": [
+        {
+          "path": "docs/api.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/architecture.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "docs/roadmap.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-7955b79",
+      "repo": "lumaflow-studio",
+      "commit": "7955b795d26fd0f15b4a3faa283e61bde4af14df",
+      "parent": "abd91667160b3fe70355e17ebbae17901cf87cf4",
+      "subject": "test(frontend): give cold-start page suites a 15 s budget",
+      "task": "give cold-start page suites a 15 s budget",
+      "relevant": [
+        {
+          "path": "frontend/vite.config.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-f021a29",
+      "repo": "lumaflow-studio",
+      "commit": "f021a29be3b1a1c54726ca7a0b683bd90044aff9",
+      "parent": "40b6e24576e7aade036a1d124271cfe6ca0e993d",
+      "subject": "fix(docker): resolve frontend nginx config path",
+      "task": "resolve frontend nginx config path",
+      "relevant": [
+        {
+          "path": "frontend/Dockerfile",
+          "status": "M",
+          "rankable": false
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-b590521",
+      "repo": "lumaflow-studio",
+      "commit": "b5905219186661fcce3a0452dd150500cff1f84a",
+      "parent": "8951080c00accb4c775a151d95caebd9d2e9ab44",
+      "subject": "refactor(auth): simplify access screens",
+      "task": "simplify access screens",
+      "relevant": [
+        {
+          "path": "frontend/src/features/auth/AuthShell.jsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "frontend/src/pages/LoginPage.jsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "frontend/src/pages/RegisterPage.jsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-b1ca222",
+      "repo": "lumaflow-studio",
+      "commit": "b1ca2224458c27b48a3c02c44747ce82e02a4f8e",
+      "parent": "f22088e59ea60bdd324ba11ea053637da34d2e6c",
+      "subject": "fix(deploy): use ephemeral cache on free hosting",
+      "task": "use ephemeral cache on free hosting",
+      "relevant": [
+        {
+          "path": "render.yaml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-2fcff2f",
+      "repo": "lumaflow-studio",
+      "commit": "2fcff2f381ebbd12b2a302706d564edfc26f387f",
+      "parent": "8d4fb4ff9c189cc54738b64d92f17d6440e3c204",
+      "subject": "fix(deploy): use PHP 8.4 in production image",
+      "task": "use PHP 8.4 in production image",
+      "relevant": [
+        {
+          "path": "backend/Dockerfile",
+          "status": "M",
+          "rankable": false
+        },
+        {
+          "path": "frontend/.gitignore",
+          "status": "M",
+          "rankable": false
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-69a7753",
+      "repo": "lumaflow-studio",
+      "commit": "69a7753be5b23c7ca10c53c75feefb84abd9bbb7",
+      "parent": "df3392e60c08a361ac848a2dde0d64e0dff5c18e",
+      "subject": "fix(frontend): mejoras de productividad y estetica tras auditoria de UI",
+      "task": "mejoras de productividad y estetica tras auditoria de UI",
+      "relevant": [
+        {
+          "path": "frontend/src/components/ui/Button.jsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "frontend/src/features/analytics/chartTheme.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "frontend/src/features/presets/PresetSlider.jsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.jsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "frontend/src/pages/PhotosPage.jsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "lumaflow-studio-4abcebf",
+      "repo": "lumaflow-studio",
+      "commit": "4abcebf59e4ebacc16627830a3540dd9524e163f",
+      "parent": "1e0d691a4b94483373d0849cd7db6cedb2686323",
+      "subject": "fix(api): use backend url fallback",
+      "task": "use backend url fallback",
+      "relevant": [
+        {
+          "path": ".gitignore",
+          "status": "M",
+          "rankable": false
+        },
+        {
+          "path": "frontend/src/api/client.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "premium-frontend-showcase-1469b2b",
+      "repo": "premium-frontend-showcase",
+      "commit": "1469b2b73a57829bd8aade0166c6b34c9176463d",
+      "parent": "96f79bf70bcdc9f75c5b7b43a86190abcc043605",
+      "subject": "style: mark the tools in your setup with a small square instead of a side bar",
+      "task": "mark the tools in your setup with a small square instead of a side bar",
+      "relevant": [
+        {
+          "path": "app/globals.css",
+          "status": "M",
+          "rankable": false
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "premium-frontend-showcase-1daead8",
+      "repo": "premium-frontend-showcase",
+      "commit": "1daead8e1797781fc0888e716b6d73429a3b5661",
+      "parent": "e25e9f264b97ae5c9e5d1cdef69df4bac39ee78b",
+      "subject": "feat: third art-direction pass on craft, gates and titles",
+      "task": "third art-direction pass on craft, gates and titles",
+      "relevant": [
+        {
+          "path": "DESIGN.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "app/components/Experience.jsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "app/globals.css",
+          "status": "M",
+          "rankable": false
+        },
+        {
+          "path": "app/page.jsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "premium-frontend-showcase-a61415e",
+      "repo": "premium-frontend-showcase",
+      "commit": "a61415e9f075feacaedafba196dde9ed24a1ad7c",
+      "parent": "1d0c4c733a281e70c0aef0f6e9f504631183eb08",
+      "subject": "fix: preserve revealed content without JavaScript",
+      "task": "preserve revealed content without JavaScript",
+      "relevant": [
+        {
+          "path": "app/page.jsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    }
+  ]
+}
