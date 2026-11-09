@@ -110,6 +110,20 @@ test('legacy wire client survives malformed input and cancels and closes cleanly
   send('notifications/cancelled', { requestId: 2, reason: 'test' });
   send('tools/list', {}, 3);
   assert.equal((await receive(3)).result.tools.length, 3);
+  let recovered = false;
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const id = 4 + attempt;
+    send('tools/call', { name: 'project_scan', arguments: { repository: 'sample' } }, id);
+    const { result } = await receive(id);
+    if (!result.isError) {
+      recovered = true;
+      break;
+    }
+    assert.match(result.content[0].text, /busy/);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  }
+  assert.ok(recovered, 'analysis slot was not released after cancellation');
+  send('tools/call', { name: 'project_scan', arguments: { repository: 'sample' } }, 34);
   child.stdin.end();
   assert.deepEqual(await exited, [0, null]);
 });
