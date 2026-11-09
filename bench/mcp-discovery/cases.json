@@ -1,0 +1,24 @@
+[
+  {
+    "id": "express-etag",
+    "repository": "https://github.com/expressjs/express",
+    "clone": "express",
+    "parent": "3ce6d0eb86e9d93529ff3191c6bb5db8ce6e72c8",
+    "upstreamFix": "9a34acf03cb818ff3f8bc40e44176e277a25cbb9",
+    "prompt": "An HTTP response with a short string body and an explicitly configured chunked transfer encoding no longer gets an automatic entity tag. Restore automatic tags while keeping the headers valid and preserving the existing body and explicit tag behavior. Add a regression test.",
+    "essential": ["lib/response.js", "test/res.send.js"],
+    "incidental": [],
+    "rubric": "Compute the body length even when transfer encoding is present, suppress only the Content-Length header in that case, preserve automatic and explicit ETag behavior, and cover a chunked response with a body, expected tag and no Content-Length."
+  },
+  {
+    "id": "laravel-reconnect",
+    "repository": "https://github.com/laravel/framework",
+    "clone": "framework",
+    "parent": "0406274cae8fc36f01d76d9e3d9f4c0395b99824",
+    "upstreamFix": "703ffc3617cdea72e626f45e008b3ef1ecf82262",
+    "prompt": "A long-running database worker cannot recover after the server drops the connection during commit. The next transaction can fail immediately as if one were already active, and restarting the process is the only workaround. Restore recovery on the next transaction without swallowing the original exception or altering retry behavior for other errors. Add a regression test.",
+    "essential": ["src/Illuminate/Database/Concerns/ManagesTransactions.php", "tests/Database/DatabaseConnectionTest.php"],
+    "incidental": [],
+    "rubric": "On the lost-connection commit path reset transaction state and discard the stale PDO, rethrow the original exception, and exercise a failed commit followed by a successful reconnecting transaction."
+  }
+]
