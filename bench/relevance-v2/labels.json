@@ -1,0 +1,1233 @@
+{
+  "selection": "bench/external/select.js (rules in the file header)",
+  "repos": {
+    "ky": {
+      "url": "https://github.com/sindresorhus/ky",
+      "head": "3541888878c4d303a8bc2ad61815f4e048f55a5d"
+    },
+    "preact": {
+      "url": "https://github.com/preactjs/preact",
+      "head": "cf50052eee0718a4e02614d3c2383e690462242e"
+    },
+    "framework": {
+      "url": "https://github.com/laravel/framework",
+      "head": "4997a3c1607f0fa28b15292b4c4d0c357fbc1a76"
+    },
+    "express": {
+      "url": "https://github.com/expressjs/express",
+      "head": "43fca52d28a422c8be48fd489cbd4f2d6152bab6"
+    },
+    "underscore": {
+      "url": "https://github.com/jashkenas/underscore",
+      "head": "5c1e5f686f8500af9c9d15614ed60289d6d35d6b"
+    }
+  },
+  "tasks": [
+    {
+      "id": "ky-d93adf8",
+      "repo": "ky",
+      "commit": "d93adf85d1a992eb3b0390200c7d19e37d16b890",
+      "parent": "a5ed57b1898d5eba75f1b0ffc8752518a75e0f07",
+      "subject": "Run the browser tests and static checks once in CI",
+      "task": "Run the browser tests and static checks once in CI",
+      "relevant": [
+        {
+          "path": ".github/workflows/main.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-4cc6698",
+      "repo": "ky",
+      "commit": "4cc6698cf35873f288177f4073cbc0bdbbf83374",
+      "parent": "deb5a331d07b82dbc7eed308804626ea7f1d6383",
+      "subject": "Recognise a cross-realm `beforeRetry` error and keep the retried error as the cause",
+      "task": "Recognise a cross-realm `beforeRetry` error and keep the retried error as the cause",
+      "relevant": [
+        {
+          "path": "source/core/Ky.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/hooks.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/main.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/retry.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-74224d8",
+      "repo": "ky",
+      "commit": "74224d8b277147371ed6a6321e21c775dd941c71",
+      "parent": "619c42765fa22b02966f39443fbc28167b707caa",
+      "subject": "Make a non-Error progress-callback throw non-retriable too",
+      "task": "Make a non-Error progress-callback throw non-retriable too",
+      "relevant": [
+        {
+          "path": "source/core/Ky.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/stream.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-01b0839",
+      "repo": "ky",
+      "commit": "01b0839916e88f131c61222a18c394263828dd51",
+      "parent": "0b1f462c6d8976cfb67a9b4e6dad824b2409b44a",
+      "subject": "Recognise another copy of Ky: the stop symbol and the retry marker",
+      "task": "Recognise another copy of Ky: the stop symbol and the retry marker",
+      "relevant": [
+        {
+          "path": "source/core/Ky.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/core/constants.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/hooks.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-0a9cbb1",
+      "repo": "ky",
+      "commit": "0a9cbb1a3f09f67f69cc4b45057fb38988881f49",
+      "parent": "3f0e330dba1bcce4900316857bd2d3087e79f95b",
+      "subject": "Report a `hooks` option that is not an object",
+      "task": "Report a `hooks` option that is not an object",
+      "relevant": [
+        {
+          "path": "source/utils/merge.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/hooks.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-23ca564",
+      "repo": "ky",
+      "commit": "23ca56439a82408169788dadac52717d5c6324b9",
+      "parent": "d89c8c8d700544deda79c2c7cc13f17171cfb398",
+      "subject": "Skip wrapping a body a hook read, and read a past reset epoch as a timestamp",
+      "task": "Skip wrapping a body a hook read, and read a past reset epoch as a timestamp",
+      "relevant": [
+        {
+          "path": "readme.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/core/retry-timing.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/types/options.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/utils/body.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/response-size.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/retry-timing.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/retry.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-38bbe4e",
+      "repo": "ky",
+      "commit": "38bbe4ede31cadbf1e7d11787a22af424db33251",
+      "parent": "d9774cf8d557a16f902263aea75a3bd112fb0b37",
+      "subject": "Treat a null `searchParams` assigned by an `init` hook as absent",
+      "task": "Treat a null `searchParams` assigned by an `init` hook as absent",
+      "relevant": [
+        {
+          "path": "source/utils/options.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/main.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-ff0155d",
+      "repo": "ky",
+      "commit": "ff0155d6e99ec3ba6661189add9baa79ff4a52f4",
+      "parent": "8778439c9ff51a50875b166bca1c40f94290be0a",
+      "subject": "Normalize mutable init hook options",
+      "task": "Normalize mutable init hook options",
+      "relevant": [
+        {
+          "path": "source/core/Ky.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/types/options.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/utils/merge.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test-d/hooks.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/hooks.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-de278ae",
+      "repo": "ky",
+      "commit": "de278ae6e003a5a7d7e3c5dba24da5587ac28752",
+      "parent": "ec3d17f90943d99aec96da2021d69155c95a19b8",
+      "subject": "Preserve a user cancellation across retry decisions and report the bytes that arrived",
+      "task": "Preserve a user cancellation across retry decisions and report the bytes that arrived",
+      "relevant": [
+        {
+          "path": "readme.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/core/Ky.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/types/options.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/utils/body.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/browser.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/retry.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "test/abort-retry.ts",
+        "test/body-regressions.ts"
+      ]
+    },
+    {
+      "id": "ky-d6e049a",
+      "repo": "ky",
+      "commit": "d6e049a690c7562a72e22d0b1eb57a2d4d19745e",
+      "parent": "323b98f0a326f3967dc16acd34f2755da3ebd63a",
+      "subject": "Resolve retry replacements without parent retry options",
+      "task": "Resolve retry replacements without parent retry options",
+      "relevant": [
+        {
+          "path": "source/utils/merge.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/retry.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-b28ba90",
+      "repo": "ky",
+      "commit": "b28ba903c322b84b5d9cf47a6fc0af6a61d5954f",
+      "parent": "cd1dba0e4502d95be93846e6c77bf0479dc0e385",
+      "subject": "Simplify request state and retry normalization",
+      "task": "Simplify request state and retry normalization",
+      "relevant": [
+        {
+          "path": "source/core/Ky.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/types/common.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/types/options.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/utils/normalize.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "ky-f4886ca",
+      "repo": "ky",
+      "commit": "f4886ca8f58c1f9f950124d9edef6bb0f60bb6ef",
+      "parent": "51b31777058c13f24b640a0ef1a47565f011e080",
+      "subject": "Preserve JSON types when cloning requests and responses",
+      "task": "Preserve JSON types when cloning requests and responses",
+      "relevant": [
+        {
+          "path": "source/types/request.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "source/types/response.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/hooks.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/main.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "test-d/request-clone.ts",
+        "test-d/response-clone.ts"
+      ]
+    },
+    {
+      "id": "preact-cf50052",
+      "repo": "preact",
+      "commit": "cf50052eee0718a4e02614d3c2383e690462242e",
+      "parent": "dbeba0d59bb59260ea4a90c5adf9f5a29d43cdab",
+      "subject": "docs: fix duplicated words and initial-letter typo (#5355)",
+      "task": "fix duplicated words and initial-letter typo (#5355)",
+      "relevant": [
+        {
+          "path": "compat/test/browser/render.test.jsx",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "compat/test/browser/suspense-utils.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "hooks/src/index.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "preact-52a1d8f",
+      "repo": "preact",
+      "commit": "52a1d8f699b933666981d0f55146c45842b8b029",
+      "parent": "0935fecd7e8244417a39e8470c9e7f440e51379b",
+      "subject": "types: improve a11y discriminated unions (#5311)",
+      "task": "types: improve a11y discriminated unions (#5311)",
+      "relevant": [
+        {
+          "path": "src/dom.d.ts",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/ts/dom-attributes.test-d.tsx",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "preact-8b25c58",
+      "repo": "preact",
+      "commit": "8b25c58dc49c7c7a55df9694a359f125ad4fa240",
+      "parent": "0fd9a026ce0f4f5b2406c0d66e7108d923b6bae6",
+      "subject": "types: add command and commandfor to AllHTMLAttributes (#5216)",
+      "task": "types: add command and commandfor to AllHTMLAttributes (#5216)",
+      "relevant": [
+        {
+          "path": "src/dom.d.ts",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "preact-03253d5",
+      "repo": "preact",
+      "commit": "03253d5bdf10e898c8ddc9d0317e452b4c23de0c",
+      "parent": "54f628c6242b50c17b9b97fbb319ef6168bd0577",
+      "subject": "ci: bump pinned GitHub actions (#5110)",
+      "task": "bump pinned GitHub actions (#5110)",
+      "relevant": [
+        {
+          "path": ".github/workflows/benchmarks.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/build-test.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/pr-reporter.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/release.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/run-bench.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/single-bench.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": ".github/workflows/size.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "framework-4997a3c",
+      "repo": "framework",
+      "commit": "4997a3c1607f0fa28b15292b4c4d0c357fbc1a76",
+      "parent": "703ffc3617cdea72e626f45e008b3ef1ecf82262",
+      "subject": "Support the integer key type in Blueprint::foreignIdFor() (#62365)",
+      "task": "Support the integer key type in Blueprint::foreignIdFor() (#62365)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Database/Schema/Blueprint.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Database/DatabaseSchemaBlueprintTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "tests/Database/Fixtures/Models/EloquentModelUsingIntegerKeyType.php"
+      ]
+    },
+    {
+      "id": "framework-aca3cc2",
+      "repo": "framework",
+      "commit": "aca3cc22f3dcdbff47468ce046a959f71db79fd4",
+      "parent": "45943ab53bf7090beb89f241926ef813a8a88990",
+      "subject": "[13.x] Include identical BelongsToMany resources once in JSON:API compound documents (#62360)",
+      "task": "[13.x] Include identical BelongsToMany resources once in JSON:API compound documents (#62360)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Http/Resources/JsonApi/Concerns/ResolvesJsonApiElements.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Integration/Http/Resources/JsonApi/JsonApiCollectionTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "tests/Integration/Http/Resources/JsonApi/Fixtures/TeamWithLazyAttributeResource.php",
+        "tests/Integration/Http/Resources/JsonApi/Fixtures/UserWithLazyTeamAttributeResource.php"
+      ]
+    },
+    {
+      "id": "framework-fe640a7",
+      "repo": "framework",
+      "commit": "fe640a794074727887a560dc4d3cbaef8d5b6942",
+      "parent": "3ee9f38b4b840acabe79dbe3212b42e00b9ee4ee",
+      "subject": "Add Macroable to PendingProcess (#62351)",
+      "task": "Add Macroable to PendingProcess (#62351)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Process/PendingProcess.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Process/ProcessTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "framework-32be37a",
+      "repo": "framework",
+      "commit": "32be37ad4f2ad49aff2e9405d2e3ec0a6b7b1804",
+      "parent": "4541ca67e81e0f1fef0a46ebe42181416ac862e1",
+      "subject": "Respect preventLazyLoading when iterating multiple models via cursor() (#62345)",
+      "task": "Respect preventLazyLoading when iterating multiple models via cursor() (#62345)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Database/Eloquent/Builder.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Integration/Database/EloquentStrictLoadingTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "framework-21719b7",
+      "repo": "framework",
+      "commit": "21719b7b765c01d4bb19fd0c4304f3292322ae3d",
+      "parent": "5af00abcf7982b180ab9c1da3f8d3040e999a451",
+      "subject": "[13.x] Improves Ably integration (#62322)",
+      "task": "[13.x] Improves Ably integration (#62322)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Broadcasting/Broadcasters/Ably2Broadcaster.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "src/Illuminate/Broadcasting/Broadcasters/AblyBroadcaster.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "src/Illuminate/Foundation/Console/BroadcastingInstallCommand.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "framework-4c15d93",
+      "repo": "framework",
+      "commit": "4c15d932ddf96ca48bee939657b7f7a7db8b7560",
+      "parent": "59fbbb0c4d16581a9e26f1cb9871e0521b370fef",
+      "subject": "Fix Pusher authentication for invalid channel names (#62309)",
+      "task": "Fix Pusher authentication for invalid channel names (#62309)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Broadcasting/Broadcasters/PusherBroadcaster.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Broadcasting/PusherBroadcasterTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "framework-6721027",
+      "repo": "framework",
+      "commit": "6721027eded4da0660979eceaa55d78b567adfa0",
+      "parent": "2f92c1886de168caa2506b3aae33c1a56ace892f",
+      "subject": "[13.x] Fix `dispatch()->afterResponse()` trying to render exception (#62313)",
+      "task": "[13.x] Fix `dispatch()->afterResponse()` trying to render exception (#62313)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Bus/Dispatcher.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "tests/Integration/Bus/DispatcherTest.php"
+      ]
+    },
+    {
+      "id": "framework-e0cd2e0",
+      "repo": "framework",
+      "commit": "e0cd2e0ee9fd92f1aa1f4f872726131cf32d0b78",
+      "parent": "53388cc754624ad55f25a092ca091aed8290ce6a",
+      "subject": "LostConnectionDetector detectUsing (#62316)",
+      "task": "LostConnectionDetector detectUsing (#62316)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Database/LostConnectionDetector.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Database/DatabaseConnectionLostTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "framework-ddbf5eb",
+      "repo": "framework",
+      "commit": "ddbf5ebcdef2be42d326c8c909c9e40228d9e517",
+      "parent": "f51168461c5b22c8bca6f60c1bd3cfbc389b247d",
+      "subject": "13.x add ScheduledTaskSkipReason (#62294)",
+      "task": "13.x add ScheduledTaskSkipReason (#62294)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Console/Events/ScheduledTaskSkipped.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "src/Illuminate/Console/Scheduling/ScheduleRunCommand.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Integration/Console/Scheduling/ScheduleRunCommandTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "src/Illuminate/Console/Scheduling/ScheduledTaskSkipReason.php"
+      ]
+    },
+    {
+      "id": "framework-c37133b",
+      "repo": "framework",
+      "commit": "c37133b89b30a86eb404537151edd8944e938f0a",
+      "parent": "1571da1acb0eb566a9a4f10866a8b8452ec9a9de",
+      "subject": "[13.x] Fix: Authenticate the Concurrency Process Result Envelope to Prevent Task Output Injection (#62297)",
+      "task": "[13.x] Fix: Authenticate the Concurrency Process Result Envelope to Prevent Task Output Injection (#62297)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Concurrency/Console/InvokeSerializedClosureCommand.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "src/Illuminate/Concurrency/ProcessDriver.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Integration/Concurrency/ConcurrencyTest.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Integration/Concurrency/Console/InvokeSerializedClosureCommandTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        "tests/Integration/Concurrency/ProcessDriverSecurityTest.php"
+      ]
+    },
+    {
+      "id": "framework-b20bf7f",
+      "repo": "framework",
+      "commit": "b20bf7f442beabdb70e45cf9d29cd6c64675f856",
+      "parent": "86d3106af73b8338a10f82a04edf49f37978e6be",
+      "subject": "Update facade docblocks",
+      "task": "Update facade docblocks",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Support/Facades/DB.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "framework-3f50fa3",
+      "repo": "framework",
+      "commit": "3f50fa318ecbd2359e4183fff7a08fbe2d2c9af4",
+      "parent": "ce1e6faac55834c96bbb31257a7f88f67f9c7c17",
+      "subject": "add QueryList.TerminateAll to lost connection detector (#62270)",
+      "task": "add QueryList.TerminateAll to lost connection detector (#62270)",
+      "relevant": [
+        {
+          "path": "src/Illuminate/Database/LostConnectionDetector.php",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "tests/Database/DatabaseConnectionLostTest.php",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-0dee2c5",
+      "repo": "express",
+      "commit": "0dee2c52c7c873498f8ed7d8ee4ddd0a04d3ada8",
+      "parent": "a419aa7350389a275ab45fde2e849ed1f02449ef",
+      "subject": "docs: correct crossed names in the emeritus triagers list (#7529)",
+      "task": "correct crossed names in the emeritus triagers list (#7529)",
+      "relevant": [
+        {
+          "path": "Readme.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-9169cbe",
+      "repo": "express",
+      "commit": "9169cbe1127ed1f9bc4f80a70b82c412467dd156",
+      "parent": "7ef98448f8b38099ab1ded55e458538ad47a51e7",
+      "subject": "docs: add missing apostrophe in example (#7483)",
+      "task": "add missing apostrophe in example (#7483)",
+      "relevant": [
+        {
+          "path": "examples/mvc/controllers/user/index.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/response.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-c35284e",
+      "repo": "express",
+      "commit": "c35284ee7afddb267da747b8c1d66de71982c026",
+      "parent": "023767fe9872e029271df1418f73401bff20ff40",
+      "subject": "chore: group github actions updates (#7460)",
+      "task": "group github actions updates (#7460)",
+      "relevant": [
+        {
+          "path": ".github/dependabot.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-66878d3",
+      "repo": "express",
+      "commit": "66878d3e70437ba7b887ec519a3e33edc5bca0c7",
+      "parent": "18e5985b8a9d5e8423db0a9121f22bdaecd5b120",
+      "subject": "docs: use the new logo (#7316)",
+      "task": "use the new logo (#7316)",
+      "relevant": [
+        {
+          "path": "Readme.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-9d8223d",
+      "repo": "express",
+      "commit": "9d8223d92ee81137a50a28eb6ad55a096791091d",
+      "parent": "90ec6206d3275fdf2787f2028c6f48a2d92e8042",
+      "subject": "fix: replace deprecated trimRight() with trimEnd() (#7265)",
+      "task": "replace deprecated trimRight() with trimEnd() (#7265)",
+      "relevant": [
+        {
+          "path": "lib/request.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-f5c159b",
+      "repo": "express",
+      "commit": "f5c159b112e8ac6e3b2b022eff03ad727d4ff98a",
+      "parent": "2eae22b1e12df345e314a4db483052a780e0ba0b",
+      "subject": "ci: build express with node.js v26 (#7218)",
+      "task": "build express with node.js v26 (#7218)",
+      "relevant": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "package.json",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-8e022ed",
+      "repo": "express",
+      "commit": "8e022edc9185f540a3fcecaf5e56b850d919cdac",
+      "parent": "e5099198b292a565f8583d70caf12d7afed3607f",
+      "subject": "docs: update npm install docs URL in Readme.md (#7159)",
+      "task": "update npm install docs URL in Readme.md (#7159)",
+      "relevant": [
+        {
+          "path": "Readme.md",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-b4ab7d6",
+      "repo": "express",
+      "commit": "b4ab7d65d7724d9309b6faaaf82ad492da2a6d35",
+      "parent": "c4cc78bdf55ae657536239aad2077425f7d79045",
+      "subject": "test: include edge case tests for `res.type()` (#7037)",
+      "task": "include edge case tests for `res.type()` (#7037)",
+      "relevant": [
+        {
+          "path": "test/res.type.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-9c85a25",
+      "repo": "express",
+      "commit": "9c85a25c02e83ad16e1561d02c8ede652f0ef15b",
+      "parent": "1140301f6a0ed5a05bc1ef38d48294f75a49580c",
+      "subject": "Remove duplicate tests in res.location and res.jsonp (#6996)",
+      "task": "Remove duplicate tests in res.location and res.jsonp (#6996)",
+      "relevant": [
+        {
+          "path": "test/res.jsonp.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/res.location.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-6b7ccfc",
+      "repo": "express",
+      "commit": "6b7ccfcf120e77f20aa22ff96ccf98a994c7d35b",
+      "parent": "c9ecf7b658388ccaa2b8470aabad92aabde458a2",
+      "subject": "test: add test for normalizeType fallback when mime lookup fails (#6894)",
+      "task": "add test for normalizeType fallback when mime lookup fails (#6894)",
+      "relevant": [
+        {
+          "path": "test/utils.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-5a4568a",
+      "repo": "express",
+      "commit": "5a4568abfe05f71d5559e1db9321627af501ebe3",
+      "parent": "912893c07cac79cc0b761f3a0c1061b8e8cde87e",
+      "subject": "chore: remove benchmarks directory (#6992)",
+      "task": "remove benchmarks directory (#6992)",
+      "relevant": [
+        {
+          "path": "benchmarks/Makefile",
+          "status": "D",
+          "rankable": false
+        },
+        {
+          "path": "benchmarks/README.md",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "benchmarks/middleware.js",
+          "status": "D",
+          "rankable": true
+        },
+        {
+          "path": "benchmarks/run",
+          "status": "D",
+          "rankable": false
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "express-9a3f7ff",
+      "repo": "express",
+      "commit": "9a3f7ff4120d7920a2d13809ff5ae78648c8a3d6",
+      "parent": "2cd372e34cd6613f4d00836c2ee122f28bddfcb3",
+      "subject": "Polish HTML structure of the response in the res.redirect() function (#5167)",
+      "task": "Polish HTML structure of the response in the res.redirect() function (#5167)",
+      "relevant": [
+        {
+          "path": "History.md",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "lib/response.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "test/res.redirect.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-5f37c37",
+      "repo": "underscore",
+      "commit": "5f37c372ddf593dc20e0edd538296a3efd16b8dc",
+      "parent": "6672abe7171cc3c0ed6cf7d7283fce6edb058ef0",
+      "subject": "Unlist PageCDN embed links from documentation",
+      "task": "Unlist PageCDN embed links from documentation",
+      "relevant": [
+        {
+          "path": "index.html",
+          "status": "M",
+          "rankable": false
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-7860d11",
+      "repo": "underscore",
+      "commit": "7860d11ca75ee9371b21c6ab68b9597efd74d29e",
+      "parent": "af7c386a1f2f16ec8971b59f8593d46f7ca91aa3",
+      "subject": "Add a github entry to the FUNDING.yml",
+      "task": "Add a github entry to the FUNDING.yml",
+      "relevant": [
+        {
+          "path": ".github/FUNDING.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-2e7c0f2",
+      "repo": "underscore",
+      "commit": "2e7c0f2841f5d2d0172ee42a762193898a663e30",
+      "parent": "e8f86fb4c670ff00abade85064c4a9cf4456fbbd",
+      "subject": "Update generated files, tag 1.13.6 release",
+      "task": "Update generated files, tag 1.13.6 release",
+      "relevant": [
+        {
+          "path": "docs/modules/_setup.html",
+          "status": "M",
+          "rankable": false
+        },
+        {
+          "path": "docs/modules/index.html",
+          "status": "M",
+          "rankable": false
+        },
+        {
+          "path": "docs/underscore-esm.html",
+          "status": "M",
+          "rankable": false
+        },
+        {
+          "path": "underscore-esm-min.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "underscore-min.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "underscore-umd-min.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "underscore.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-66ee70d",
+      "repo": "underscore",
+      "commit": "66ee70d746399b3446a700492bc62f4117d4a21b",
+      "parent": "68e5eb68635548846b4663479b9d0fc78d090b0a",
+      "subject": "Verify that production and doc builds still work in CI",
+      "task": "Verify that production and doc builds still work in CI",
+      "relevant": [
+        {
+          "path": ".travis.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-c7ce0d7",
+      "repo": "underscore",
+      "commit": "c7ce0d746ccce997b3056b778565d69f39c77541",
+      "parent": "e7e719eba6a03d08e52b6f352491172ca4a13cb7",
+      "subject": "Expand git.io URLs in codeql-analysis workflow (fix #2957)",
+      "task": "Expand git.io URLs in codeql-analysis workflow (fix #2957)",
+      "relevant": [
+        {
+          "path": ".github/workflows/codeql-analysis.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-aca966a",
+      "repo": "underscore",
+      "commit": "aca966a309d6ff13b330e605efaf9dc51e43367d",
+      "parent": "a3c2c669071fd2111278ab4bbd78f88d495098ea",
+      "subject": "Prevent test-node from running twice in CI on Node.js 14",
+      "task": "Prevent test-node from running twice in CI on Node.js 14",
+      "relevant": [
+        {
+          "path": ".travis.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-99a9a29",
+      "repo": "underscore",
+      "commit": "99a9a29d51cc73bcad8e3ea796a55e81ae815746",
+      "parent": "334993a90104a3c13279c6d35ec0520c9f35aeae",
+      "subject": "Remove duplicate with",
+      "task": "Remove duplicate with",
+      "relevant": [
+        {
+          "path": ".github/workflows/codeql-analysis.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-790f423",
+      "repo": "underscore",
+      "commit": "790f423c7c5847bf4c9a8c21e50cc1102a5fc775",
+      "parent": "84b827868524ecd72f54d90397df07c2a323fe49",
+      "subject": "Work around GitHub Actions YAML limitation",
+      "task": "Work around GitHub Actions YAML limitation",
+      "relevant": [
+        {
+          "path": ".github/workflows/codeql-analysis.yml",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": [
+        ".github/workflows/codeql-config.yml"
+      ]
+    },
+    {
+      "id": "underscore-7c2db70",
+      "repo": "underscore",
+      "commit": "7c2db70ff0464ae01fa4b486d5ef5f0aa8f6a103",
+      "parent": "d9e00911565df587792b45f1213639b6aba0dcb0",
+      "subject": "Clarify that _.bind and _.partial can be used together (#2328)",
+      "task": "Clarify that _.bind and _.partial can be used together (#2328)",
+      "relevant": [
+        {
+          "path": "index.html",
+          "status": "M",
+          "rankable": false
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-b2bc393",
+      "repo": "underscore",
+      "commit": "b2bc393aaf0887679e6adf74770d754fef0e6ca2",
+      "parent": "acb04e45c41726dfb554a50d83daf5318e72c73b",
+      "subject": "Update the copyright statement",
+      "task": "Update the copyright statement",
+      "relevant": [
+        {
+          "path": "LICENSE",
+          "status": "M",
+          "rankable": false
+        },
+        {
+          "path": "modules/index.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "underscore-esm.js",
+          "status": "M",
+          "rankable": true
+        },
+        {
+          "path": "underscore.js",
+          "status": "M",
+          "rankable": true
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-c9e803e",
+      "repo": "underscore",
+      "commit": "c9e803e400775d0dd27a9a70bb0f1b2fe7689d70",
+      "parent": "0c20985ad1e7df18f7346c7da7fc702578bb3934",
+      "subject": "Add diff and docs to the 1.12.1 change log entry",
+      "task": "Add diff and docs to the 1.12.1 change log entry",
+      "relevant": [
+        {
+          "path": "index.html",
+          "status": "M",
+          "rankable": false
+        }
+      ],
+      "addedByCommit": []
+    },
+    {
+      "id": "underscore-db7fb6a",
+      "repo": "underscore",
+      "commit": "db7fb6a5042a7efbc27039a9156d829d95075615",
+      "parent": "548fa01a94a830172ce0a51d7120a78586d1aed2",
+      "subject": "Add temporary note about preview release to index.html",
+      "task": "Add temporary note about preview release to index.html",
+      "relevant": [
+        {
+          "path": "index.html",
+          "status": "M",
+          "rankable": false
+        }
+      ],
+      "addedByCommit": []
+    }
+  ]
+}
