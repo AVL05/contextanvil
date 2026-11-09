@@ -5,6 +5,7 @@ import { classifySensitivePath } from './secrets.js';
 import { byCodeUnit, isInside, realpath, toPosix } from './paths.js';
 import { extensionOf } from './classify.js';
 import { escapeUnsafe, hasUnsafeCharacters } from './sanitize.js';
+import { createReader } from './reader.js';
 
 /** Directory names that are never traversed (dependencies, build output, caches). */
 export const DEFAULT_EXCLUDED_DIRS = new Set([
@@ -30,16 +31,14 @@ function byName(a, b) {
 }
 
 /** Ignore files are read only if they are regular files inside the root (a symlink to elsewhere is not followed). */
-function readIgnoreFile(root, abs, limits) {
-  try {
-    const real = realpath(abs);
-    if (!isInside(root, real)) return [];
-    const st = fs.statSync(real);
-    if (!st.isFile() || st.size > limits.maxIgnoreFileBytes) return [];
-    return parseIgnore(fs.readFileSync(real, 'utf8'));
-  } catch {
-    return [];
-  }
+function readIgnoreFile(root, rel, limits) {
+  const cap = limits.maxIgnoreFileBytes;
+  const reader = createReader({
+    root, files: [{ path: rel, size: 0 }],
+    limits: { maxFileBytes: cap, maxTotalReadBytes: cap },
+  });
+  const text = reader.read(rel);
+  return { rules: text === null ? null : parseIgnore(text), reads: reader.filesRead(), bytes: reader.bytesRead() };
 }
 
 /** List a directory, refusing absurdly large ones so a hostile tree cannot exhaust memory. */
@@ -78,6 +77,8 @@ export function walkRepository(root, limits, { respectIgnore = true } = {}) {
   let dirsVisited = 0;
   let truncated = false;
   let depthLimited = 0;
+  let ignoreReads = 0;
+  let ignoreBytes = 0;
 
   const queue = [{ abs: root, rel: '', depth: 0, sources: [] }];
   outer: for (let qi = 0; qi < queue.length; qi++) {
@@ -103,8 +104,12 @@ export function walkRepository(root, limits, { respectIgnore = true } = {}) {
     if (respectIgnore) {
       for (const name of ['.gitignore', '.contextanvilignore']) {
         if (!entries.some((e) => e.name === name && (e.isFile() || e.isSymbolicLink()))) continue;
-        const rules = readIgnoreFile(root, path.join(dir.abs, name), limits);
-        if (rules.length) sources = [...sources, { base: dir.rel, rules }];
+        const rel = dir.rel ? `${dir.rel}/${name}` : name;
+        const { rules, reads, bytes } = readIgnoreFile(root, rel, limits);
+        ignoreReads += reads;
+        ignoreBytes += bytes;
+        if (!rules) diagnostics.push({ level: 'warn', code: 'ignore-unreadable', message: 'Ignore rules could not be read safely', path: rel });
+        else if (rules.length) sources = [...sources, { base: dir.rel, rules }];
       }
     }
 
@@ -223,5 +228,5 @@ export function walkRepository(root, limits, { respectIgnore = true } = {}) {
   }
   files.sort((a, b) => byCodeUnit(a.path, b.path));
   sensitive.sort((a, b) => byCodeUnit(a.path, b.path));
-  return { files, sensitive, excluded, dirsVisited, truncated, diagnostics };
+  return { files, sensitive, excluded, dirsVisited, truncated, diagnostics, ignoreReads, ignoreBytes };
 }

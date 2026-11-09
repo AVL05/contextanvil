@@ -79,6 +79,7 @@ export function scanRepository(rootInput = '.', options = {}) {
     files: walk.files,
   };
   Object.defineProperty(result, 'reader', { value: reader, enumerable: false });
+  Object.defineProperty(result, 'ignoreIo', { value: { reads: walk.ignoreReads, bytes: walk.ignoreBytes }, enumerable: false });
   return result;
 }
 

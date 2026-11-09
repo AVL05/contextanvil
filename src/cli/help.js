@@ -15,13 +15,27 @@ Usage:
   contextanvil scan [path]                 Analyse a repository and report what was found
   contextanvil context "<task>" [path]     Compile focused context for a task
   contextanvil doctor [path]               Diagnose missing, conflicting, stale or unsafe context
+  contextanvil manifest <action> <path>    Create, verify, diff or update a repository snapshot
   contextanvil --help | --version
 
 'path' defaults to the current directory. Use "contextanvil <command> --help"
 for command options. All commands accept --json for machine-readable output.
 
-Exit codes: 0 success, 1 doctor findings at or above --fail-on, 2 usage error,
+Exit codes: 0 success, 1 doctor findings or manifest verification mismatch, 2 usage error,
 3 runtime error.
+`,
+  manifest: `Usage:
+  contextanvil manifest create <path> --output <file> [--json]
+  contextanvil manifest verify <path> --manifest <file> [--json]
+  contextanvil manifest diff <path> --manifest <file> [--json]
+  contextanvil manifest update <path> --manifest <file> [--json]
+
+Create refuses existing destinations. Update explicitly replaces a valid manifest.
+Choose a destination outside the scanned repository. All actions reconstruct
+the live snapshot. Verify exits 1 on drift. Diff exits 0 on a complete comparison.
+Invalid manifests, incomplete snapshots and storage failures exit 3.
+
+${LIMIT_OPTIONS}
 `,
   scan: `Usage: contextanvil scan [path] [options]
 

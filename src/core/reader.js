@@ -1,6 +1,8 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
-import { isInside, normalizeRelative, realpath, resolveUnder } from './paths.js';
+import path from 'node:path';
+import { isInside, normalizeRelative, realpath, resolveUnder, toPosix } from './paths.js';
+import { classifySensitivePath } from './secrets.js';
 
 /**
  * The only way detectors and the compiler touch file contents.
@@ -23,6 +25,7 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
   const cache = new Map();
   const warned = new Set();
   let totalRead = 0;
+  let reads = 0;
 
   function warn(code, message, p) {
     const key = `${code}\0${p}`;
@@ -31,7 +34,7 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
     diagnostics.push({ level: 'warn', code, message, path: p });
   }
 
-  function loadUncached(rel) {
+  function loadUncached(rel, hashOnly = false) {
     const entry = index.get(rel);
     if (!entry) return null;
     if (entry.oversized) {
@@ -49,7 +52,11 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
         warn('symlink-escape', 'Path resolves outside the repository root and was not read', rel);
         return null;
       }
-      fd = fs.openSync(real, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW ?? 0));
+      if (classifySensitivePath(toPosix(path.relative(root, real)))) {
+        warn('sensitive-target', 'Sensitive target was not read', rel);
+        return null;
+      }
+      fd = fs.openSync(real, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW ?? 0) | (fs.constants.O_NONBLOCK ?? 0));
       const st = fs.fstatSync(fd);
       if (!st.isFile()) return null;
       const after = fs.statSync(real);
@@ -62,6 +69,11 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
         warn('file-too-large', `File exceeds the ${limits.maxFileBytes}-byte read limit and was not read`, rel);
         return null;
       }
+      if (totalRead + st.size > limits.maxTotalReadBytes) {
+        warn('read-budget-exhausted', 'Total read budget reached; file was not read', rel);
+        return null;
+      }
+      reads++;
       const buf = Buffer.alloc(st.size);
       let off = 0;
       while (off < st.size) {
@@ -70,11 +82,18 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
         off += n;
       }
       totalRead += off;
+      const final = fs.fstatSync(fd);
+      if (off !== st.size || final.size !== st.size || final.mtimeMs !== st.mtimeMs || final.ctimeMs !== st.ctimeMs) {
+        warn('file-changed-during-read', 'File changed while it was being read; not used', rel);
+        return null;
+      }
       const data = buf.subarray(0, off);
       if (data.subarray(0, 8000).includes(0)) return null; // binary content
+      const sha256 = crypto.createHash('sha256').update(data).digest('hex');
+      if (hashOnly) return { bytes: off, sha256 };
       let text = data.toString('utf8');
       if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
-      return { text, bytes: off, sha256: crypto.createHash('sha256').update(data).digest('hex') };
+      return { text, bytes: off, sha256 };
     } catch {
       warn('read-failed', 'File could not be read', rel);
       return null;
@@ -95,6 +114,10 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
     has: (rel) => index.has(rel),
     entry: (rel) => index.get(rel),
     readMeta,
+    hashMeta(rel) {
+      return cache.has(rel) ? cache.get(rel) : loadUncached(rel, true);
+    },
+    filesRead: () => reads,
     read: (rel) => readMeta(rel)?.text ?? null,
     /**
      * Existence check for an untrusted reference. Safe against traversal and
