@@ -1,7 +1,15 @@
 {
   "name": "contextanvil",
   "version": "0.1.1",
-  "description": "Forge better context. Deterministic repository analysis and task-aware context compilation for AI coding agents.",
+  "description": "Audit repository instructions, compile traceable context, and verify repository snapshots offline.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AVL05/contextanvil.git"
+  },
+  "homepage": "https://github.com/AVL05/contextanvil#readme",
+  "bugs": {
+    "url": "https://github.com/AVL05/contextanvil/issues"
+  },
   "keywords": [
     "context-engineering",
     "ai-agents",
@@ -26,6 +34,9 @@
     "src",
     "README.md",
     "LICENSE",
+    "SECURITY.md",
+    "docs/security.md",
+    "docs/design/phase-2-manifests.md",
     "CHANGELOG.md"
   ],
   "engines": {

@@ -5,6 +5,10 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 
 ## [Unreleased]
 
+- Keep manifest option errors machine-readable in JSON mode.
+- Redact detected secrets and neutralize unsafe characters in fact identifiers.
+- Include the security policy and manifest format in the npm tarball.
+
 - Add explicit `manifest create`, `verify`, `diff`, and `update` commands with
   canonical source hashes, fact provenance, and atomic external publication.
   Refreshes reconstruct from live files and skip writes when unchanged.

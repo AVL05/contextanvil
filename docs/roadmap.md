@@ -1,97 +1,50 @@
 # Roadmap
 
-This page separates what **exists today** from what is **planned**. Anything under "Planned" is design intent only:
-nothing in those sections is implemented, and each phase must preserve the same principles: provider independence, user
-control, deterministic and inspectable behaviour, and no mandatory network or model.
+ContextAnvil focuses on local repository-instruction audits, traceable
+context and snapshot verification. See the [product positioning](product/product-positioning.md)
+and [first beta readiness assessment](product/release-readiness.md).
 
-## Implemented
+## Stable product
 
-### Phase 1: repository intelligence and context compilation (v0.1.0)
+- **Phase 1: analysis and auditing.** `scan` inventories the repository.
+  `doctor` reports missing guidance, package-manager contradictions, stale
+  references and potentially unsafe content. `context` uses the stable
+  task-aware ranking and exposes its evidence and omissions.
+  [Ranking decisions](decisions/0002-relevance-ranking.md) and
+  [security boundaries](security.md).
+- **Phase 1.2: validation.** Cross-platform CI exercises Linux, macOS and
+  Windows. Historical benchmark data and independently derived changed-file
+  labels remain available for comparison.
+  [Benchmark history](../bench/README.md) and [external results](../bench/external/RESULTS.md).
+- **Phase 2: snapshots.** Explicit create, verify, diff and update commands
+  persist hashes and provenance outside the scanned tree. Refresh fully
+  reconstructs the live snapshot and skips an identical write.
+  [Manifest design and implementation](design/phase-2-manifests.md).
 
-`scan`, `context` and `doctor` commands; a reusable library core; JavaScript, React, Next.js, Node.js, PHP and Laravel
-detection; AGENTS.md / CLAUDE.md and other instruction files; task-aware selection with explicit budgets and omissions;
-secret redaction; ignore, symlink and traversal safety.
+## Archived experiments
 
-### Phase 1.1: hardening, relevance and validation (v0.1.1)
+- **Relevance v2** was closed without merge after lower candidate recall
+  and changed-file coverage on the independent holdout, and higher warm
+  latency and memory in the 5,000-file fixture. The branch preserves the
+  [postmortem and frozen benchmark evidence](https://github.com/AVL05/contextanvil/blob/fd9e0ca4f5b70a4ed4a8d9fa76e98cc47525f587/bench/relevance-v2/POSTMORTEM.md).
+  [PR #6](https://github.com/AVL05/contextanvil/pull/6).
+- **MCP** was closed without merge. Client connections and guided calls
+  worked, but the pilots showed no spontaneous invocation and inconsistent
+  utility when guided. The branch preserves the
+  [discovery evaluation](https://github.com/AVL05/contextanvil/blob/4c77e20d11e500ea26eeb07008d4136f14f517ae/docs/evaluation/mcp-discovery-results.md),
+  raw observations and earlier pilot reports.
+  [PR #8](https://github.com/AVL05/contextanvil/pull/8).
 
-- **Relevance ranking** that stays deterministic and explainable: term rarity weighting, task intent, structural roles,
-  import relations for JavaScript, TypeScript and PHP, registry awareness, shared-root word matching
-  ([ADR 0002](decisions/0002-relevance-ranking.md)).
-- **Benchmark framework** (`bench/`): labelled tasks on synthetic and real repositories, precision/recall metrics, pack size,
-  timing, memory and determinism, with a before/after comparison against v0.1.0 ([bench/README.md](../bench/README.md)).
-- **Security hardening**: two denial-of-service bugs fixed (regular-expression backtracking in secret detection and in
-  ignore-pattern matching), terminal-escape and hidden-character neutralisation, payload redaction, narrowed
-  check-then-open window, directory-size limit, broader sensitive-file and prompt-injection detection
-  ([docs/security.md](security.md)).
-- **CI** prepared for Linux, macOS and Windows with Node 22, 24 and the current LTS, including a cross-platform output
-  digest comparison. *Remote verification is pending: the workflow has not run on GitHub yet.*
-- **Public API contract tests** pinning the exported names and result shapes.
+## Next milestone
 
-### Phase 1.2: cross-platform validation and independent evaluation (v0.1.1+)
+1. Finish the public beta gates, starting with private vulnerability intake
+   and an exact installed-package candidate test.
+2. Gather feedback on first-run audit noise, CI thresholds and snapshot
+   drift reports before expanding detector coverage.
+3. Prioritize small, evidenced fixes to safety and usability. Revisit
+   retrieval or agent integrations only when an evaluation can demonstrate
+   practical value on a representative workflow.
 
-- GitHub Actions run green on Ubuntu, macOS and Windows with Node.js 22, 24 and 26, including a byte-identical output digest across all nine.
-- An independent ranking evaluation with frozen labels from real commit history (`bench/external/`); its sobering result is recorded.
-- Compile-time investigation (`docs/performance.md`) and a deterministic `--max-content-files` bound.
-- **Designs written, not implemented:** [deadlines and partial results](design/deadlines-and-partial-results.md) and
-  [persistent manifests](design/phase-2-manifests.md).
-
-## Planned (not implemented)
-
-### Phase 2: persistent manifests and live diffs
-
-The [manifest implementation](design/phase-2-manifests.md) adds explicit
-create, verify, live diff and update. Snapshots persist provenance and hashes
-outside the scanned tree. Refresh reconstructs live state and skips an
-identical write. A verified incremental read cache and safe generation of
-instruction files remain future work.
-
-### Phase 3: MCP server
-
-Goal: let MCP-capable agents ask for context instead of receiving a pasted pack.
-
-- A server exposing read-only tools over the existing API, for example `get_project_overview`,
-  `get_task_context`, `get_project_rules`, `get_file_context` and `run_doctor`.
-- Same safety model: read-only, no execution, bounded output with an explicit budget argument, secrets
-  redacted, repository text returned as quoted data.
-- Local transport first (stdio). No remote exposure by default; no telemetry.
-- Prerequisite work: asynchronous or worker-based scanning with a deadline, caching keyed by content digest, a stable
-  public API surface with documented schema versions.
-
-### Phase 4: visual dashboard
-
-Goal: make project understanding and context quality inspectable by people.
-
-- Local web UI served from the user's machine, reading the same scan and pack data.
-- Project overview, evidence inspector (click a fact to see its source lines and digest), context debugger
-  ("why was this file included or omitted?", building on the per-point ranking reasons that already exist), and conflict
-  resolution view for doctor findings.
-- Resolution actions only produce diffs for the user to apply; nothing is changed silently.
-
-### Phase 5: reproducible agent benchmarks
-
-Goal: measure, not claim, whether ContextAnvil helps an AI agent. (The `bench/` directory already measures *ranking
-accuracy*, speed and determinism; it does not involve any agent.)
-
-- A public, versioned task suite over pinned open-source repositories, labelled by more than one person.
-- A harness that runs the same agent and tasks **with and without** ContextAnvil context, recording pass rate,
-  tokens, time and cost, with fixed seeds where the provider allows and repeated trials otherwise.
-- Raw results and methodology published, including negative results. No claim about agent quality or token consumption
-  is made before this exists.
-
-## Smaller items under consideration (also not implemented)
-
-- A new, independently labelled, larger ranking evaluation set (third-party repositories, labels from more than one person) before any further ranking change; the Phase 1.2 set is spent.
-- Ranking: limit how much weak evidence can add up (barrel files, generic words); see the analysis in `bench/README.md`.
-- Static analysis of the remaining zero-overlap cases (co-change history, synonyms) if it can stay local and deterministic.
-- More detectors (Python, Go, Rust, Ruby; Vue/Svelte specifics; monorepo workspace awareness).
-- Import/relationship extraction beyond JavaScript, TypeScript and PHP.
-- Reducing compile time at several thousand files (profile first; the 2.3 s at 5,000 files in v0.1.1 is mostly content reads).
-- Optional file snippets in context packs (with the same redaction and budget accounting).
-- Reading `.git/info/exclude` and the global excludes file.
-- Opt-in inclusion of default-excluded directory names such as `build/`.
-- Pluggable tokenizer for exact token counts, as an optional adapter.
-- Optional semantic matching, if it can be made local, deterministic, explainable and opt-in.
-- A wall-clock deadline for scans.
-- Independent labels for the ranking benchmark, and a larger set of real repositories.
-
-Priorities depend on user feedback; open an issue to argue for a change.
+[Deadlines and partial results](design/deadlines-and-partial-results.md)
+remain design work. Incremental read avoidance, a dashboard and automatic
+instruction generation are outside the first beta.

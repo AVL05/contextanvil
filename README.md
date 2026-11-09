@@ -2,23 +2,20 @@
 
 **Forge better context.**
 
-ContextAnvil is a context-engineering toolkit for AI coding agents. It reads a repository, works out what
-is in it, and compiles a small, source-grounded context pack for the task at hand, then checks the
-repository's agent-facing context (AGENTS.md, CLAUDE.md and friends) for problems.
+ContextAnvil is an offline toolkit for auditing repository instructions and reviewing project context.
+Use it to check AGENTS.md and CLAUDE.md against the repository, inspect evidence for detected facts,
+and compare a recorded snapshot with the live tree.
 
 It is deterministic and offline. Repository analysis is read-only. It needs no API key, no cloud service and no language model.
 
-> **Status: v0.1.1+, early development.** Scan, context and doctor are implemented and tested. The test suite and a
-> cross-platform output comparison have run **green on GitHub Actions on Ubuntu, macOS and Windows with Node.js 22, 24 and
-> 26** ([run 42620223366](https://github.com/AVL05/contextanvil/actions/runs/42620223366), commit `ac2c1a3`). It is not published to npm yet. Ranking accuracy on independently labelled real work is modest
-> (see [How well does the ranking work?](#how-well-does-the-ranking-work)). See also [Limitations](#limitations), the
-> [benchmarks](bench/README.md) and the [roadmap](docs/roadmap.md).
+> **Status: pre-beta, available from source.** Scan, doctor, context and manifests are implemented.
+> See the [roadmap](docs/roadmap.md), [security limits](docs/security.md) and
+> [release readiness assessment](docs/product/release-readiness.md).
 
 ## Why
 
-Coding agents work better when they start from accurate, relevant context, and worse when they re-discover
-a repository each session, read the wrong files, or follow instructions that no longer match the code.
-ContextAnvil is built around three ideas:
+Repository guidance can drift as commands, paths and conventions change. ContextAnvil
+makes those changes reviewable with source references and explicit analysis limits:
 
 - **Understand**: discover languages, frameworks, scripts, entry points, conventions and existing agent
   instructions, and record *where each fact came from*.
@@ -28,7 +25,7 @@ ContextAnvil is built around three ideas:
   contain secrets and hidden or hijacking text.
 
 What it deliberately does differently from memory and indexing tools: analysis is **deterministic** (same
-input, same bytes), every claim is **cited** (path, line, content digest), facts are separated from
+input, same bytes), facts have **provenance** (path, with line and content digest where available), and are separated from
 **inferences**, budgets are **measured** rather than assumed, ranking decisions are **explained**, and nothing in a
 scanned repository can instruct the tool.
 
@@ -42,17 +39,18 @@ scanned repository can instruct the tool.
 
 ## Install and run
 
-ContextAnvil is not on npm yet. Run it from a clone. Requires **Node.js 22 or later**; there are no
-dependencies to install.
+Run it from a clone with **Node.js 22 or later**. There are no dependencies to install.
 
 ```bash
-git clone <this repository>
+git clone https://github.com/AVL05/contextanvil.git
 cd contextanvil
-npm test
-node bin/contextanvil.js --help
+node bin/contextanvil.js doctor . --fail-on never
 ```
 
-There is no install step; a global `contextanvil` command will exist once the package is published.
+Use `node bin/contextanvil.js --help` to see the other commands. Examples below
+use `contextanvil` as shorthand for `node bin/contextanvil.js`. For a local
+package preview, run `npm pack --ignore-scripts` and install the resulting
+tarball in a separate directory.
 
 ## Commands
 
@@ -60,13 +58,18 @@ There is no install step; a global `contextanvil` command will exist once the pa
 contextanvil scan [path]                 Analyse a repository and report what was found
 contextanvil context "<task>" [path]     Compile focused context for a task
 contextanvil doctor [path]               Diagnose missing, conflicting, stale or unsafe context
+contextanvil manifest <action> <path>    Create, verify, diff or update a repository snapshot
 contextanvil --help | --version
 ```
 
-`path` defaults to the current directory. Every command accepts `--json`. Shared options:
+`path` defaults to the current directory for scan, context and doctor. Manifest actions
+require an explicit path. Each command group accepts `--json`. Shared options:
 `--max-files <n>`, `--max-depth <n>`, `--max-file-size <size>`, `--no-gitignore`.
 
-Exit codes: `0` success, `1` doctor findings at or above `--fail-on`, `2` usage error, `3` runtime error.
+Exit codes are `0` for success, `1` for doctor findings at or above `--fail-on`
+or a manifest verification mismatch, `2` for usage errors, and `3` for runtime
+errors. Use `doctor --fail-on error` for an initial CI gate and review warnings
+before deciding whether to make them blocking.
 
 ### `scan`
 
@@ -283,11 +286,11 @@ Adding a language or framework means adding one detector module; see
 files on disk (read-only) -> core (walker, ignore, reader, sanitize) -> detectors -> scanner -> ScanResult
                                                                                      |-> compiler -> context pack
                                                                                      '-> doctor   -> findings
-                                                               CLI / future MCP server / future dashboard
+                                                               CLI / ESM consumers
 ```
 
-All logic lives in a library with three functions that return plain JSON-serialisable data, so a CLI, an
-MCP server and a dashboard can share it. The exported names and result shapes are pinned by tests.
+The CLI and downstream tools share three analysis functions that return plain JSON-serialisable data.
+Tests pin the exported names and representative result shapes.
 
 ```js
 import { scanRepository, compileContext, diagnose } from './src/index.js';
@@ -319,15 +322,13 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
 ## Supported environments
 
 - Node.js 22 or later.
-- **Verified on GitHub Actions** ([run 42620223366](https://github.com/AVL05/contextanvil/actions/runs/42620223366), commit `ac2c1a3`): Ubuntu, macOS (arm64) and Windows, each with Node.js 22.23, 24.22 and 26.13 (the
-  current LTS at the time): the full test suite (127 tests; 126 pass and 1 is skipped on Windows because a POSIX file-permission
-  test cannot run there; 127 pass on Ubuntu and macOS), CLI smoke and exit-code checks, run-to-run identical output, and a
-  **byte-identical digest of the complete output across all nine combinations**. Linux and macOS have *not* been checked on a
-  real developer machine.
+- **Verified on GitHub Actions** ([stable main run](https://github.com/AVL05/contextanvil/actions/runs/42638297218)):
+  Ubuntu, macOS and Windows with Node 22, 24 and current LTS. CI compares
+  output digests across the matrix with local root paths masked.
 - **Verified locally**: Windows 11, Node.js 24.22.2.
 - Workflow: [.github/workflows/ci.yml](.github/workflows/ci.yml); actions are pinned to commit SHAs. It was validated by GitHub
   accepting and running it; `actionlint` was not available.
-- Output is ASCII-only so legacy Windows consoles render it correctly.
+- Reports may contain Unicode repository paths and metadata. Use a UTF-8 terminal or capture JSON.
 
 ## Repository manifests
 
@@ -384,16 +385,9 @@ See the [manifest format and storage guarantees](docs/design/phase-2-manifests.m
 
 ## Roadmap
 
-What exists today is described above. Everything below is **planned and not implemented**; details in
-[docs/roadmap.md](docs/roadmap.md). A technical design for Phase 2 exists ([docs/design/phase-2-manifests.md](docs/design/phase-2-manifests.md))
-but no code:
-
-2. Persistent context manifests and live diffs. Verified read skipping and safe instruction generation remain separate work.
-3. An MCP server exposing repository context and project rules.
-4. A visual dashboard for project understanding, evidence inspection and conflict resolution.
-5. Reproducible agent benchmarks comparing agent workflows with and without ContextAnvil.
-
-Every phase must keep provider independence and user control.
+The next milestone is a public beta of the audit and snapshot workflows.
+See the [roadmap](docs/roadmap.md) and [product positioning](docs/product/product-positioning.md)
+for the stable scope and links to archived experiments.
 
 ## Development
 
@@ -414,9 +408,8 @@ Security issues: [SECURITY.md](SECURITY.md).
 
 ## Name
 
-"ContextAnvil" was checked against npm, GitHub, search results and DNS on 2026-11-09 and no existing project
-using it was found; this is not a trademark clearance. The `contextanvil.com` domain was registered by a third
-party shortly before that check and shows no website; no domain has been registered for this project.
+The [release assessment](docs/product/release-readiness.md) records the npm
+registry check and the remaining ownership checks.
 
 ## License
 

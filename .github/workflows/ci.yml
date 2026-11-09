@@ -64,6 +64,17 @@ jobs:
           node bin/contextanvil.js nonsense > /dev/null 2>&1; test $? -eq 2 || { echo "expected exit 2"; exit 1; }
           node bin/contextanvil.js scan ./does-not-exist > /dev/null 2>&1; test $? -eq 3 || { echo "expected exit 3"; exit 1; }
 
+      - name: Install and smoke-test the npm tarball
+        shell: bash
+        run: |
+          artifact=$(npm pack --silent --ignore-scripts --pack-destination "$RUNNER_TEMP")
+          install="$RUNNER_TEMP/contextanvil-package"
+          mkdir -p "$install"
+          npm install --prefix "$install" --ignore-scripts --offline --no-audit --no-save --package-lock=false "$RUNNER_TEMP/$artifact"
+          cd "$install"
+          npm exec --offline -- contextanvil --version
+          node --input-type=module -e "import { scanRepository } from 'contextanvil'; if (typeof scanRepository !== 'function') process.exit(1)"
+
       - name: Output is identical between two runs in separate processes
         shell: bash
         run: |
