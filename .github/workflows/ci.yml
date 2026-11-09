@@ -26,9 +26,11 @@ jobs:
         # lts/* follows whatever is the newest LTS when the job runs.
         node: [22, 24, 'lts/*']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ matrix.node }}
 
@@ -65,21 +67,26 @@ jobs:
       - name: Output is identical between two runs in separate processes
         shell: bash
         run: |
-          node bin/contextanvil.js scan . --json > run1.json
-          node bin/contextanvil.js scan . --json > run2.json
-          cmp run1.json run2.json
-          node bin/contextanvil.js context "update the scanner" . --json > pack1.json
-          node bin/contextanvil.js context "update the scanner" . --json > pack2.json
-          cmp pack1.json pack2.json
+          # Write outside the scanned directory: files created inside it would change what the second run sees.
+          out="$RUNNER_TEMP/determinism"
+          mkdir -p "$out"
+          node bin/contextanvil.js scan . --json > "$out/run1.json"
+          node bin/contextanvil.js scan . --json > "$out/run2.json"
+          cmp "$out/run1.json" "$out/run2.json"
+          node bin/contextanvil.js context "update the scanner" . --json > "$out/pack1.json"
+          node bin/contextanvil.js context "update the scanner" . --json > "$out/pack2.json"
+          cmp "$out/pack1.json" "$out/pack2.json"
+          git status --porcelain | tee "$out/status.txt"
+          test ! -s "$out/status.txt" || { echo "the CLI modified the working tree"; exit 1; }
 
       - name: Cross-platform determinism digest
         shell: bash
-        run: node bench/digest.js > digest.json && cat digest.json
+        run: node bench/digest.js > "$RUNNER_TEMP/digest.json" && cat "$RUNNER_TEMP/digest.json"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: digest-${{ matrix.os }}-node-${{ matrix.node == 'lts/*' && 'lts' || matrix.node }}
-          path: digest.json
+          path: ${{ runner.temp }}/digest.json
 
   determinism-across-platforms:
     name: Same output on every OS and Node version
@@ -87,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: digest-*
           path: digests
@@ -109,8 +116,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 24
       # Quality and determinism only. Timings from shared CI runners are noisy and are not asserted.
@@ -121,7 +130,7 @@ jobs:
           if (!r.determinism.every((d) => d.crossProcessIdentical)) { console.error('non-deterministic output'); process.exit(1); }
           console.log('benchmark ok; synthetic MRR', r.summary.synthetic.all.MRR, 'real MRR', r.summary.real.all.MRR);
           "
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: benchmark-quick
           path: |
