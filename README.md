@@ -10,7 +10,7 @@ It is deterministic, offline and read-only. It needs no API key, no cloud servic
 
 > **Status: v0.1.1+, early development.** Scan, context and doctor are implemented and tested. The test suite and a
 > cross-platform output comparison have run **green on GitHub Actions on Ubuntu, macOS and Windows with Node.js 22, 24 and
-> 26** (@@CI_RUN@@). It is not published to npm yet. Ranking accuracy on independently labelled real work is modest
+> 26** ([run 42620223366](https://github.com/AVL05/contextanvil/actions/runs/42620223366), commit `ac2c1a3`). It is not published to npm yet. Ranking accuracy on independently labelled real work is modest
 > (see [How well does the ranking work?](#how-well-does-the-ranking-work)). See also [Limitations](#limitations), the
 > [benchmarks](bench/README.md) and the [roadmap](docs/roadmap.md).
 
@@ -319,7 +319,7 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
 ## Supported environments
 
 - Node.js 22 or later.
-- **Verified on GitHub Actions** (@@CI_RUN@@): Ubuntu, macOS (arm64) and Windows, each with Node.js 22.23, 24.22 and 26.13 (the
+- **Verified on GitHub Actions** ([run 42620223366](https://github.com/AVL05/contextanvil/actions/runs/42620223366), commit `ac2c1a3`): Ubuntu, macOS (arm64) and Windows, each with Node.js 22.23, 24.22 and 26.13 (the
   current LTS at the time): the full test suite (127 tests; 126 pass and 1 is skipped on Windows because a POSIX file-permission
   test cannot run there; 127 pass on Ubuntu and macOS), CLI smoke and exit-code checks, run-to-run identical output, and a
   **byte-identical digest of the complete output across all nine combinations**. Linux and macOS have *not* been checked on a
