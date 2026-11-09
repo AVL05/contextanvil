@@ -18,7 +18,7 @@ const LIMIT_FLAGS = {
 
 const COMMANDS = {
   scan: { options: { json: { type: 'boolean' }, files: { type: 'boolean' }, ...LIMIT_FLAGS } },
-  context: { options: { json: { type: 'boolean' }, budget: { type: 'string' }, top: { type: 'string' }, ...LIMIT_FLAGS } },
+  context: { options: { json: { type: 'boolean' }, budget: { type: 'string' }, top: { type: 'string' }, 'max-content-files': { type: 'string' }, ...LIMIT_FLAGS } },
   doctor: { options: { json: { type: 'boolean' }, 'fail-on': { type: 'string' }, ...LIMIT_FLAGS } },
 };
 
@@ -112,7 +112,8 @@ function execute(argv, env) {
   }
   if (first === 'context') {
     const top = values.top === undefined ? undefined : toInt(values.top, '--top');
-    const pack = compileContext(scan, task, { budget: values.budget, top });
+    const maxContentFiles = values['max-content-files'] === undefined ? undefined : toInt(values['max-content-files'], '--max-content-files');
+    const pack = compileContext(scan, task, { budget: values.budget, top, maxContentFiles });
     if (values.json) writeJson(env, pack);
     else env.stdout.write(pack.rendered);
     return EXIT.OK;

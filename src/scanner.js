@@ -3,7 +3,7 @@ import path from 'node:path';
 import { ContextAnvilError } from './errors.js';
 import { KIND_ORDER } from './core/facts.js';
 import { resolveLimits } from './core/limits.js';
-import { byCodeUnit } from './core/paths.js';
+import { byCodeUnit, realpath } from './core/paths.js';
 import { createReader } from './core/reader.js';
 import { walkRepository } from './core/walker.js';
 import { createDetectorContext } from './detectors/context.js';
@@ -23,7 +23,7 @@ export function scanRepository(rootInput = '.', options = {}) {
   const limits = resolveLimits(options);
   let root;
   try {
-    root = fs.realpathSync(path.resolve(rootInput));
+    root = realpath(path.resolve(rootInput));
   } catch {
     throw new ContextAnvilError('ROOT_NOT_FOUND', `Path does not exist or is not accessible: ${rootInput}`);
   }

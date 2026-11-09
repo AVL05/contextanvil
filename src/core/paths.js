@@ -1,4 +1,12 @@
+import fs from 'node:fs';
 import path from 'node:path';
+
+/**
+ * Resolve symlinks with one system call. The JavaScript implementation of fs.realpathSync walks the path with one
+ * lstat per component (measured: about 3x slower on Windows, and the reader calls it twice per file), and the two
+ * implementations can disagree on letter case on Windows, so every real-path comparison in the project uses this.
+ */
+export const realpath = fs.realpathSync.native;
 
 /** Convert a platform path to a forward-slash path. */
 export function toPosix(p) {

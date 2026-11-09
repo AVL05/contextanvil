@@ -178,9 +178,9 @@ export function compileContext(scan, task, options = {}) {
 
   selectedFiles.forEach((f, i) => {
     const lines = [`- \`${f.path}\` (score ${f.score}; ${fmtKiB(f.size)}${f.sha256 ? `; sha256 ${shortHash(f.sha256)}` : ''})`];
-    lines.push(`  - why: ${f.reasons.filter((r) => r.points > 0).map((r) => r.brief ?? r.detail).join('; ')}`);
+    lines.push(`  - why: ${[...f.reasons].filter((r) => r.points > 0).sort((a, b) => b.points - a.points).slice(0, 4).map((r) => r.brief ?? r.detail).join('; ')}`);
     if (f.symbols.length) lines.push(`  - symbols: ${f.symbols.map((s) => `${s.name} (${s.kind}, line ${s.line})`).join(', ')}`);
-    if (f.related.length) lines.push(`  - related: ${f.related.map((r) => `\`${r.path}\` (${r.relation})`).join(', ')}`);
+    if (f.related.length) lines.push(`  - related: ${f.related.slice(0, 3).map((r) => `\`${r.path}\` (${r.relation})`).join(', ')}`);
     add({
       id: `file:${f.path}`, section: 'files', priority: i < 3 ? 30 + i : 60 + i, markdown: lines.join('\n'), file: f,
       compact: `- \`${f.path}\` (score ${f.score}; reasons trimmed to fit budget)`,
@@ -269,7 +269,7 @@ export function compileContext(scan, task, options = {}) {
       '',
       `- Task: ${taskInfo.text.replace(/\s+/g, ' ')}${taskInfo.truncated ? ' [task text truncated]' : ''}`,
       `- Repository: ${repoName}`,
-      `- Task terms: ${terms.length ? terms.map((t) => { const i = termInfo.find((x) => x.term === t); return i ? `${t} (x${i.weight}, in ${i.files} file${i.files === 1 ? '' : 's'})` : t; }).join(', ') : '(none after removing generic words)'}`,
+      `- Task terms: ${terms.length ? terms.map((t) => { const i = termInfo.find((x) => x.term === t); return i ? `${t} x${i.weight} (${i.files} files)` : t; }).join(', ') : '(none after removing generic words)'}`,
       `- Task intent: ${intent.name}${intent.trigger ? ` (from "${intent.trigger}")` : ' (default)'}`,
       `- Budget: ${budget.unit === 'tokens' ? `${budget.value} estimated tokens (${budget.bytes} bytes)` : `${budget.bytes} bytes`}; used ${used} bytes (~${estimateTokens(used)} estimated tokens, bytes/4)`,
       '- Provenance: items cite path:line and a content digest. "observed" = read from a file; "inferred" = deterministic heuristic.',

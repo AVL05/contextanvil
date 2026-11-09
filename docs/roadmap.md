@@ -27,9 +27,19 @@ secret redaction; ignore, symlink and traversal safety.
   digest comparison. *Remote verification is pending: the workflow has not run on GitHub yet.*
 - **Public API contract tests** pinning the exported names and result shapes.
 
+### Phase 1.2: cross-platform validation and independent evaluation (v0.1.1+)
+
+- GitHub Actions run green on Ubuntu, macOS and Windows with Node.js 22, 24 and 26, including a byte-identical output digest across all nine.
+- An independent ranking evaluation with frozen labels from real commit history (`bench/external/`); its sobering result is recorded.
+- Compile-time investigation (`docs/performance.md`) and a deterministic `--max-content-files` bound.
+- **Designs written, not implemented:** [deadlines and partial results](design/deadlines-and-partial-results.md) and
+  [persistent manifests](design/phase-2-manifests.md).
+
 ## Planned (not implemented)
 
 ### Phase 2: persistent manifests, incremental updates, diffs, safe generation
+
+A full technical design exists: [design/phase-2-manifests.md](design/phase-2-manifests.md). It is a proposal awaiting review, and contains its own acceptance criteria and open questions. No code has been written.
 
 Goal: stop re-deriving facts on every run and let people review how context changes.
 
@@ -80,7 +90,9 @@ accuracy*, speed and determinism; it does not involve any agent.)
 
 ## Smaller items under consideration (also not implemented)
 
-- Remote CI results for Linux and macOS, and a first public run of the cross-platform digest check.
+- A new, independently labelled, larger ranking evaluation set (third-party repositories, labels from more than one person) before any further ranking change; the Phase 1.2 set is spent.
+- Ranking: limit how much weak evidence can add up (barrel files, generic words); see the analysis in `bench/README.md`.
+- Static analysis of the remaining zero-overlap cases (co-change history, synonyms) if it can stay local and deterministic.
 - More detectors (Python, Go, Rust, Ruby; Vue/Svelte specifics; monorepo workspace awareness).
 - Import/relationship extraction beyond JavaScript, TypeScript and PHP.
 - Reducing compile time at several thousand files (profile first; the 2.3 s at 5,000 files in v0.1.1 is mostly content reads).

@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
-import { isInside, normalizeRelative, resolveUnder } from './paths.js';
+import { isInside, normalizeRelative, realpath, resolveUnder } from './paths.js';
 
 /**
  * The only way detectors and the compiler touch file contents.
@@ -44,7 +44,7 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
     }
     let fd;
     try {
-      const real = fs.realpathSync(resolveUnder(root, rel));
+      const real = realpath(resolveUnder(root, rel));
       if (!isInside(root, real)) {
         warn('symlink-escape', 'Path resolves outside the repository root and was not read', rel);
         return null;
@@ -53,7 +53,7 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
       const st = fs.fstatSync(fd);
       if (!st.isFile()) return null;
       const after = fs.statSync(real);
-      const again = fs.realpathSync(real);
+      const again = realpath(real);
       if (again !== real || !isInside(root, again) || (st.ino !== 0 && (st.ino !== after.ino || st.dev !== after.dev))) {
         warn('file-changed-during-read', 'File was replaced while it was being read; not used', rel);
         return null;
@@ -105,7 +105,7 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
       if (!norm) return false;
       if (index.has(norm)) return true;
       try {
-        return isInside(root, fs.realpathSync(resolveUnder(root, norm)));
+        return isInside(root, realpath(resolveUnder(root, norm)));
       } catch {
         return false;
       }

@@ -161,7 +161,7 @@ test('pack explains the task analysis: intent and per-term weights', () => {
   const scanner = pack.task.termWeights.find((t) => t.term === 'scanner');
   assert.ok(vue.weight > scanner.weight, 'the rarer term weighs more');
   assert.match(pack.rendered, /- Task intent: add \(from "add"\)/);
-  assert.match(pack.rendered, /vue \(x\d\.\d+, in \d+ files?\)/);
+  assert.match(pack.rendered, /vue x\d\.\d+ \(\d+ files\)/);
 });
 
 test('ranking is deterministic across repeated runs', () => {

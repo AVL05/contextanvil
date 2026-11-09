@@ -98,6 +98,17 @@ test('context defaults the path to the working directory', () => {
   assert.match(r.out, /lib\/format\.ts/);
 });
 
+test('--max-content-files bounds content reading deterministically and says so', () => {
+  const run = () => cli(['context', 'Update the navigation component', fixture('next-app'), '--max-content-files', '3', '--json']);
+  const a = run();
+  assert.equal(a.code, 0, a.err);
+  const pack = JSON.parse(a.out);
+  assert.ok(pack.omissions.some((o) => o.kind === 'content-limit'), 'the limit is reported as an omission');
+  assert.equal(a.out, run().out, 'same limit, same bytes');
+  assert.equal(cli(['context', 'navigation', fixture('next-app'), '--max-content-files', '0']).code, 0, '0 means match by path only');
+  assert.equal(cli(['context', 'x thing', fixture('next-app'), '--max-content-files', 'many']).code, 2);
+});
+
 test('doctor exit codes follow --fail-on', () => {
   assert.equal(cli(['doctor', fixture('next-app')]).code, 1, 'warnings fail by default');
   assert.equal(cli(['doctor', fixture('next-app'), '--fail-on', 'error']).code, 0);

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { isIgnoredBy, parseIgnore } from './ignore.js';
 import { classifySensitivePath } from './secrets.js';
-import { byCodeUnit, isInside, toPosix } from './paths.js';
+import { byCodeUnit, isInside, realpath, toPosix } from './paths.js';
 import { extensionOf } from './classify.js';
 import { escapeUnsafe, hasUnsafeCharacters } from './sanitize.js';
 
@@ -32,7 +32,7 @@ function byName(a, b) {
 /** Ignore files are read only if they are regular files inside the root (a symlink to elsewhere is not followed). */
 function readIgnoreFile(root, abs, limits) {
   try {
-    const real = fs.realpathSync(abs);
+    const real = realpath(abs);
     if (!isInside(root, real)) return [];
     const st = fs.statSync(real);
     if (!st.isFile() || st.size > limits.maxIgnoreFileBytes) return [];
@@ -125,7 +125,7 @@ export function walkRepository(root, limits, { respectIgnore = true } = {}) {
       if (ent.isSymbolicLink()) {
         let real;
         try {
-          real = fs.realpathSync(abs);
+          real = realpath(abs);
         } catch {
           excluded.symlinks++;
           diagnostics.push({ level: 'info', code: 'broken-symlink', message: 'Broken symbolic link skipped', path: rel });
@@ -158,7 +158,7 @@ export function walkRepository(root, limits, { respectIgnore = true } = {}) {
         }
         let real;
         try {
-          real = fs.realpathSync(abs);
+          real = realpath(abs);
         } catch {
           excluded.unreadable++;
           continue;

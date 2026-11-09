@@ -7,6 +7,11 @@ This directory measures four things about ContextAnvil, reproducibly:
 3. **Speed and memory**: scan and compile time, peak memory.
 4. **Determinism**: are the outputs byte-identical across runs and processes (and, in CI, across operating systems)?
 
+**Read this first: the benchmark in this file is optimistic.** Its labels were written by the author of the ranker. A second
+evaluation with labels taken from real commit history, frozen before it was run, gives much lower numbers (MRR 0.43 against 0.92
+on the synthetic repositories here); see [external/RESULTS.md](external/RESULTS.md). Believe the external numbers when they
+disagree with these.
+
 **What this does not measure.** Nothing here involves a language model. These benchmarks say how well
 ContextAnvil *finds relevant files*. They say **nothing** about whether an AI agent gets better answers, uses fewer
 tokens, finishes faster or costs less when given a ContextAnvil pack. Those claims need agent-based experiments
@@ -18,6 +23,8 @@ tokens, finishes faster or costs less when given a ContextAnvil pack. Those clai
 npm run bench:quick        # ranking quality only, a few seconds
 npm run bench              # full run: quality + timing + memory + determinism -> bench/results/latest.{json,md}
 npm run bench:digest       # output digest used by CI to compare operating systems
+node bench/profile.js 5000  # cold and warm compile time on a generated repository
+node bench/external/evaluate.js --repo ...   # frozen external labels; see bench/external/README.md
 node bench/explain.js shop-next sn-nav-hamburger   # why did the ranker order files this way? (dev tasks only)
 node bench/run.js --engine /path/to/other/src/index.js --label "other build"   # same harness, another build
 node bench/compare.js bench/results/baseline-v0.1.0.json bench/results/after-v0.1.1.json
@@ -148,6 +155,35 @@ versions). CI additionally compares a digest of that output between operating sy
   service) are still hard.
 - Nothing here shows an effect on any AI agent.
 
+## Frozen baseline engine
+
+`bench/engines/v0.1.0/` is a verbatim copy of the v0.1.0 `src/`, committed so that every "before" number here can be reproduced
+(`node bench/run.js --engine bench/engines/v0.1.0/src/index.js`). It contains the denial-of-service bugs fixed in v0.1.1 and must not be
+used for anything else.
+
+## Investigation of the real-repository holdout regression (R-precision 0.29 to 0.21)
+
+Done in Phase 1.2 by comparing per-task ranks of the four held-out tasks between the two engines (data in
+`results/baseline-v0.1.0.json` and `results/after-v0.1.1.json`). **Nothing was changed in response**, because the holdout is not blind
+and tuning on it would defeat its purpose.
+
+- The whole drop comes from **one task**: "Fix the output budget so the pack never exceeds the limit". `src/compiler/budget.js`
+  moved from rank 3 to rank 10 (R-precision 0.33 to 0.00). The other three holdout tasks were flat or better: `test/detectors.test.js`
+  22 to 9, `src/detectors/index.js` miss to 7, `test/compiler.test.js` 20 to 8, `test/scanner-safety.test.js` 16 to 8.
+- **Why `budget.js` fell** (reasons recorded for every point, via `bench/explain.js --show-holdout`): the scoring is additive, and
+  `src/index.js`, a barrel file that re-exports `parseBudget`, `PACK_SCHEMA_VERSION`, `exceedsThreshold` and `DEFAULT_LIMITS`, collected
+  four separate symbol matches plus a "matches 4 of 6 terms" bonus and scored 23.1, against 8.0 for `budget.js`, whose single strong
+  signal is its file name (5.1). Three generic task words ("output", "pack", "never") each add a little to many files, and the
+  unusual word "exceeds" matched `exceedsThreshold` in an unrelated module and triggered the distinctive-term bonus.
+- **Diagnosis:** the additive model lets several weak signals outweigh one strong one. Barrel/re-export files and files that touch
+  many generic words are over-rewarded. These are structural properties of the scoring, so they probably affect other repositories
+  too, which the independent evaluation is consistent with (it shows the same family of failures on a different codebase).
+- **Candidate remedies for the next ranking iteration** (untested, to be evaluated on a new frozen set): cap symbol evidence per file,
+  discount barrel files whose symbols are re-exports, weight the coverage bonus by term weight, require the distinctive-term bonus to
+  come with a strong location match.
+- R-precision is a cliff metric: for a three-file label set it is exactly "how many of the top three are relevant", so moving the
+  best file from rank 3 to rank 10 costs the whole score although `compile.js` and the test improved.
+
 ## Files
 
 ```text
@@ -155,6 +191,9 @@ bench/
   datasets/tasks.json        tasks, labels, splits, notes
   fixtures/*.bundle          synthetic repositories ("=== path ===" followed by file content)
   snapshots/*.json           frozen real repository
+  engines/v0.1.0/            frozen v0.1.0 engine used as the baseline
+  external/                  frozen externally defined labels and their evaluation (see its README)
+  profile.js                 cold/warm compile timing and CPU profile
   lib/                       metrics, bundle/snapshot materialisation, scale generator
   run.js  child.js           benchmark runner and the fresh-process measurement helper
   compare.js  digest.js      before/after table; cross-platform output digest

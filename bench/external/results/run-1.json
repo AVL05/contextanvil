@@ -1,0 +1,3512 @@
+{
+  "meta": {
+    "node": "v24.22.2",
+    "platform": "win32-x64",
+    "labelsSha256": "a8205f3bb53eef6b2d96a957e43a5cd0a6d2b672d65399831e0d27c530ce69af",
+    "tasks": 36,
+    "repos": {
+      "portfolio": {
+        "url": "https://github.com/AVL05/Portfolio",
+        "head": "69110df849192124ac36d75c29f78bfd9e154131"
+      },
+      "alexgallery": {
+        "url": "https://github.com/AVL05/alexgallery",
+        "head": "8ae6e3c77404a4114bbfa992aa255c6ff354dca2"
+      },
+      "lumaflow-studio": {
+        "url": "https://github.com/AVL05/lumaflow-studio",
+        "head": "8d26885fcde3e78d01120dea027f0782090130dd"
+      },
+      "premium-frontend-showcase": {
+        "url": "https://github.com/AVL05/premium-frontend-director-showcase",
+        "head": "1469b2b73a57829bd8aade0166c6b34c9176463d"
+      }
+    }
+  },
+  "engines": {
+    "v0.1.0": {
+      "tasks": [
+        {
+          "id": "portfolio-98928bc",
+          "repo": "portfolio",
+          "task": "stop reduced-motion pause cancelling viewer playback and settle hero plate state",
+          "relevantAll": 4,
+          "relevantRankable": 4,
+          "notIndexed": [],
+          "ranks": {
+            "components/hero.tsx": 2,
+            "components/project-showcase.tsx": 10,
+            "tests/e2e/frontend-redesign.spec.ts": 22,
+            "tests/e2e/m2-selected-work.spec.ts": 25
+          },
+          "top5": [
+            "lib/gsap.ts",
+            "components/hero.tsx",
+            "docs/M3_MOTION_POLISH.md",
+            "tests/e2e/hero.spec.ts",
+            "tests/e2e/m3-motion.spec.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.25,
+              "R@5": 0.25,
+              "R@3": 0.25,
+              "R@8": 0.25,
+              "packRecall": 0.25
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.25,
+              "R@5": 0.25,
+              "R@3": 0.25,
+              "R@8": 0.25,
+              "packRecall": 0.25
+            }
+          },
+          "packBytes": 11364,
+          "repoFiles": 122,
+          "scanMs": 615.0651,
+          "compileMs": 3280.8557,
+          "defaultCompileMs": 42.65849999999955
+        },
+        {
+          "id": "portfolio-7ec2062",
+          "repo": "portfolio",
+          "task": "record production deployment and public validation",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "docs/RELEASE_2_1.md": 11
+          },
+          "top5": [
+            "docs/STAGING_VALIDATION.md",
+            "PRODUCT.md",
+            "components/legal-page-content.tsx",
+            "components/raw-vives-case-study.tsx",
+            "lib/case-study-content.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.09090909090909091,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.09090909090909091,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11852,
+          "repoFiles": 122,
+          "scanMs": 526.2497999999996,
+          "compileMs": 2681.1005000000005,
+          "defaultCompileMs": 26.057600000000093
+        },
+        {
+          "id": "portfolio-69cd9b3",
+          "repo": "portfolio",
+          "task": "refine skills and profile copy",
+          "relevantAll": 5,
+          "relevantRankable": 5,
+          "notIndexed": [],
+          "ranks": {
+            "components/skills.tsx": 1,
+            "lib/locales/en.json": 7,
+            "lib/locales/es.json": 37,
+            "lib/page-content.ts": 31,
+            "tests/home-refinement.test.mjs": 5
+          },
+          "top5": [
+            "components/skills.tsx",
+            "lib/seo.ts",
+            "lib/case-study-content.ts",
+            "docs/HOME_REFINEMENT.md",
+            "tests/home-refinement.test.mjs"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.4,
+              "R@5": 0.4,
+              "R@3": 0.2,
+              "R@8": 0.6,
+              "packRecall": 0.6
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.4,
+              "R@5": 0.4,
+              "R@3": 0.2,
+              "R@8": 0.6,
+              "packRecall": 0.6
+            }
+          },
+          "packBytes": 10577,
+          "repoFiles": 144,
+          "scanMs": 548.0719000000008,
+          "compileMs": 2428.6580999999987,
+          "defaultCompileMs": 21.197400000000926
+        },
+        {
+          "id": "portfolio-68ffaf5",
+          "repo": "portfolio",
+          "task": "sync cursor with pointer preferences",
+          "relevantAll": 2,
+          "relevantRankable": 2,
+          "notIndexed": [],
+          "ranks": {
+            "components/custom-cursor.tsx": 1,
+            "tests/ui-quality.test.mjs": 38
+          },
+          "top5": [
+            "components/custom-cursor.tsx",
+            "components/avatar-3d/AvatarCanvas.tsx",
+            "lib/gsap.ts",
+            "components/hero-3d/CreativeRoomScene.tsx",
+            "components/hero.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.5,
+              "R@5": 0.5,
+              "R@3": 0.5,
+              "R@8": 0.5,
+              "packRecall": 0.5
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.5,
+              "R@5": 0.5,
+              "R@3": 0.5,
+              "R@8": 0.5,
+              "packRecall": 0.5
+            }
+          },
+          "packBytes": 9548,
+          "repoFiles": 143,
+          "scanMs": 207.23270000000048,
+          "compileMs": 835.140800000001,
+          "defaultCompileMs": 20.520199999999022
+        },
+        {
+          "id": "portfolio-a8b5eac",
+          "repo": "portfolio",
+          "task": "patch Next.js to 16.3.4 and sharp to 0.35.4",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "package.json": 4
+          },
+          "top5": [
+            "next.config.mjs",
+            "scripts/capture-hero-3d.mjs",
+            "docs/HERO_3D.md",
+            "package.json",
+            "app/(en)/en/about/page.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.25,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.25,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 8742,
+          "repoFiles": 139,
+          "scanMs": 261.996799999999,
+          "compileMs": 1205.045500000002,
+          "defaultCompileMs": 13.750499999998283
+        },
+        {
+          "id": "portfolio-dffaf64",
+          "repo": "portfolio",
+          "task": "remove obsolete files and update favicon",
+          "relevantAll": 8,
+          "relevantRankable": 7,
+          "notIndexed": [],
+          "ranks": {
+            ".gitignore": null,
+            ".impeccable/design.json": null,
+            ".vscode/settings.json": null,
+            "CLAUDE.md": null,
+            "README.md": 1,
+            "docs/RAW_VIVES_PROMOTION_COPY.md": null,
+            "tests/e2e/portfolio.spec.ts": null,
+            "tests/ui-quality.test.mjs": null
+          },
+          "top5": [
+            "README.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.14285714285714285,
+              "R@5": 0.14285714285714285,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.14285714285714285,
+              "packRecall": 0.14285714285714285
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.125,
+              "R@5": 0.125,
+              "R@3": 0.125,
+              "R@8": 0.125,
+              "packRecall": 0.125
+            }
+          },
+          "packBytes": 11520,
+          "repoFiles": 75,
+          "scanMs": 403.71659999999974,
+          "compileMs": 1274.0175999999992,
+          "defaultCompileMs": 15.286299999999756
+        },
+        {
+          "id": "portfolio-afbaa07",
+          "repo": "portfolio",
+          "task": "restore direct section anchors",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "components/navigation.tsx": 16
+          },
+          "top5": [
+            "components/photography.tsx",
+            "CLAUDE.md",
+            "components/raw-vives-case-study.tsx",
+            ".impeccable/design.json",
+            "app/api/language/route.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.0625,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.0625,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 8470,
+          "repoFiles": 73,
+          "scanMs": 339.8966999999975,
+          "compileMs": 1354.4622000000018,
+          "defaultCompileMs": 12.967100000001665
+        },
+        {
+          "id": "portfolio-47a3b13",
+          "repo": "portfolio",
+          "task": "add mobile archive swipe",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "components/photography.tsx": 2
+          },
+          "top5": [
+            "components/navigation.tsx",
+            "components/photography.tsx",
+            "components/projects.tsx",
+            "components/raw-vives-case-study.tsx",
+            "lib/locales/en.json"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 8102,
+          "repoFiles": 72,
+          "scanMs": 277.15929999999935,
+          "compileMs": 1125.7651000000005,
+          "defaultCompileMs": 8.480500000001484
+        },
+        {
+          "id": "portfolio-fea3616",
+          "repo": "portfolio",
+          "task": "normalize theme colors for Three.js",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "components/hero-webgl.tsx": 1
+          },
+          "top5": [
+            "components/hero-webgl.tsx",
+            "app/layout.tsx",
+            "components/raw-vives-case-study.tsx",
+            "app/api/og/route.tsx",
+            "app/legal/page.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 8785,
+          "repoFiles": 72,
+          "scanMs": 209.33130000000165,
+          "compileMs": 705.8321999999971,
+          "defaultCompileMs": 6.321200000002136
+        },
+        {
+          "id": "portfolio-6c4f57a",
+          "repo": "portfolio",
+          "task": "document raw.vives integration",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "README.md": null
+          },
+          "top5": [
+            "tests/raw-vives-integration.test.mjs",
+            "components/raw-vives-case-study.tsx",
+            "app/proyectos/raw-vives/page.tsx",
+            "app/proyectos/raw-manager/page.tsx",
+            "package.json"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 9508,
+          "repoFiles": 70,
+          "scanMs": 145.931700000001,
+          "compileMs": 439.8037000000004,
+          "defaultCompileMs": 14.568100000000413
+        },
+        {
+          "id": "portfolio-74574e8",
+          "repo": "portfolio",
+          "task": "add raw.vives case study",
+          "relevantAll": 5,
+          "relevantRankable": 5,
+          "notIndexed": [],
+          "ranks": {
+            "components/photography.tsx": 6,
+            "components/projects.tsx": 3,
+            "lib/language-context.tsx": null,
+            "lib/locales/en.json": 7,
+            "lib/locales/es.json": 21
+          },
+          "top5": [
+            "app/proyectos/raw-manager/page.tsx",
+            "app/proyectos/distrito-gourmet/page.tsx",
+            "components/projects.tsx",
+            ".impeccable/design.json",
+            "components/hero.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0.2,
+              "R@5": 0.2,
+              "R@3": 0.2,
+              "R@8": 0.6,
+              "packRecall": 0.6
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0.2,
+              "R@5": 0.2,
+              "R@3": 0.2,
+              "R@8": 0.6,
+              "packRecall": 0.6
+            }
+          },
+          "packBytes": 8696,
+          "repoFiles": 67,
+          "scanMs": 176.88900000000285,
+          "compileMs": 608.0316999999995,
+          "defaultCompileMs": 4.6414999999979045
+        },
+        {
+          "id": "portfolio-d88bace",
+          "repo": "portfolio",
+          "task": "restore web3forms browser submission",
+          "relevantAll": 3,
+          "relevantRankable": 3,
+          "notIndexed": [],
+          "ranks": {
+            "app/api/contact/route.ts": 2,
+            "components/contact.tsx": null,
+            "next.config.mjs": null
+          },
+          "top5": [
+            ".claude/skills/gsap-plugins/SKILL.md",
+            "app/api/contact/route.ts",
+            "eslint.config.mjs",
+            ".claude/skills/gsap-core/SKILL.md",
+            ".claude/skills/gsap-performance/SKILL.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.3333333333333333,
+              "R@5": 0.3333333333333333,
+              "R@3": 0.3333333333333333,
+              "R@8": 0.3333333333333333,
+              "packRecall": 0.3333333333333333
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.3333333333333333,
+              "R@5": 0.3333333333333333,
+              "R@3": 0.3333333333333333,
+              "R@8": 0.3333333333333333,
+              "packRecall": 0.3333333333333333
+            }
+          },
+          "packBytes": 4072,
+          "repoFiles": 65,
+          "scanMs": 471.74099999999817,
+          "compileMs": 992.2780000000021,
+          "defaultCompileMs": 8.223399999998946
+        },
+        {
+          "id": "alexgallery-8ae6e3c",
+          "repo": "alexgallery",
+          "task": "show the title and label from the first paint",
+          "relevantAll": 2,
+          "relevantRankable": 2,
+          "notIndexed": [],
+          "ranks": {
+            "components/hero/use-hero-motion.ts": null,
+            "lib/motion/photo-motion.ts": null
+          },
+          "top5": [
+            "lib/motion/config.ts",
+            "components/ui/card.tsx",
+            "lib/intro/persistence.ts",
+            "lib/photo-process/selectors.ts",
+            "lib/photos/index.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11670,
+          "repoFiles": 304,
+          "scanMs": 525.2749999999978,
+          "compileMs": 2414.1654000000017,
+          "defaultCompileMs": 28.373200000001816
+        },
+        {
+          "id": "alexgallery-8fc389d",
+          "repo": "alexgallery",
+          "task": "prepare RAW.VIVES cinematic Premium redesign and reset legacy design state",
+          "relevantAll": 7,
+          "relevantRankable": 7,
+          "notIndexed": [],
+          "ranks": {
+            ".github/dependabot.yml": null,
+            ".impeccable/design.json": 37,
+            "AGENTS.md": null,
+            "DESIGN.md": 38,
+            "PRODUCT.md": null,
+            "README.md": null,
+            "docs/RAW_VIVES_DESIGN_SYSTEM.md": 1
+          },
+          "top5": [
+            "docs/RAW_VIVES_DESIGN_SYSTEM.md",
+            "lib/interactions/development.ts",
+            "lib/motion/photo-motion.ts",
+            "docs/RAW_VIVES_ARCHITECTURE.md",
+            "docs/RAW_VIVES_ARCHIVE_SYSTEM.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.14285714285714285,
+              "R@5": 0.14285714285714285,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.14285714285714285,
+              "packRecall": 0.14285714285714285
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.14285714285714285,
+              "R@5": 0.14285714285714285,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.14285714285714285,
+              "packRecall": 0.14285714285714285
+            }
+          },
+          "packBytes": 11913,
+          "repoFiles": 300,
+          "scanMs": 564.8914000000004,
+          "compileMs": 4123.786200000002,
+          "defaultCompileMs": 95.79219999999623
+        },
+        {
+          "id": "alexgallery-22e6c84",
+          "repo": "alexgallery",
+          "task": "add El oficio en las manos",
+          "relevantAll": 8,
+          "relevantRankable": 8,
+          "notIndexed": [],
+          "ranks": {
+            "lib/gallery-data.ts": 2,
+            "lib/images-data.json": null,
+            "lib/photo-detail/content.ts": null,
+            "tests/archive/archive-system.test.ts": null,
+            "tests/hero/hero-system.test.ts": null,
+            "tests/home/home-narrative.test.ts": null,
+            "tests/photo-detail/photo-detail-system.test.ts": null,
+            "tests/series/photo-series-system.test.ts": null
+          },
+          "top5": [
+            "dictionaries/en.json",
+            "lib/gallery-data.ts",
+            "docs/RAW_VIVES_ARCHITECTURE.md",
+            "docs/RAW_VIVES_PHOTO_DETAIL_SYSTEM.md",
+            "app/[locale]/archive/page.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.125,
+              "R@5": 0.125,
+              "R@3": 0.125,
+              "R@8": 0.125,
+              "packRecall": 0.125
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.125,
+              "R@5": 0.125,
+              "R@3": 0.125,
+              "R@8": 0.125,
+              "packRecall": 0.125
+            }
+          },
+          "packBytes": 10900,
+          "repoFiles": 295,
+          "scanMs": 481.8697000000029,
+          "compileMs": 2963.999100000001,
+          "defaultCompileMs": 47.6762000000017
+        },
+        {
+          "id": "alexgallery-4452000",
+          "repo": "alexgallery",
+          "task": "isolate content during intro",
+          "relevantAll": 4,
+          "relevantRankable": 4,
+          "notIndexed": [],
+          "ranks": {
+            "components/intro/intro-overlay.tsx": 1,
+            "components/intro/intro-skip-button.tsx": 9,
+            "tests/e2e/smoke.spec.ts": 20,
+            "tests/intro/intro-system.test.ts": 19
+          },
+          "top5": [
+            "components/intro/intro-overlay.tsx",
+            "components/intro/use-intro-sequence.ts",
+            "lib/photo-detail/content.ts",
+            "components/hero/hero-content.tsx",
+            "components/intro/intro-bootstrap-script.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.25,
+              "R@5": 0.25,
+              "R@3": 0.25,
+              "R@8": 0.25,
+              "packRecall": 0.25
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.25,
+              "R@5": 0.25,
+              "R@3": 0.25,
+              "R@8": 0.25,
+              "packRecall": 0.25
+            }
+          },
+          "packBytes": 11962,
+          "repoFiles": 284,
+          "scanMs": 727.7796999999991,
+          "compileMs": 5097.575000000004,
+          "defaultCompileMs": 43.359099999994214
+        },
+        {
+          "id": "alexgallery-1db0da1",
+          "repo": "alexgallery",
+          "task": "consolidate repository instructions",
+          "relevantAll": 2,
+          "relevantRankable": 2,
+          "notIndexed": [],
+          "ranks": {
+            "AGENTS.md": 3,
+            "CLAUDE.md": 4
+          },
+          "top5": [
+            "lib/photo-process/config.ts",
+            ".github/workflows/ci.yml",
+            "AGENTS.md",
+            "CLAUDE.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 0.5,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 0.5,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 7969,
+          "repoFiles": 285,
+          "scanMs": 327.9190000000017,
+          "compileMs": 2340.2483999999968,
+          "defaultCompileMs": 32.77150000000256
+        },
+        {
+          "id": "alexgallery-bce9ea7",
+          "repo": "alexgallery",
+          "task": "harden production experience",
+          "relevantAll": 5,
+          "relevantRankable": 5,
+          "notIndexed": [],
+          "ranks": {
+            "components/archive/archive-page.tsx": null,
+            "components/graphics/hero-frames-scene.tsx": null,
+            "components/graphics/photo-frame-preview.tsx": null,
+            "hooks/use-archive-state.ts": null,
+            "tests/archive/archive-system.test.ts": null
+          },
+          "top5": [
+            "lib/home/experience.ts",
+            "docs/RAW_VIVES_EXPERIENCE_FLOW_SYSTEM.md",
+            "components/intro/intro-overlay.tsx",
+            "docs/RAW_VIVES_PRODUCTION_AUDIT.md",
+            "tests/home/home-experience.test.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 8965,
+          "repoFiles": 274,
+          "scanMs": 459.69139999999607,
+          "compileMs": 2263.1042000000016,
+          "defaultCompileMs": 36.26879999999801
+        },
+        {
+          "id": "alexgallery-54ac3d5",
+          "repo": "alexgallery",
+          "task": "final qa and cleanup",
+          "relevantAll": 7,
+          "relevantRankable": 7,
+          "notIndexed": [],
+          "ranks": {
+            "components/ui/layout.tsx": null,
+            "components/ui/metadata.tsx": null,
+            "components/ui/optimized-image.tsx": null,
+            "docs/RAW_VIVES_ARCHITECTURE.md": 3,
+            "docs/RAW_VIVES_ARCHIVE_SYSTEM.md": 4,
+            "docs/RAW_VIVES_DESIGN_SYSTEM.md": 44,
+            "docs/RAW_VIVES_GRAPHICS_SYSTEM.md": 6
+          },
+          "top5": [
+            "lib/photo-detail/interaction.ts",
+            "lib/photo-detail/seo.ts",
+            "docs/RAW_VIVES_ARCHITECTURE.md",
+            "docs/RAW_VIVES_ARCHIVE_SYSTEM.md",
+            "docs/RAW_VIVES_AUDIT.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0.42857142857142855,
+              "R@5": 0.2857142857142857,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.42857142857142855,
+              "packRecall": 0.42857142857142855
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0.42857142857142855,
+              "R@5": 0.2857142857142857,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.42857142857142855,
+              "packRecall": 0.42857142857142855
+            }
+          },
+          "packBytes": 6490,
+          "repoFiles": 275,
+          "scanMs": 289.4235000000044,
+          "compileMs": 1706.790200000003,
+          "defaultCompileMs": 34.58759999999893
+        },
+        {
+          "id": "alexgallery-b7cbdee",
+          "repo": "alexgallery",
+          "task": "add adaptive 3d quality",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "components/graphics/hero-frames-scene.tsx": null
+          },
+          "top5": [
+            "components/graphics/photo-frame-3d.tsx",
+            "lib/graphics/capabilities.ts",
+            "types/graphics.ts",
+            "tests/graphics/graphics-system.test.ts",
+            "components/graphics/hero-graphics-bootstrap.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 4608,
+          "repoFiles": 274,
+          "scanMs": 272.4261000000115,
+          "compileMs": 2238.0120999999926,
+          "defaultCompileMs": 26.303700000004028
+        },
+        {
+          "id": "alexgallery-76418b0",
+          "repo": "alexgallery",
+          "task": "unify motion system",
+          "relevantAll": 6,
+          "relevantRankable": 6,
+          "notIndexed": [],
+          "ranks": {
+            "components/archive/archive-item.tsx": null,
+            "components/archive/archive-preview.tsx": null,
+            "components/photo-detail/photo-detail-navigation.tsx": null,
+            "components/photo-detail/photo-detail-related.tsx": null,
+            "components/series/series-essay.tsx": null,
+            "components/series/series-index-page.tsx": null
+          },
+          "top5": [
+            "docs/RAW_VIVES_MOTION_SYSTEM.md",
+            "docs/RAW_VIVES_PHOTO_MOTION_SYSTEM.md",
+            "tests/motion/photo-motion-system.test.ts",
+            "components/motion/motion-debug-panel.tsx",
+            "components/hero/use-hero-motion.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 7422,
+          "repoFiles": 271,
+          "scanMs": 204.67910000000848,
+          "compileMs": 2738.8975999999966,
+          "defaultCompileMs": 30.692299999995157
+        },
+        {
+          "id": "alexgallery-c7c7d25",
+          "repo": "alexgallery",
+          "task": "prepare optimized photo frame asset",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "app/layout.tsx": null
+          },
+          "top5": [
+            "scripts/prepare-photo-process.ts",
+            "components/photo-process/photo-process-debug-panel.tsx",
+            "lib/motion/photo-motion.ts",
+            "types/photo-process.ts",
+            "types/photo.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 10551,
+          "repoFiles": 261,
+          "scanMs": 272.35409999999683,
+          "compileMs": 2320.9541000000027,
+          "defaultCompileMs": 34.83179999999993
+        },
+        {
+          "id": "alexgallery-fb560b8",
+          "repo": "alexgallery",
+          "task": "update Instagram and simplify gallery copy",
+          "relevantAll": 7,
+          "relevantRankable": 7,
+          "notIndexed": [],
+          "ranks": {
+            "app/layout.tsx": 10,
+            "components/contact.tsx": 35,
+            "components/footer.tsx": 6,
+            "components/photo-detail/photo-detail-header.tsx": 13,
+            "dictionaries/en.json": 14,
+            "dictionaries/es.json": 15,
+            "lib/series/config.ts": null
+          },
+          "top5": [
+            "components/gallery.tsx",
+            "lib/gallery-data.ts",
+            "lib/gallery-filter-events.ts",
+            "types/dictionary.ts",
+            "types/photo.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.16666666666666666,
+              "R-precision": 0.14285714285714285,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0.14285714285714285,
+              "packRecall": 0.14285714285714285
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.16666666666666666,
+              "R-precision": 0.14285714285714285,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0.14285714285714285,
+              "packRecall": 0.14285714285714285
+            }
+          },
+          "packBytes": 7240,
+          "repoFiles": 247,
+          "scanMs": 501.4630000000034,
+          "compileMs": 2855.5706000000064,
+          "defaultCompileMs": 37.25139999999374
+        },
+        {
+          "id": "alexgallery-c14b568",
+          "repo": "alexgallery",
+          "task": "record cloudflare pages project endpoint",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "docs/RAW_VIVES_DEPLOYMENT.md": 16
+          },
+          "top5": [
+            "app/[locale]/privacidad/page.tsx",
+            "app/[locale]/page.tsx",
+            "app/[locale]/photo/[id]/page.tsx",
+            "app/[locale]/series/[slug]/page.tsx",
+            "app/[locale]/series/page.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.0625,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.0625,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 7897,
+          "repoFiles": 247,
+          "scanMs": 394.32020000000193,
+          "compileMs": 2395.544599999994,
+          "defaultCompileMs": 26.23300000000745
+        },
+        {
+          "id": "lumaflow-studio-8d26885",
+          "repo": "lumaflow-studio",
+          "task": "record local E2E result and its baseline comparison",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "docs/plans/2026-11-06-consolidation-release-assessment.md": 50
+          },
+          "top5": [
+            "backend/tests/Feature/RemoteBackupTest.php",
+            "backend/tests/Feature/WorkflowTest.php",
+            "frontend/src/features/ai/localAiRepository.js",
+            "frontend/src/features/search/SearchResultGroup.jsx",
+            "scripts/start-local.mjs"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.02,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.02,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11513,
+          "repoFiles": 695,
+          "scanMs": 2738.0176000000065,
+          "compileMs": 27058.465599999996,
+          "defaultCompileMs": 110.32070000001113
+        },
+        {
+          "id": "lumaflow-studio-1cd2fdc",
+          "repo": "lumaflow-studio",
+          "task": "drop SEO sections duplicated by the branch merge",
+          "relevantAll": 3,
+          "relevantRankable": 3,
+          "notIndexed": [],
+          "ranks": {
+            "docs/api.md": 29,
+            "docs/architecture.md": 30,
+            "docs/roadmap.md": 21
+          },
+          "top5": [
+            "frontend/scripts/publicSeo.mjs",
+            "frontend/src/features/calendar/DayDropZone.jsx",
+            "docs/plans/2026-11-02-seo-geo-p0-p1.md",
+            "docs/SEO_GEO_AUDIT.md",
+            "frontend/src/app/seo.js"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.047619047619047616,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.047619047619047616,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 10768,
+          "repoFiles": 695,
+          "scanMs": 655.6425000000017,
+          "compileMs": 9761.847499999989,
+          "defaultCompileMs": 109.9090000000142
+        },
+        {
+          "id": "lumaflow-studio-7955b79",
+          "repo": "lumaflow-studio",
+          "task": "give cold-start page suites a 15 s budget",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "frontend/vite.config.js": null
+          },
+          "top5": [
+            "frontend/src/pages/GettingStartedPage.jsx",
+            "frontend/src/pages/JobDetailPage.jsx",
+            "frontend/src/pages/AiAssistantPage.jsx",
+            "frontend/src/pages/BookingRequestsPage.jsx",
+            "frontend/src/pages/ClientPortalPage.jsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11778,
+          "repoFiles": 695,
+          "scanMs": 800.8018000000156,
+          "compileMs": 7902.118300000002,
+          "defaultCompileMs": 204.14509999999427
+        },
+        {
+          "id": "lumaflow-studio-f021a29",
+          "repo": "lumaflow-studio",
+          "task": "resolve frontend nginx config path",
+          "relevantAll": 1,
+          "relevantRankable": 0,
+          "notIndexed": [],
+          "ranks": {
+            "frontend/Dockerfile": null
+          },
+          "top5": [
+            "frontend/vite.config.js",
+            "frontend/docker/nginx.conf",
+            "scripts/start-local.mjs",
+            "docs/frontend.md",
+            "backend/app/Services/SearchService.php"
+          ],
+          "metrics": {
+            "rankable": null,
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 9237,
+          "repoFiles": 404,
+          "scanMs": 1062.1824999999953,
+          "compileMs": 13842.730700000015,
+          "defaultCompileMs": 40.64429999998538
+        },
+        {
+          "id": "lumaflow-studio-b590521",
+          "repo": "lumaflow-studio",
+          "task": "simplify access screens",
+          "relevantAll": 3,
+          "relevantRankable": 3,
+          "notIndexed": [],
+          "ranks": {
+            "frontend/src/features/auth/AuthShell.jsx": null,
+            "frontend/src/pages/LoginPage.jsx": null,
+            "frontend/src/pages/RegisterPage.jsx": null
+          },
+          "top5": [
+            "backend/database/migrations/2026_07_08_091226_create_personal_access_tokens_table.php",
+            "backend/app/Models/Location.php",
+            "frontend/src/utils/catalogs.js",
+            "backend/app/Http/Controllers/Api/Auth/AuthController.php",
+            "backend/app/Http/Controllers/Api/LocationController.php"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 10160,
+          "repoFiles": 403,
+          "scanMs": 373.44449999998324,
+          "compileMs": 2816.276500000007,
+          "defaultCompileMs": 78.87510000000475
+        },
+        {
+          "id": "lumaflow-studio-b1ca222",
+          "repo": "lumaflow-studio",
+          "task": "use ephemeral cache on free hosting",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "render.yaml": 7
+          },
+          "top5": [
+            "backend/config/cache.php",
+            "backend/database/migrations/0001_01_01_000001_create_cache_table.php",
+            "backend/app/Services/HealthService.php",
+            "backend/config/database.php",
+            "backend/config/session.php"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.14285714285714285,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.14285714285714285,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 11312,
+          "repoFiles": 400,
+          "scanMs": 647.0862000000197,
+          "compileMs": 3163.027299999987,
+          "defaultCompileMs": 49.9151000000129
+        },
+        {
+          "id": "lumaflow-studio-2fcff2f",
+          "repo": "lumaflow-studio",
+          "task": "use PHP 8.4 in production image",
+          "relevantAll": 2,
+          "relevantRankable": 0,
+          "notIndexed": [],
+          "ranks": {
+            "backend/Dockerfile": null,
+            "frontend/.gitignore": null
+          },
+          "top5": [
+            "backend/app/Http/Controllers/Api/DeliveryImageController.php",
+            "backend/app/Http/Resources/DeliveryImageResource.php",
+            "backend/app/Models/DeliveryImage.php",
+            "backend/app/Models/Delivery.php",
+            "backend/app/Models/User.php"
+          ],
+          "metrics": {
+            "rankable": null,
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11682,
+          "repoFiles": 400,
+          "scanMs": 523.6947999999975,
+          "compileMs": 3007.799399999989,
+          "defaultCompileMs": 41.842499999998836
+        },
+        {
+          "id": "lumaflow-studio-69a7753",
+          "repo": "lumaflow-studio",
+          "task": "mejoras de productividad y estetica tras auditoria de UI",
+          "relevantAll": 5,
+          "relevantRankable": 5,
+          "notIndexed": [],
+          "ranks": {
+            "frontend/src/components/ui/Button.jsx": 5,
+            "frontend/src/features/analytics/chartTheme.js": null,
+            "frontend/src/features/presets/PresetSlider.jsx": null,
+            "frontend/src/pages/DashboardPage.jsx": null,
+            "frontend/src/pages/PhotosPage.jsx": null
+          },
+          "top5": [
+            "backend/app/Support/AuditLog.php",
+            "frontend/src/features/analytics/charts.jsx",
+            "frontend/src/components/ui/Badge.jsx",
+            "frontend/src/components/ui/BulkActionBar.jsx",
+            "frontend/src/components/ui/Button.jsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.2,
+              "R-precision": 0.2,
+              "R@5": 0.2,
+              "R@3": 0,
+              "R@8": 0.2,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.2,
+              "R-precision": 0.2,
+              "R@5": 0.2,
+              "R@3": 0,
+              "R@8": 0.2,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11920,
+          "repoFiles": 399,
+          "scanMs": 631.4194000000134,
+          "compileMs": 10365.639399999985,
+          "defaultCompileMs": 18.78790000002482
+        },
+        {
+          "id": "lumaflow-studio-4abcebf",
+          "repo": "lumaflow-studio",
+          "task": "use backend url fallback",
+          "relevantAll": 2,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            ".gitignore": null,
+            "frontend/src/api/client.js": null
+          },
+          "top5": [
+            "backend/app/Services/OllamaService.php",
+            "backend/config/app.php",
+            "backend/app/Http/Requests/DeliveryRequest.php",
+            "backend/app/Http/Resources/DeliveryResource.php",
+            "backend/app/Http/Resources/PhotoResource.php"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 7292,
+          "repoFiles": 216,
+          "scanMs": 270.7284000000218,
+          "compileMs": 6262.829799999978,
+          "defaultCompileMs": 7.579300000012154
+        },
+        {
+          "id": "premium-frontend-showcase-1469b2b",
+          "repo": "premium-frontend-showcase",
+          "task": "mark the tools in your setup with a small square instead of a side bar",
+          "relevantAll": 1,
+          "relevantRankable": 0,
+          "notIndexed": [],
+          "ranks": {
+            "app/globals.css": null
+          },
+          "top5": [
+            "app/components/Setup.jsx",
+            "app/components/setup-data.js",
+            "app/components/shared.jsx",
+            "app/components/stage.js",
+            "app/components/motion.js"
+          ],
+          "metrics": {
+            "rankable": null,
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 4823,
+          "repoFiles": 30,
+          "scanMs": 60.04859999998007,
+          "compileMs": 167.4163000000117,
+          "defaultCompileMs": 1.9508999999961816
+        },
+        {
+          "id": "premium-frontend-showcase-1daead8",
+          "repo": "premium-frontend-showcase",
+          "task": "third art-direction pass on craft, gates and titles",
+          "relevantAll": 4,
+          "relevantRankable": 3,
+          "notIndexed": [],
+          "ranks": {
+            "DESIGN.md": 7,
+            "app/components/Experience.jsx": 1,
+            "app/globals.css": null,
+            "app/page.jsx": 5
+          },
+          "top5": [
+            "app/components/Experience.jsx",
+            "app/components/interactive.jsx",
+            "app/components/stage.js",
+            "app/layout.jsx",
+            "app/page.jsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.3333333333333333,
+              "R@5": 0.6666666666666666,
+              "R@3": 0.3333333333333333,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.25,
+              "R@5": 0.5,
+              "R@3": 0.25,
+              "R@8": 0.75,
+              "packRecall": 0.75
+            }
+          },
+          "packBytes": 4043,
+          "repoFiles": 23,
+          "scanMs": 34.76020000001881,
+          "compileMs": 54.83629999999539,
+          "defaultCompileMs": 1.321700000000419
+        },
+        {
+          "id": "premium-frontend-showcase-a61415e",
+          "repo": "premium-frontend-showcase",
+          "task": "preserve revealed content without JavaScript",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "app/page.jsx": 1
+          },
+          "top5": [
+            "app/page.jsx",
+            "CLAUDE_CODE_PROMPT.md",
+            "DESIGN.md",
+            "IMPLEMENTATION_PLAN.md",
+            "README.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 2439,
+          "repoFiles": 11,
+          "scanMs": 36.64310000001569,
+          "compileMs": 9.66459999998915,
+          "defaultCompileMs": 0.37410000001545995
+        }
+      ],
+      "version": "0.1.0",
+      "summary": {
+        "rankable": {
+          "tasks": 33,
+          "P@1": 0.242,
+          "MRR": 0.365,
+          "R-precision": 0.165,
+          "R@3": 0.185,
+          "R@5": 0.257,
+          "R@8": 0.325,
+          "packRecall": 0.319,
+          "packBytesMean": 9050,
+          "scanMsMedian": 399,
+          "compileMsMedian": 2404.9
+        },
+        "all": {
+          "tasks": 36,
+          "P@1": 0.222,
+          "MRR": 0.335,
+          "R-precision": 0.149,
+          "R@3": 0.167,
+          "R@5": 0.231,
+          "R@8": 0.29,
+          "packRecall": 0.285,
+          "packBytesMean": 9050,
+          "scanMsMedian": 399,
+          "compileMsMedian": 2404.9
+        }
+      },
+      "byRepo": {
+        "portfolio": {
+          "rankable": {
+            "tasks": 12,
+            "P@1": 0.333,
+            "MRR": 0.52,
+            "R-precision": 0.236,
+            "R@3": 0.302,
+            "R@5": 0.402,
+            "R@8": 0.452,
+            "packRecall": 0.452,
+            "packBytesMean": 9270,
+            "scanMsMedian": 308.5,
+            "compileMsMedian": 1165.4
+          },
+          "all": {
+            "tasks": 12,
+            "P@1": 0.333,
+            "MRR": 0.52,
+            "R-precision": 0.234,
+            "R@3": 0.301,
+            "R@5": 0.401,
+            "R@8": 0.451,
+            "packRecall": 0.451,
+            "packBytesMean": 9270,
+            "scanMsMedian": 308.5,
+            "compileMsMedian": 1165.4
+          }
+        },
+        "alexgallery": {
+          "rankable": {
+            "tasks": 12,
+            "P@1": 0.167,
+            "MRR": 0.283,
+            "R-precision": 0.091,
+            "R@3": 0.097,
+            "R@5": 0.15,
+            "R@8": 0.174,
+            "packRecall": 0.174,
+            "packBytesMean": 8966,
+            "scanMsMedian": 427,
+            "compileMsMedian": 2404.9
+          },
+          "all": {
+            "tasks": 12,
+            "P@1": 0.167,
+            "MRR": 0.283,
+            "R-precision": 0.091,
+            "R@3": 0.097,
+            "R@5": 0.15,
+            "R@8": 0.174,
+            "packRecall": 0.174,
+            "packBytesMean": 8966,
+            "scanMsMedian": 427,
+            "compileMsMedian": 2404.9
+          }
+        },
+        "lumaflow-studio": {
+          "rankable": {
+            "tasks": 7,
+            "P@1": 0,
+            "MRR": 0.059,
+            "R-precision": 0.029,
+            "R@3": 0,
+            "R@5": 0.029,
+            "R@8": 0.171,
+            "packRecall": 0.143,
+            "packBytesMean": 10629,
+            "scanMsMedian": 647.1,
+            "compileMsMedian": 7902.1
+          },
+          "all": {
+            "tasks": 9,
+            "P@1": 0,
+            "MRR": 0.046,
+            "R-precision": 0.022,
+            "R@3": 0,
+            "R@5": 0.022,
+            "R@8": 0.133,
+            "packRecall": 0.111,
+            "packBytesMean": 10629,
+            "scanMsMedian": 647.1,
+            "compileMsMedian": 7902.1
+          }
+        },
+        "premium-frontend-showcase": {
+          "rankable": {
+            "tasks": 2,
+            "P@1": 1,
+            "MRR": 1,
+            "R-precision": 0.667,
+            "R@3": 0.667,
+            "R@5": 0.833,
+            "R@8": 1,
+            "packRecall": 1,
+            "packBytesMean": 3768,
+            "scanMsMedian": 36.6,
+            "compileMsMedian": 54.8
+          },
+          "all": {
+            "tasks": 3,
+            "P@1": 0.667,
+            "MRR": 0.667,
+            "R-precision": 0.417,
+            "R@3": 0.417,
+            "R@5": 0.5,
+            "R@8": 0.583,
+            "packRecall": 0.583,
+            "packBytesMean": 3768,
+            "scanMsMedian": 36.6,
+            "compileMsMedian": 54.8
+          }
+        }
+      }
+    },
+    "v0.1.1": {
+      "tasks": [
+        {
+          "id": "portfolio-98928bc",
+          "repo": "portfolio",
+          "task": "stop reduced-motion pause cancelling viewer playback and settle hero plate state",
+          "relevantAll": 4,
+          "relevantRankable": 4,
+          "notIndexed": [],
+          "ranks": {
+            "components/hero.tsx": 1,
+            "components/project-showcase.tsx": 4,
+            "tests/e2e/frontend-redesign.spec.ts": 13,
+            "tests/e2e/m2-selected-work.spec.ts": 12
+          },
+          "top5": [
+            "components/hero.tsx",
+            "lib/featured-work.ts",
+            "lib/gsap.ts",
+            "components/project-showcase.tsx",
+            "tests/e2e/quality-closure.spec.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.5,
+              "R@5": 0.5,
+              "R@3": 0.25,
+              "R@8": 0.5,
+              "packRecall": 0.5
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.5,
+              "R@5": 0.5,
+              "R@3": 0.25,
+              "R@8": 0.5,
+              "packRecall": 0.5
+            }
+          },
+          "packBytes": 11120,
+          "repoFiles": 122,
+          "scanMs": 117.64449999999943,
+          "compileMs": 253.1211000000003,
+          "defaultCompileMs": 50.17450000000008
+        },
+        {
+          "id": "portfolio-7ec2062",
+          "repo": "portfolio",
+          "task": "record production deployment and public validation",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "docs/RELEASE_2_1.md": 16
+          },
+          "top5": [
+            "lib/case-study-content.ts",
+            "docs/STAGING_VALIDATION.md",
+            "components/raw-vives-case-study.tsx",
+            "lib/page-content.ts",
+            "docs/ALEVICLOP_2_1.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.0625,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.0625,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11876,
+          "repoFiles": 122,
+          "scanMs": 99.11579999999958,
+          "compileMs": 216.89960000000065,
+          "defaultCompileMs": 28.626099999999497
+        },
+        {
+          "id": "portfolio-69cd9b3",
+          "repo": "portfolio",
+          "task": "refine skills and profile copy",
+          "relevantAll": 5,
+          "relevantRankable": 5,
+          "notIndexed": [],
+          "ranks": {
+            "components/skills.tsx": 1,
+            "lib/locales/en.json": 6,
+            "lib/locales/es.json": 34,
+            "lib/page-content.ts": 13,
+            "tests/home-refinement.test.mjs": 4
+          },
+          "top5": [
+            "components/skills.tsx",
+            "lib/seo.ts",
+            "docs/HOME_REFINEMENT.md",
+            "tests/home-refinement.test.mjs",
+            "components/home-client.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.4,
+              "R@5": 0.4,
+              "R@3": 0.2,
+              "R@8": 0.6,
+              "packRecall": 0.6
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.4,
+              "R@5": 0.4,
+              "R@3": 0.2,
+              "R@8": 0.6,
+              "packRecall": 0.6
+            }
+          },
+          "packBytes": 11057,
+          "repoFiles": 144,
+          "scanMs": 112.72420000000056,
+          "compileMs": 229.24969999999848,
+          "defaultCompileMs": 21.641700000000128
+        },
+        {
+          "id": "portfolio-68ffaf5",
+          "repo": "portfolio",
+          "task": "sync cursor with pointer preferences",
+          "relevantAll": 2,
+          "relevantRankable": 2,
+          "notIndexed": [],
+          "ranks": {
+            "components/custom-cursor.tsx": 1,
+            "tests/ui-quality.test.mjs": 25
+          },
+          "top5": [
+            "components/custom-cursor.tsx",
+            "components/ui/input.tsx",
+            "components/projects.tsx",
+            "app/avatar-preview/page.tsx",
+            "components/hero.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.5,
+              "R@5": 0.5,
+              "R@3": 0.5,
+              "R@8": 0.5,
+              "packRecall": 0.5
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.5,
+              "R@5": 0.5,
+              "R@3": 0.5,
+              "R@8": 0.5,
+              "packRecall": 0.5
+            }
+          },
+          "packBytes": 10148,
+          "repoFiles": 143,
+          "scanMs": 123.12880000000041,
+          "compileMs": 234.21810000000005,
+          "defaultCompileMs": 23.289600000000064
+        },
+        {
+          "id": "portfolio-a8b5eac",
+          "repo": "portfolio",
+          "task": "patch Next.js to 16.3.4 and sharp to 0.35.4",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "package.json": 3
+          },
+          "top5": [
+            "scripts/capture-hero-3d.mjs",
+            "next.config.mjs",
+            "package.json",
+            "docs/HERO_3D.md",
+            "app/(en)/layout.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 9441,
+          "repoFiles": 139,
+          "scanMs": 107.1359999999986,
+          "compileMs": 229.34100000000035,
+          "defaultCompileMs": 18.832099999999627
+        },
+        {
+          "id": "portfolio-dffaf64",
+          "repo": "portfolio",
+          "task": "remove obsolete files and update favicon",
+          "relevantAll": 8,
+          "relevantRankable": 7,
+          "notIndexed": [],
+          "ranks": {
+            ".gitignore": null,
+            ".impeccable/design.json": null,
+            ".vscode/settings.json": null,
+            "CLAUDE.md": null,
+            "README.md": 1,
+            "docs/RAW_VIVES_PROMOTION_COPY.md": null,
+            "tests/e2e/portfolio.spec.ts": null,
+            "tests/ui-quality.test.mjs": null
+          },
+          "top5": [
+            "README.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.14285714285714285,
+              "R@5": 0.14285714285714285,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.14285714285714285,
+              "packRecall": 0.14285714285714285
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.125,
+              "R@5": 0.125,
+              "R@3": 0.125,
+              "R@8": 0.125,
+              "packRecall": 0.125
+            }
+          },
+          "packBytes": 11299,
+          "repoFiles": 75,
+          "scanMs": 86.98049999999785,
+          "compileMs": 95.59460000000036,
+          "defaultCompileMs": 9.7400000000016
+        },
+        {
+          "id": "portfolio-afbaa07",
+          "repo": "portfolio",
+          "task": "restore direct section anchors",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "components/navigation.tsx": 8
+          },
+          "top5": [
+            "components/photography.tsx",
+            "CLAUDE.md",
+            "app/legal/page.tsx",
+            "components/raw-vives-case-study.tsx",
+            ".impeccable/design.json"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.125,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.125,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 8818,
+          "repoFiles": 73,
+          "scanMs": 94.20540000000256,
+          "compileMs": 187.97559999999794,
+          "defaultCompileMs": 19.021200000002864
+        },
+        {
+          "id": "portfolio-47a3b13",
+          "repo": "portfolio",
+          "task": "add mobile archive swipe",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "components/photography.tsx": 1
+          },
+          "top5": [
+            "components/photography.tsx",
+            "components/projects.tsx",
+            "components/raw-vives-case-study.tsx",
+            "lib/locales/en.json",
+            "components/navigation.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 8514,
+          "repoFiles": 72,
+          "scanMs": 79.7464,
+          "compileMs": 117.99070000000211,
+          "defaultCompileMs": 9.930899999999383
+        },
+        {
+          "id": "portfolio-fea3616",
+          "repo": "portfolio",
+          "task": "normalize theme colors for Three.js",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "components/hero-webgl.tsx": 1
+          },
+          "top5": [
+            "components/hero-webgl.tsx",
+            "app/layout.tsx",
+            "app/legal/page.tsx",
+            "components/experience.tsx",
+            "components/seo-page-shell.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 9718,
+          "repoFiles": 72,
+          "scanMs": 31.42399999999907,
+          "compileMs": 118.96450000000186,
+          "defaultCompileMs": 13.354199999997945
+        },
+        {
+          "id": "portfolio-6c4f57a",
+          "repo": "portfolio",
+          "task": "document raw.vives integration",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "README.md": null
+          },
+          "top5": [
+            "components/raw-vives-case-study.tsx",
+            "app/proyectos/raw-vives/page.tsx",
+            "tests/raw-vives-integration.test.mjs",
+            "app/proyectos/raw-manager/page.tsx",
+            "package.json"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 9905,
+          "repoFiles": 70,
+          "scanMs": 83.48559999999998,
+          "compileMs": 116.97130000000107,
+          "defaultCompileMs": 13.7670999999973
+        },
+        {
+          "id": "portfolio-74574e8",
+          "repo": "portfolio",
+          "task": "add raw.vives case study",
+          "relevantAll": 5,
+          "relevantRankable": 5,
+          "notIndexed": [],
+          "ranks": {
+            "components/photography.tsx": 6,
+            "components/projects.tsx": 3,
+            "lib/language-context.tsx": null,
+            "lib/locales/en.json": 7,
+            "lib/locales/es.json": 14
+          },
+          "top5": [
+            "app/proyectos/raw-manager/page.tsx",
+            "app/proyectos/distrito-gourmet/page.tsx",
+            "components/projects.tsx",
+            ".impeccable/design.json",
+            "components/hero.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0.2,
+              "R@5": 0.2,
+              "R@3": 0.2,
+              "R@8": 0.6,
+              "packRecall": 0.6
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0.2,
+              "R@5": 0.2,
+              "R@3": 0.2,
+              "R@8": 0.6,
+              "packRecall": 0.6
+            }
+          },
+          "packBytes": 9157,
+          "repoFiles": 67,
+          "scanMs": 61.848699999998644,
+          "compileMs": 105.20290000000023,
+          "defaultCompileMs": 9.498200000001816
+        },
+        {
+          "id": "portfolio-d88bace",
+          "repo": "portfolio",
+          "task": "restore web3forms browser submission",
+          "relevantAll": 3,
+          "relevantRankable": 3,
+          "notIndexed": [],
+          "ranks": {
+            "app/api/contact/route.ts": 2,
+            "components/contact.tsx": null,
+            "next.config.mjs": null
+          },
+          "top5": [
+            ".claude/skills/gsap-plugins/SKILL.md",
+            "app/api/contact/route.ts",
+            "eslint.config.mjs",
+            ".claude/skills/gsap-core/SKILL.md",
+            ".claude/skills/gsap-performance/SKILL.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.3333333333333333,
+              "R@5": 0.3333333333333333,
+              "R@3": 0.3333333333333333,
+              "R@8": 0.3333333333333333,
+              "packRecall": 0.3333333333333333
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.3333333333333333,
+              "R@5": 0.3333333333333333,
+              "R@3": 0.3333333333333333,
+              "R@8": 0.3333333333333333,
+              "packRecall": 0.3333333333333333
+            }
+          },
+          "packBytes": 4315,
+          "repoFiles": 65,
+          "scanMs": 80.50460000000021,
+          "compileMs": 81.8137999999999,
+          "defaultCompileMs": 7.694000000003143
+        },
+        {
+          "id": "alexgallery-8ae6e3c",
+          "repo": "alexgallery",
+          "task": "show the title and label from the first paint",
+          "relevantAll": 2,
+          "relevantRankable": 2,
+          "notIndexed": [],
+          "ranks": {
+            "components/hero/use-hero-motion.ts": null,
+            "lib/motion/photo-motion.ts": null
+          },
+          "top5": [
+            "components/series/series-debug-panel.tsx",
+            "components/contact.tsx",
+            "app/[locale]/licencias/licencias-client.tsx",
+            "components/archive/archive-mobile-filters.tsx",
+            "components/faq/faq-section.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11588,
+          "repoFiles": 304,
+          "scanMs": 138.4519999999975,
+          "compileMs": 539.0893999999971,
+          "defaultCompileMs": 52.3718000000008
+        },
+        {
+          "id": "alexgallery-8fc389d",
+          "repo": "alexgallery",
+          "task": "prepare RAW.VIVES cinematic Premium redesign and reset legacy design state",
+          "relevantAll": 7,
+          "relevantRankable": 7,
+          "notIndexed": [],
+          "ranks": {
+            ".github/dependabot.yml": null,
+            ".impeccable/design.json": 19,
+            "AGENTS.md": 48,
+            "DESIGN.md": 9,
+            "PRODUCT.md": 40,
+            "README.md": 41,
+            "docs/RAW_VIVES_DESIGN_SYSTEM.md": 1
+          },
+          "top5": [
+            "docs/RAW_VIVES_DESIGN_SYSTEM.md",
+            "lib/motion/photo-motion.ts",
+            "docs/RAW_VIVES_MOTION_SYSTEM.md",
+            "docs/RAW_VIVES_HERO_SYSTEM.md",
+            "lib/interactions/development.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.14285714285714285,
+              "R@5": 0.14285714285714285,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.14285714285714285,
+              "packRecall": 0.14285714285714285
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.14285714285714285,
+              "R@5": 0.14285714285714285,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.14285714285714285,
+              "packRecall": 0.14285714285714285
+            }
+          },
+          "packBytes": 11867,
+          "repoFiles": 300,
+          "scanMs": 182.70620000000054,
+          "compileMs": 828.3856999999989,
+          "defaultCompileMs": 88.8798999999999
+        },
+        {
+          "id": "alexgallery-22e6c84",
+          "repo": "alexgallery",
+          "task": "add El oficio en las manos",
+          "relevantAll": 8,
+          "relevantRankable": 8,
+          "notIndexed": [],
+          "ranks": {
+            "lib/gallery-data.ts": 2,
+            "lib/images-data.json": null,
+            "lib/photo-detail/content.ts": null,
+            "tests/archive/archive-system.test.ts": null,
+            "tests/hero/hero-system.test.ts": null,
+            "tests/home/home-narrative.test.ts": 10,
+            "tests/photo-detail/photo-detail-system.test.ts": 1,
+            "tests/series/photo-series-system.test.ts": null
+          },
+          "top5": [
+            "tests/photo-detail/photo-detail-system.test.ts",
+            "lib/gallery-data.ts",
+            "dictionaries/en.json",
+            "docs/RAW_VIVES_ARCHITECTURE.md",
+            "docs/RAW_VIVES_PHOTO_DETAIL_SYSTEM.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.25,
+              "R@5": 0.25,
+              "R@3": 0.25,
+              "R@8": 0.25,
+              "packRecall": 0.25
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.25,
+              "R@5": 0.25,
+              "R@3": 0.25,
+              "R@8": 0.25,
+              "packRecall": 0.25
+            }
+          },
+          "packBytes": 11561,
+          "repoFiles": 295,
+          "scanMs": 221.63500000000204,
+          "compileMs": 676.2874999999985,
+          "defaultCompileMs": 87.48999999999796
+        },
+        {
+          "id": "alexgallery-4452000",
+          "repo": "alexgallery",
+          "task": "isolate content during intro",
+          "relevantAll": 4,
+          "relevantRankable": 4,
+          "notIndexed": [],
+          "ranks": {
+            "components/intro/intro-overlay.tsx": 2,
+            "components/intro/intro-skip-button.tsx": 10,
+            "tests/e2e/smoke.spec.ts": 19,
+            "tests/intro/intro-system.test.ts": 23
+          },
+          "top5": [
+            "lib/photo-detail/content.ts",
+            "components/intro/intro-overlay.tsx",
+            "components/intro/use-intro-sequence.ts",
+            "docs/RAW_VIVES_INTRO_SYSTEM.md",
+            "components/intro/intro-bootstrap-script.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.25,
+              "R@5": 0.25,
+              "R@3": 0.25,
+              "R@8": 0.25,
+              "packRecall": 0.25
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.5,
+              "R-precision": 0.25,
+              "R@5": 0.25,
+              "R@3": 0.25,
+              "R@8": 0.25,
+              "packRecall": 0.25
+            }
+          },
+          "packBytes": 11865,
+          "repoFiles": 284,
+          "scanMs": 184.52880000000005,
+          "compileMs": 1059.5457999999999,
+          "defaultCompileMs": 52.46949999999924
+        },
+        {
+          "id": "alexgallery-1db0da1",
+          "repo": "alexgallery",
+          "task": "consolidate repository instructions",
+          "relevantAll": 2,
+          "relevantRankable": 2,
+          "notIndexed": [],
+          "ranks": {
+            "AGENTS.md": 7,
+            "CLAUDE.md": 8
+          },
+          "top5": [
+            "docs/RAW_VIVES_AUDIT.md",
+            "docs/RAW_VIVES_CREATIVE_PROCESS_SYSTEM.md",
+            "docs/RAW_VIVES_DEPLOYMENT.md",
+            "lib/photo-process/config.ts",
+            "docs/RAW_VIVES_RELEASE_NOTES.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.14285714285714285,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.14285714285714285,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 8557,
+          "repoFiles": 285,
+          "scanMs": 193.35259999999835,
+          "compileMs": 523.088499999998,
+          "defaultCompileMs": 45.071200000005774
+        },
+        {
+          "id": "alexgallery-bce9ea7",
+          "repo": "alexgallery",
+          "task": "harden production experience",
+          "relevantAll": 5,
+          "relevantRankable": 5,
+          "notIndexed": [],
+          "ranks": {
+            "components/archive/archive-page.tsx": null,
+            "components/graphics/hero-frames-scene.tsx": null,
+            "components/graphics/photo-frame-preview.tsx": null,
+            "hooks/use-archive-state.ts": null,
+            "tests/archive/archive-system.test.ts": null
+          },
+          "top5": [
+            "docs/RAW_VIVES_PRODUCTION_AUDIT.md",
+            "docs/RAW_VIVES_CASE_STUDY.md",
+            "PRODUCT.md",
+            "lib/home/experience.ts",
+            "AGENTS.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 8967,
+          "repoFiles": 274,
+          "scanMs": 210.36219999999594,
+          "compileMs": 574.5958000000028,
+          "defaultCompileMs": 42.75489999999991
+        },
+        {
+          "id": "alexgallery-54ac3d5",
+          "repo": "alexgallery",
+          "task": "final qa and cleanup",
+          "relevantAll": 7,
+          "relevantRankable": 7,
+          "notIndexed": [],
+          "ranks": {
+            "components/ui/layout.tsx": null,
+            "components/ui/metadata.tsx": null,
+            "components/ui/optimized-image.tsx": null,
+            "docs/RAW_VIVES_ARCHITECTURE.md": 4,
+            "docs/RAW_VIVES_ARCHIVE_SYSTEM.md": 12,
+            "docs/RAW_VIVES_DESIGN_SYSTEM.md": 44,
+            "docs/RAW_VIVES_GRAPHICS_SYSTEM.md": 6
+          },
+          "top5": [
+            "tests/motion/motion-infrastructure.test.ts",
+            "scripts/validate-photo-process.ts",
+            "tests/photo-process/photo-process-system.test.ts",
+            "docs/RAW_VIVES_ARCHITECTURE.md",
+            "docs/RAW_VIVES_AUDIT.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.25,
+              "R-precision": 0.2857142857142857,
+              "R@5": 0.14285714285714285,
+              "R@3": 0,
+              "R@8": 0.2857142857142857,
+              "packRecall": 0.2857142857142857
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.25,
+              "R-precision": 0.2857142857142857,
+              "R@5": 0.14285714285714285,
+              "R@3": 0,
+              "R@8": 0.2857142857142857,
+              "packRecall": 0.2857142857142857
+            }
+          },
+          "packBytes": 7688,
+          "repoFiles": 275,
+          "scanMs": 366.1024000000034,
+          "compileMs": 1303.737599999993,
+          "defaultCompileMs": 29.448000000003958
+        },
+        {
+          "id": "alexgallery-b7cbdee",
+          "repo": "alexgallery",
+          "task": "add adaptive 3d quality",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "components/graphics/hero-frames-scene.tsx": null
+          },
+          "top5": [
+            "lib/graphics/capabilities.ts",
+            "tests/graphics/graphics-system.test.ts",
+            "components/graphics/photo-frame-3d.tsx",
+            "types/graphics.ts",
+            "components/graphics/hero-graphics-bootstrap.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 5402,
+          "repoFiles": 274,
+          "scanMs": 163.01370000001043,
+          "compileMs": 431.4890999999916,
+          "defaultCompileMs": 36.94410000000789
+        },
+        {
+          "id": "alexgallery-76418b0",
+          "repo": "alexgallery",
+          "task": "unify motion system",
+          "relevantAll": 6,
+          "relevantRankable": 6,
+          "notIndexed": [],
+          "ranks": {
+            "components/archive/archive-item.tsx": null,
+            "components/archive/archive-preview.tsx": null,
+            "components/photo-detail/photo-detail-navigation.tsx": null,
+            "components/photo-detail/photo-detail-related.tsx": null,
+            "components/series/series-essay.tsx": null,
+            "components/series/series-index-page.tsx": null
+          },
+          "top5": [
+            "docs/RAW_VIVES_MOTION_SYSTEM.md",
+            "docs/RAW_VIVES_PHOTO_MOTION_SYSTEM.md",
+            "components/motion/motion-debug-panel.tsx",
+            "tests/motion/photo-motion-system.test.ts",
+            "docs/RAW_VIVES_ARCHIVE_SYSTEM.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 7236,
+          "repoFiles": 271,
+          "scanMs": 179.91330000000016,
+          "compileMs": 588.6983999999939,
+          "defaultCompileMs": 31.632200000007288
+        },
+        {
+          "id": "alexgallery-c7c7d25",
+          "repo": "alexgallery",
+          "task": "prepare optimized photo frame asset",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "app/layout.tsx": null
+          },
+          "top5": [
+            "components/photo-process/photo-process-debug-panel.tsx",
+            "scripts/prepare-photo-process.ts",
+            "lib/motion/photo-motion.ts",
+            "scripts/validate-photo-process.ts",
+            "types/photo-process.ts"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 10347,
+          "repoFiles": 261,
+          "scanMs": 189.17870000000403,
+          "compileMs": 484.8295999999973,
+          "defaultCompileMs": 49.01450000000477
+        },
+        {
+          "id": "alexgallery-fb560b8",
+          "repo": "alexgallery",
+          "task": "update Instagram and simplify gallery copy",
+          "relevantAll": 7,
+          "relevantRankable": 7,
+          "notIndexed": [],
+          "ranks": {
+            "app/layout.tsx": 4,
+            "components/contact.tsx": 38,
+            "components/footer.tsx": 1,
+            "components/photo-detail/photo-detail-header.tsx": 8,
+            "dictionaries/en.json": 16,
+            "dictionaries/es.json": 17,
+            "lib/series/config.ts": null
+          },
+          "top5": [
+            "components/footer.tsx",
+            "components/gallery.tsx",
+            "lib/gallery-filter-events.ts",
+            "app/layout.tsx",
+            "app/[locale]/politica-uso/politica-client.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.2857142857142857,
+              "R@5": 0.2857142857142857,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.42857142857142855,
+              "packRecall": 0.42857142857142855
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.2857142857142857,
+              "R@5": 0.2857142857142857,
+              "R@3": 0.14285714285714285,
+              "R@8": 0.42857142857142855,
+              "packRecall": 0.42857142857142855
+            }
+          },
+          "packBytes": 7469,
+          "repoFiles": 247,
+          "scanMs": 151.4948999999906,
+          "compileMs": 357.5497000000032,
+          "defaultCompileMs": 34.29339999999502
+        },
+        {
+          "id": "alexgallery-c14b568",
+          "repo": "alexgallery",
+          "task": "record cloudflare pages project endpoint",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "docs/RAW_VIVES_DEPLOYMENT.md": 8
+          },
+          "top5": [
+            "app/[locale]/privacidad/page.tsx",
+            ".github/workflows/deploy.yml",
+            "app/[locale]/photo/[id]/page.tsx",
+            "app/[locale]/series/[slug]/page.tsx",
+            "app/[locale]/series/page.tsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.125,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.125,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 8182,
+          "repoFiles": 247,
+          "scanMs": 146.3240000000078,
+          "compileMs": 384.87889999999607,
+          "defaultCompileMs": 43.640500000008615
+        },
+        {
+          "id": "lumaflow-studio-8d26885",
+          "repo": "lumaflow-studio",
+          "task": "record local E2E result and its baseline comparison",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "docs/plans/2026-11-06-consolidation-release-assessment.md": 45
+          },
+          "top5": [
+            "frontend/src/features/search/SearchResultGroup.jsx",
+            "frontend/src/features/ai/localAiRepository.js",
+            "scripts/start-local.mjs",
+            "frontend/src/pages/AiAssistantPage.jsx",
+            "backend/tests/Feature/WorkflowTest.php"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.022222222222222223,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.022222222222222223,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11074,
+          "repoFiles": 695,
+          "scanMs": 310.456600000005,
+          "compileMs": 1371.3271999999997,
+          "defaultCompileMs": 139.94289999999455
+        },
+        {
+          "id": "lumaflow-studio-1cd2fdc",
+          "repo": "lumaflow-studio",
+          "task": "drop SEO sections duplicated by the branch merge",
+          "relevantAll": 3,
+          "relevantRankable": 3,
+          "notIndexed": [],
+          "ranks": {
+            "docs/api.md": 9,
+            "docs/architecture.md": 10,
+            "docs/roadmap.md": 6
+          },
+          "top5": [
+            "docs/plans/2026-11-02-seo-geo-p0-p1.md",
+            "docs/deployment.md",
+            "docs/SEO_GEO_AUDIT.md",
+            "frontend/src/features/checklists/ChecklistCard.jsx",
+            "docs/plans/2026-10-29-sprint1-dependencies.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.16666666666666666,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0.3333333333333333,
+              "packRecall": 0.3333333333333333
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.16666666666666666,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0.3333333333333333,
+              "packRecall": 0.3333333333333333
+            }
+          },
+          "packBytes": 10652,
+          "repoFiles": 695,
+          "scanMs": 863.6420999999973,
+          "compileMs": 3311.5887999999977,
+          "defaultCompileMs": 185.4489000000176
+        },
+        {
+          "id": "lumaflow-studio-7955b79",
+          "repo": "lumaflow-studio",
+          "task": "give cold-start page suites a 15 s budget",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "frontend/vite.config.js": null
+          },
+          "top5": [
+            "frontend/src/pages/GettingStartedPage.jsx",
+            "frontend/src/pages/JobDetailPage.jsx",
+            "e2e/fixtures/test.js",
+            "frontend/src/pages/DeliveriesPage.jsx",
+            "frontend/src/pages/ClientPortalPage.jsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11711,
+          "repoFiles": 695,
+          "scanMs": 389.54939999998896,
+          "compileMs": 2477.3917000000074,
+          "defaultCompileMs": 134.08839999997872
+        },
+        {
+          "id": "lumaflow-studio-f021a29",
+          "repo": "lumaflow-studio",
+          "task": "resolve frontend nginx config path",
+          "relevantAll": 1,
+          "relevantRankable": 0,
+          "notIndexed": [],
+          "ranks": {
+            "frontend/Dockerfile": null
+          },
+          "top5": [
+            "scripts/start-local.mjs",
+            "backend/config/cors.php",
+            "frontend/docker/nginx.conf",
+            "frontend/vite.config.js",
+            "backend/config/filesystems.php"
+          ],
+          "metrics": {
+            "rankable": null,
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 9765,
+          "repoFiles": 404,
+          "scanMs": 176.99109999998473,
+          "compileMs": 707.7005000000063,
+          "defaultCompileMs": 68.06030000001192
+        },
+        {
+          "id": "lumaflow-studio-b590521",
+          "repo": "lumaflow-studio",
+          "task": "simplify access screens",
+          "relevantAll": 3,
+          "relevantRankable": 3,
+          "notIndexed": [],
+          "ranks": {
+            "frontend/src/features/auth/AuthShell.jsx": null,
+            "frontend/src/pages/LoginPage.jsx": null,
+            "frontend/src/pages/RegisterPage.jsx": null
+          },
+          "top5": [
+            "backend/config/queue.php",
+            "backend/database/migrations/2026_07_08_091226_create_personal_access_tokens_table.php",
+            "backend/app/Models/Location.php",
+            "frontend/src/utils/catalogs.js",
+            "frontend/src/pages/LocationsPage.jsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 10631,
+          "repoFiles": 403,
+          "scanMs": 405.1640999999945,
+          "compileMs": 1009.8815999999933,
+          "defaultCompileMs": 151.70690000001923
+        },
+        {
+          "id": "lumaflow-studio-b1ca222",
+          "repo": "lumaflow-studio",
+          "task": "use ephemeral cache on free hosting",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "render.yaml": 6
+          },
+          "top5": [
+            "backend/config/database.php",
+            "backend/config/session.php",
+            "backend/config/cache.php",
+            "backend/database/migrations/0001_01_01_000001_create_cache_table.php",
+            "docs/deployment.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.16666666666666666,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.16666666666666666,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 11139,
+          "repoFiles": 400,
+          "scanMs": 184.54609999997774,
+          "compileMs": 922.706600000005,
+          "defaultCompileMs": 71.64120000001276
+        },
+        {
+          "id": "lumaflow-studio-2fcff2f",
+          "repo": "lumaflow-studio",
+          "task": "use PHP 8.4 in production image",
+          "relevantAll": 2,
+          "relevantRankable": 0,
+          "notIndexed": [],
+          "ranks": {
+            "backend/Dockerfile": null,
+            "frontend/.gitignore": null
+          },
+          "top5": [
+            "backend/app/Http/Controllers/Api/DeliveryImageController.php",
+            "backend/app/Http/Resources/DeliveryImageResource.php",
+            "backend/app/Models/DeliveryImage.php",
+            "backend/app/Models/Delivery.php",
+            "backend/app/Models/User.php"
+          ],
+          "metrics": {
+            "rankable": null,
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11786,
+          "repoFiles": 400,
+          "scanMs": 175.23110000000452,
+          "compileMs": 785.656799999997,
+          "defaultCompileMs": 191.2674999999872
+        },
+        {
+          "id": "lumaflow-studio-69a7753",
+          "repo": "lumaflow-studio",
+          "task": "mejoras de productividad y estetica tras auditoria de UI",
+          "relevantAll": 5,
+          "relevantRankable": 5,
+          "notIndexed": [],
+          "ranks": {
+            "frontend/src/components/ui/Button.jsx": 7,
+            "frontend/src/features/analytics/chartTheme.js": null,
+            "frontend/src/features/presets/PresetSlider.jsx": null,
+            "frontend/src/pages/DashboardPage.jsx": 14,
+            "frontend/src/pages/PhotosPage.jsx": 16
+          },
+          "top5": [
+            "backend/app/Support/AuditLog.php",
+            "frontend/src/components/ui/StatCard.jsx",
+            "frontend/src/components/ui/Card.jsx",
+            "frontend/src/components/ui/PageHeader.jsx",
+            "frontend/src/components/ui/Badge.jsx"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.14285714285714285,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0.2,
+              "packRecall": 0
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.14285714285714285,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0.2,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 11983,
+          "repoFiles": 399,
+          "scanMs": 50.47959999999148,
+          "compileMs": 209.04670000000624,
+          "defaultCompileMs": 27.959700000006706
+        },
+        {
+          "id": "lumaflow-studio-4abcebf",
+          "repo": "lumaflow-studio",
+          "task": "use backend url fallback",
+          "relevantAll": 2,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            ".gitignore": null,
+            "frontend/src/api/client.js": 3
+          },
+          "top5": [
+            "backend/config/app.php",
+            "backend/app/Services/OllamaService.php",
+            "frontend/src/api/client.js",
+            "backend/config/database.php",
+            "backend/config/filesystems.php"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 0,
+              "MRR": 0.3333333333333333,
+              "R-precision": 0,
+              "R@5": 0.5,
+              "R@3": 0.5,
+              "R@8": 0.5,
+              "packRecall": 0.5
+            }
+          },
+          "packBytes": 7374,
+          "repoFiles": 216,
+          "scanMs": 42.1927999999898,
+          "compileMs": 95.31380000000354,
+          "defaultCompileMs": 10.654099999985192
+        },
+        {
+          "id": "premium-frontend-showcase-1469b2b",
+          "repo": "premium-frontend-showcase",
+          "task": "mark the tools in your setup with a small square instead of a side bar",
+          "relevantAll": 1,
+          "relevantRankable": 0,
+          "notIndexed": [],
+          "ranks": {
+            "app/globals.css": null
+          },
+          "top5": [
+            "app/components/Setup.jsx",
+            "app/components/setup-data.js",
+            "app/page.jsx",
+            "app/components/shared.jsx",
+            "DESIGN.md"
+          ],
+          "metrics": {
+            "rankable": null,
+            "all": {
+              "P@1": 0,
+              "MRR": 0,
+              "R-precision": 0,
+              "R@5": 0,
+              "R@3": 0,
+              "R@8": 0,
+              "packRecall": 0
+            }
+          },
+          "packBytes": 5165,
+          "repoFiles": 30,
+          "scanMs": 7.562000000005355,
+          "compileMs": 11.910100000008242,
+          "defaultCompileMs": 2.449900000006892
+        },
+        {
+          "id": "premium-frontend-showcase-1daead8",
+          "repo": "premium-frontend-showcase",
+          "task": "third art-direction pass on craft, gates and titles",
+          "relevantAll": 4,
+          "relevantRankable": 3,
+          "notIndexed": [],
+          "ranks": {
+            "DESIGN.md": 5,
+            "app/components/Experience.jsx": 2,
+            "app/globals.css": null,
+            "app/page.jsx": 1
+          },
+          "top5": [
+            "app/page.jsx",
+            "app/components/Experience.jsx",
+            "app/components/interactive.jsx",
+            "app/layout.jsx",
+            "DESIGN.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.6666666666666666,
+              "R@5": 1,
+              "R@3": 0.6666666666666666,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 0.5,
+              "R@5": 0.75,
+              "R@3": 0.5,
+              "R@8": 0.75,
+              "packRecall": 0.75
+            }
+          },
+          "packBytes": 4569,
+          "repoFiles": 23,
+          "scanMs": 7.5394999999844,
+          "compileMs": 7.099700000020675,
+          "defaultCompileMs": 1.761899999983143
+        },
+        {
+          "id": "premium-frontend-showcase-a61415e",
+          "repo": "premium-frontend-showcase",
+          "task": "preserve revealed content without JavaScript",
+          "relevantAll": 1,
+          "relevantRankable": 1,
+          "notIndexed": [],
+          "ranks": {
+            "app/page.jsx": 1
+          },
+          "top5": [
+            "app/page.jsx",
+            "DESIGN.md",
+            "IMPLEMENTATION_PLAN.md",
+            "CLAUDE_CODE_PROMPT.md",
+            "README.md"
+          ],
+          "metrics": {
+            "rankable": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            },
+            "all": {
+              "P@1": 1,
+              "MRR": 1,
+              "R-precision": 1,
+              "R@5": 1,
+              "R@3": 1,
+              "R@8": 1,
+              "packRecall": 1
+            }
+          },
+          "packBytes": 2684,
+          "repoFiles": 11,
+          "scanMs": 4.5054999999993015,
+          "compileMs": 2.4306999999971595,
+          "defaultCompileMs": 0.5636999999987893
+        }
+      ],
+      "version": "0.1.1",
+      "summary": {
+        "rankable": {
+          "tasks": 33,
+          "P@1": 0.333,
+          "MRR": 0.43,
+          "R-precision": 0.211,
+          "R@3": 0.245,
+          "R@5": 0.277,
+          "R@8": 0.441,
+          "packRecall": 0.435,
+          "packBytesMean": 9295,
+          "scanMsMedian": 142.4,
+          "compileMsMedian": 371.2
+        },
+        "all": {
+          "tasks": 36,
+          "P@1": 0.306,
+          "MRR": 0.395,
+          "R-precision": 0.188,
+          "R@3": 0.205,
+          "R@5": 0.233,
+          "R@8": 0.383,
+          "packRecall": 0.378,
+          "packBytesMean": 9295,
+          "scanMsMedian": 142.4,
+          "compileMsMedian": 371.2
+        }
+      },
+      "byRepo": {
+        "portfolio": {
+          "rankable": {
+            "tasks": 12,
+            "P@1": 0.5,
+            "MRR": 0.613,
+            "R-precision": 0.34,
+            "R@3": 0.386,
+            "R@5": 0.423,
+            "R@8": 0.556,
+            "packRecall": 0.556,
+            "packBytesMean": 9614,
+            "scanMsMedian": 90.6,
+            "compileMsMedian": 153.5
+          },
+          "all": {
+            "tasks": 12,
+            "P@1": 0.5,
+            "MRR": 0.613,
+            "R-precision": 0.338,
+            "R@3": 0.384,
+            "R@5": 0.422,
+            "R@8": 0.555,
+            "packRecall": 0.555,
+            "packBytesMean": 9614,
+            "scanMsMedian": 90.6,
+            "compileMsMedian": 153.5
+          }
+        },
+        "alexgallery": {
+          "rankable": {
+            "tasks": 12,
+            "P@1": 0.25,
+            "MRR": 0.335,
+            "R-precision": 0.101,
+            "R@3": 0.065,
+            "R@5": 0.089,
+            "R@8": 0.28,
+            "packRecall": 0.28,
+            "packBytesMean": 9227,
+            "scanMsMedian": 183.6,
+            "compileMsMedian": 556.8
+          },
+          "all": {
+            "tasks": 12,
+            "P@1": 0.25,
+            "MRR": 0.335,
+            "R-precision": 0.101,
+            "R@3": 0.065,
+            "R@5": 0.089,
+            "R@8": 0.28,
+            "packRecall": 0.28,
+            "packBytesMean": 9227,
+            "scanMsMedian": 183.6,
+            "compileMsMedian": 556.8
+          }
+        },
+        "lumaflow-studio": {
+          "rankable": {
+            "tasks": 7,
+            "P@1": 0,
+            "MRR": 0.119,
+            "R-precision": 0,
+            "R@3": 0.143,
+            "R@5": 0.143,
+            "R@8": 0.362,
+            "packRecall": 0.333,
+            "packBytesMean": 10679,
+            "scanMsMedian": 184.5,
+            "compileMsMedian": 922.7
+          },
+          "all": {
+            "tasks": 9,
+            "P@1": 0,
+            "MRR": 0.092,
+            "R-precision": 0,
+            "R@3": 0.056,
+            "R@5": 0.056,
+            "R@8": 0.226,
+            "packRecall": 0.204,
+            "packBytesMean": 10679,
+            "scanMsMedian": 184.5,
+            "compileMsMedian": 922.7
+          }
+        },
+        "premium-frontend-showcase": {
+          "rankable": {
+            "tasks": 2,
+            "P@1": 1,
+            "MRR": 1,
+            "R-precision": 0.833,
+            "R@3": 0.833,
+            "R@5": 1,
+            "R@8": 1,
+            "packRecall": 1,
+            "packBytesMean": 4139,
+            "scanMsMedian": 7.5,
+            "compileMsMedian": 7.1
+          },
+          "all": {
+            "tasks": 3,
+            "P@1": 0.667,
+            "MRR": 0.667,
+            "R-precision": 0.5,
+            "R@3": 0.5,
+            "R@5": 0.583,
+            "R@8": 0.583,
+            "packRecall": 0.583,
+            "packBytesMean": 4139,
+            "scanMsMedian": 7.5,
+            "compileMsMedian": 7.1
+          }
+        }
+      }
+    }
+  },
+  "coverage": {
+    "labels": 109,
+    "rankableLabels": 102,
+    "tasksWithNoRankableLabel": 3
+  }
+}
