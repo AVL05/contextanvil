@@ -93,8 +93,9 @@ export async function run(argv, io = {}) {
   try {
     return execute(argv, env);
   } catch (err) {
+    const manifestJson = argv[0] === 'manifest' && argv.includes('--json');
     if (err instanceof ContextAnvilError) {
-      if (argv[0] === 'manifest' && argv.includes('--json')) {
+      if (manifestJson) {
         writeJson(env, { error: { code: err.code, message: err.message } });
         return err.exitCode;
       }
@@ -103,6 +104,10 @@ export async function run(argv, io = {}) {
       return err.exitCode;
     }
     if (err?.code?.startsWith?.('ERR_PARSE_ARGS')) {
+      if (manifestJson) {
+        writeJson(env, { error: { code: err.code, message: 'Invalid manifest options. Run "contextanvil manifest --help".' } });
+        return EXIT.USAGE;
+      }
       env.stderr.write(`contextanvil: ${err.message}\nRun "contextanvil --help" for usage.\n`);
       return EXIT.USAGE;
     }

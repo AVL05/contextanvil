@@ -8,8 +8,8 @@ const LIMIT_OPTIONS = `  --max-files <n>        Stop indexing after n files (def
 export const HELP = {
   main: `ContextAnvil ${VERSION} - Forge better context.
 
-Deterministic repository analysis and task-aware context compilation for
-AI coding agents. Read-only, offline, no API keys.
+Audit repository instructions, compile traceable context, and verify snapshots.
+Offline analysis leaves the scanned repository unchanged.
 
 Usage:
   contextanvil scan [path]                 Analyse a repository and report what was found
@@ -18,8 +18,9 @@ Usage:
   contextanvil manifest <action> <path>    Create, verify, diff or update a repository snapshot
   contextanvil --help | --version
 
-'path' defaults to the current directory. Use "contextanvil <command> --help"
-for command options. All commands accept --json for machine-readable output.
+Scan, context and doctor default to the current directory. Manifest actions
+require an explicit path. Use "contextanvil <command> --help" for options.
+All four command groups accept --json.
 
 Exit codes: 0 success, 1 doctor findings or manifest verification mismatch, 2 usage error,
 3 runtime error.

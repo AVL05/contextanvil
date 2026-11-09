@@ -64,6 +64,13 @@ test('runtime errors exit 3', () => {
   assert.equal(cli(['scan', path.join(fixture('next-app'), 'package.json')]).code, 3);
 });
 
+test('manifest JSON mode reports option errors as JSON', () => {
+  const result = cli(['manifest', 'verify', '.', '--bogus', '--json']);
+  assert.equal(result.code, 2);
+  assert.equal(result.err, '');
+  assert.equal(JSON.parse(result.out).error.code, 'ERR_PARSE_ARGS_UNKNOWN_OPTION');
+});
+
 test('scan prints a report and succeeds; --json is valid, complete and content-free', () => {
   const text = cli(['scan', fixture('next-app')]);
   assert.equal(text.code, 0);

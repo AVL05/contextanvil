@@ -13,6 +13,15 @@ import { renderDoctor, renderScan } from '../src/render/text.js';
 import { scanRepository } from '../src/scanner.js';
 import { FAKE, makeRepo, trySymlink } from './helpers.js';
 
+test('detected secret-shaped script names do not leak through fact identifiers', (t) => {
+  const secret = FAKE.aws();
+  const repo = makeRepo({ 'package.json': JSON.stringify({ scripts: { [secret]: 'echo ok' } }) });
+  t.after(repo.cleanup);
+  const scan = scanRepository(repo.root);
+  assert.ok(scan.facts.some((fact) => fact.kind === 'script'));
+  assert.ok(!JSON.stringify(scan.facts).includes(secret));
+});
+
 function timed(fn) {
   const t = performance.now();
   const value = fn();
