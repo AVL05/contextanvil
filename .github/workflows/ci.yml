@@ -83,7 +83,7 @@ jobs:
         shell: bash
         run: DIGEST_DUMP="$RUNNER_TEMP/digest-dump" node bench/digest.js > "$RUNNER_TEMP/digest.json" && cat "$RUNNER_TEMP/digest.json"
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: digest-${{ matrix.os }}-node-${{ matrix.node == 'lts/*' && 'lts' || matrix.node }}
           path: |
@@ -132,7 +132,7 @@ jobs:
           if (!r.determinism.every((d) => d.crossProcessIdentical)) { console.error('non-deterministic output'); process.exit(1); }
           console.log('benchmark ok; synthetic MRR', r.summary.synthetic.all.MRR, 'real MRR', r.summary.real.all.MRR);
           "
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: benchmark-quick
           path: |
