@@ -131,6 +131,27 @@ test('partial scans expose warnings and cannot overwrite a complete snapshot', (
   }
 });
 
+test('a process exit before publication leaves the previous manifest readable', (t) => {
+  const repo = setup(t, { 'source.js': 'before' });
+  const previous = snapshotRepository(repo.root);
+  writeManifest(repo.output, previous);
+  fs.writeFileSync(path.join(repo.root, 'source.js'), 'after');
+  const model = JSON.stringify(new URL('../src/manifest/model.js', import.meta.url).href);
+  const storage = JSON.stringify(new URL('../src/manifest/storage.js', import.meta.url).href);
+  const worker = spawnSync(process.execPath, ['--input-type=module', '-e', `
+    import { snapshotRepository } from ${model};
+    import { readManifest, writeManifest } from ${storage};
+    const [root, output] = process.argv.slice(1);
+    writeManifest(output, snapshotRepository(root), readManifest(output), {
+      replace() { process.exit(23); },
+    });
+  `, repo.root, repo.output], { encoding: 'utf8' });
+  assert.equal(worker.status, 23, worker.stderr);
+  assert.equal(readManifest(repo.output).text, previous.text);
+  assert.ok(fs.existsSync(path.join(repo.base, '.snapshot.json.contextanvil-lock')));
+  assert.throws(() => writeManifest(repo.output, snapshotRepository(repo.root), readManifest(repo.output)), /lock already exists/);
+});
+
 test('manifest paths refuse symlinks and source aliases cannot hash credentials', (t) => {
   const repo = setup(t, { '.env': 'secret', 'source.js': 'hello' });
   writeManifest(repo.output, snapshotRepository(repo.root));
