@@ -5,6 +5,10 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 
 ## [Unreleased]
 
+- Add an optional local stdio MCP adapter with explicitly authorized
+  repository aliases, bounded analysis workers, and read-only scan,
+  task-context and doctor tools.
+
 - Add explicit `manifest create`, `verify`, `diff`, and `update` commands with
   canonical source hashes, fact provenance, and atomic external publication.
   Refreshes reconstruct from live files and skip writes when unchanged.

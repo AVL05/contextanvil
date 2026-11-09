@@ -47,15 +47,11 @@ instruction files remain future work.
 
 ### Phase 3: MCP server
 
-Goal: let MCP-capable agents ask for context instead of receiving a pasted pack.
-
-- A server exposing read-only tools over the existing API, for example `get_project_overview`,
-  `get_task_context`, `get_project_rules`, `get_file_context` and `run_doctor`.
-- Same safety model: read-only, no execution, bounded output with an explicit budget argument, secrets
-  redacted, repository text returned as quoted data.
-- Local transport first (stdio). No remote exposure by default; no telemetry.
-- Prerequisite work: asynchronous or worker-based scanning with a deadline, caching keyed by content digest, a stable
-  public API surface with documented schema versions.
+The [stdio adapter](mcp.md) exposes `project_scan`, `get_task_context` and
+`context_doctor` through exact startup-authorized repository aliases.
+Workers bound and isolate synchronous analysis from protocol handling.
+Claude Code connection and a native Codex tool call were verified.
+The [model-driven A/B evaluation](evaluation/agent-workflows.md) remains pending.
 
 ### Phase 4: visual dashboard
 

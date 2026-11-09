@@ -42,6 +42,12 @@ retaining their text. The storage module is the only runtime writer.
 Manifests are comparison data and never enter the analysis pipeline.
 See [schema and publication guarantees](design/phase-2-manifests.md).
 
+The [MCP adapter](mcp.md) is an isolated private package under `mcp/`.
+It imports the public API and delegates each request to a bounded worker,
+keeping synchronous repository I/O off the protocol thread. This preserves
+the dependency-free core and keeps host transport, authorization and
+response projection outside the analysis layers.
+
 ## The fact model
 
 A fact is the unit of knowledge (`src/core/facts.js`).

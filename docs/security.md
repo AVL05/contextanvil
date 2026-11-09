@@ -20,6 +20,16 @@ To report a vulnerability, see `SECURITY.md`.
 | No side effects on agent configuration | It never installs hooks, edits agent settings, or overwrites instruction files. |
 | Deterministic | Same input, same bytes of output. |
 
+## Local MCP boundary
+
+The local operator authorizes exact canonical roots with startup aliases.
+Tool arguments cannot select arbitrary paths or override ignore policy.
+The adapter checks root identity, reuses the core's safe reader, and bounds
+requests, responses and worker resources. Its output omits source excerpts
+and script bodies and labels remaining repository metadata as untrusted.
+Secret detection is heuristic. Root checks are not OS sandboxing against
+concurrent hostile changes. See the [MCP security and lifecycle contract](mcp.md).
+
 ## What `doctor` flags as potentially unsafe
 
 - secrets in instruction files (an error);

@@ -329,6 +329,16 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
   accepting and running it; `actionlint` was not available.
 - Output is ASCII-only so legacy Windows consoles render it correctly.
 
+## MCP for coding agents
+
+Install the optional local stdio adapter with `npm ci --prefix mcp`. Authorize
+each repository explicitly at startup with `--repo alias=/absolute/path`.
+The adapter exposes `project_scan`, `get_task_context` and `context_doctor`
+using the stable ContextAnvil engine. The core CLI remains dependency-free.
+
+See the [MCP guide](docs/mcp.md), [Claude Code setup](docs/integrations/claude-code.md)
+and [Codex setup](docs/integrations/codex.md).
+
 ## Repository manifests
 
 ```sh
