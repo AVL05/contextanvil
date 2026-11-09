@@ -24,6 +24,9 @@ for (const stage of ['candidate', 'ranking', 'budget']) {
   console.log(`| ${stage} | ${atStage.length} | ${atStage.filter((loss) => loss.packLost).length} |`);
 }
 console.log(`\nRelevant candidate losses displaced from the v2 lexical top 64: ${losses.filter((loss) => loss.candidateLost && loss.quota).length}.`);
+const candidateGains = postMortem.rows.reduce((total, row) => total
+  + row.baseline.missing.filter((path) => row.v2.candidatePaths.includes(path)).length, 0);
+console.log(`New relevant candidates recovered by v2: ${candidateGains}.`);
 const promotions = postMortem.rows.flatMap((row) => {
   const oldTop = new Set(row.baseline.ranked.slice(0, 8));
   const nonLabels = row.v2.topNonLabels ?? row.v2.promotedNonLabels;
