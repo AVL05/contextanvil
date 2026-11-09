@@ -34,6 +34,14 @@ The only public entry point is `src/index.js`. A CLI, an MCP server and a dashbo
 presentation layers over the same three functions: `scanRepository`, `compileContext` and `diagnose`.
 `test/api.test.js` pins the exported names and the shape of every result.
 
+The explicit manifest CLI uses an internal snapshot layer over the scanner.
+It projects source hashes and fact provenance into canonical JSON, and
+compares that projection with a validated prior snapshot. The safe reader
+reuses already-read detector inputs and hashes remaining files without
+retaining their text. The storage module is the only runtime writer.
+Manifests are comparison data and never enter the analysis pipeline.
+See [schema and publication guarantees](design/phase-2-manifests.md).
+
 ## The fact model
 
 A fact is the unit of knowledge (`src/core/facts.js`).

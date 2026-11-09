@@ -4,6 +4,8 @@ import { parseByteSize } from '../compiler/budget.js';
 import { compileContext } from '../compiler/compile.js';
 import { diagnose, exceedsThreshold } from '../doctor.js';
 import { ContextAnvilError, EXIT, usageError } from '../errors.js';
+import { diffManifest, snapshotRepository } from '../manifest/model.js';
+import { readManifest, writeManifest } from '../manifest/storage.js';
 import { renderDoctor, renderScan, scanToJson } from '../render/text.js';
 import { scanRepository } from '../scanner.js';
 import { VERSION } from '../version.js';
@@ -20,6 +22,7 @@ const COMMANDS = {
   scan: { options: { json: { type: 'boolean' }, files: { type: 'boolean' }, ...LIMIT_FLAGS } },
   context: { options: { json: { type: 'boolean' }, budget: { type: 'string' }, top: { type: 'string' }, 'max-content-files': { type: 'string' }, ...LIMIT_FLAGS } },
   doctor: { options: { json: { type: 'boolean' }, 'fail-on': { type: 'string' }, ...LIMIT_FLAGS } },
+  manifest: { options: { json: { type: 'boolean' }, output: { type: 'string' }, manifest: { type: 'string' }, ...LIMIT_FLAGS } },
 };
 
 function toInt(value, name) {
@@ -40,6 +43,43 @@ function writeJson(io, value) {
   io.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 }
 
+function runManifest(positionals, values, env) {
+  const [action, root, ...extra] = positionals;
+  const create = action === 'create';
+  if (!['create', 'verify', 'diff', 'update'].includes(action) || !root || extra.length
+    || (create ? !values.output || values.manifest !== undefined : !values.manifest || values.output !== undefined)) {
+    throw usageError('INVALID_MANIFEST_COMMAND', 'Use manifest create <path> --output <file> or manifest <verify|diff|update> <path> --manifest <file>.');
+  }
+  const filename = path.resolve(env.cwd, create ? values.output : values.manifest);
+  const old = create ? null : readManifest(filename);
+  const snapshot = snapshotRepository(path.resolve(env.cwd, root), scanOptions(values));
+  const diff = old && diffManifest(old.manifest, snapshot.manifest);
+  const written = create || action === 'update' ? writeManifest(filename, snapshot, old) : false;
+  const result = {
+    action, written, complete: snapshot.manifest.scan.complete,
+    warnings: snapshot.manifest.scan.warnings, reads: snapshot.reads, bytesRead: snapshot.bytesRead,
+    strategy: 'full-reconstruction',
+    reason: 'Existing manifest data cannot authenticate current repository contents.',
+    ...(diff && { diff }),
+  };
+  if (values.json) writeJson(env, result);
+  else {
+    env.stdout.write(`Manifest ${action}: ${written ? 'written' : diff?.identical ? 'identical' : 'different'} (full reconstruction).\n`);
+    if (diff?.metadataChanged) env.stdout.write('Scanner metadata or coverage changed.\n');
+    for (const group of ['files', 'facts']) {
+      for (const kind of ['added', 'removed', 'changed']) {
+        for (const value of diff?.[group][kind] ?? []) {
+          const safe = JSON.stringify(value).replace(/[^\x20-\x7e]/g, (ch) => '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0'));
+          env.stdout.write(`  ${group} ${kind}: ${safe}\n`);
+        }
+      }
+    }
+    if (result.warnings.length) env.stdout.write(`Warnings: ${result.warnings.join(', ')}\n`);
+  }
+  if (!result.complete || (diff && !diff.complete && action !== 'update')) return EXIT.RUNTIME;
+  return action === 'verify' && !diff.identical ? EXIT.FINDINGS : EXIT.OK;
+}
+
 /**
  * Run the CLI. Never calls process.exit, so it is directly testable and
  * stdout is always flushed.
@@ -54,6 +94,10 @@ export async function run(argv, io = {}) {
     return execute(argv, env);
   } catch (err) {
     if (err instanceof ContextAnvilError) {
+      if (argv[0] === 'manifest' && argv.includes('--json')) {
+        writeJson(env, { error: { code: err.code, message: err.message } });
+        return err.exitCode;
+      }
       env.stderr.write(`contextanvil: ${err.message}\n`);
       if (err.exitCode === EXIT.USAGE) env.stderr.write('Run "contextanvil --help" for usage.\n');
       return err.exitCode;
@@ -90,6 +134,7 @@ function execute(argv, env) {
     env.stdout.write(HELP[first]);
     return EXIT.OK;
   }
+  if (first === 'manifest') return runManifest(positionals, values, env);
 
   if (first === 'context') {
     if (positionals.length === 0 || positionals[0].trim() === '') throw usageError('MISSING_TASK', 'The context command needs a task, e.g. contextanvil context "Update the navigation component".');

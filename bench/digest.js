@@ -13,6 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compileContext, diagnose, scanRepository } from '../src/index.js';
+import { snapshotRepository } from '../src/manifest/model.js';
 import { materialize } from './lib/materialize.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -22,6 +23,7 @@ const data = JSON.parse(fs.readFileSync(path.join(HERE, 'datasets', 'tasks.json'
 
 const out = {};
 const all = [];
+const manifests = [];
 for (const ds of data.datasets) {
   const repo = materialize(HERE, ds.source);
   try {
@@ -34,6 +36,7 @@ for (const ds of data.datasets) {
       JSON.stringify(value),
     );
     const scan = scanRepository(repo.dir);
+    manifests.push(sha(snapshotRepository(repo.dir).text));
     const parts = [mask(scan), mask(diagnose(scan))];
     for (const t of ds.tasks) {
       const pack = mask(compileContext(scan, t.task));
@@ -52,4 +55,5 @@ for (const ds of data.datasets) {
   }
 }
 out.combined = sha(all.join('|'));
+out.manifests = sha(manifests.join('|'));
 console.log(JSON.stringify(out, null, 2));
