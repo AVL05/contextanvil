@@ -39,6 +39,7 @@ for (const ds of data.datasets) {
       const pack = mask(compileContext(scan, t.task));
       if (verbose) console.error(`${ds.id}/${t.id}: ${sha(pack)}`);
       parts.push(pack);
+      parts.push(mask(compileContext(scan, t.task, { relevanceV2: true, retrievalDiagnostics: true })));
     }
     out[ds.id] = sha(parts.join('\n'));
     if (process.env.DIGEST_DUMP) {

@@ -34,6 +34,32 @@ The only public entry point is `src/index.js`. A CLI, an MCP server and a dashbo
 presentation layers over the same three functions: `scanRepository`, `compileContext` and `diagnose`.
 `test/api.test.js` pins the exported names and the shape of every result.
 
+### Experimental relevance v2
+
+Enable with `context --relevance-v2` or `compileContext(scan, task, { relevanceV2: true })`.
+Add `--json` or `retrievalDiagnostics: true` respectively to inspect the candidate
+shortlist, ranked reasons and index coverage. The byte budget applies to the
+rendered pack. Diagnostic JSON is additional data outside that budget.
+
+The compiler builds a transient index during the bounded reader pass. The
+index uses normalized path keys and sparse bidirectional adjacency. A conservative
+token scanner extracts static imports, reexports, JSX references to imported
+components, PHP namespace imports and literal Laravel handler and view links.
+Next.js entry facts identify component references from recognized routes.
+Ambiguous module targets are skipped. Unsupported syntax such as template
+literals, heredocs and ambiguous slashes stops extraction for that file.
+Dynamic module resolution, PHP container bindings and full language-level
+symbol resolution remain outside this implementation.
+
+Candidate generation reserves up to 16 of 64 slots for graph neighbors.
+Traversal uses at most 24 seeds and eight outgoing or incoming relationships
+per visit. A second hop is limited to low-degree barrels and route-handler
+links. The reranker uses one strongest graph trail and one exact identifier
+boost per file. Reexport-only modules receive a discount unless the task names
+their path. Pack selection reuses exact byte accounting and prioritizes scoped
+instructions before file explanations. Markdown shows one reason per file,
+while diagnostic JSON retains the scored reasons and graph provenance.
+
 ## The fact model
 
 A fact is the unit of knowledge (`src/core/facts.js`).

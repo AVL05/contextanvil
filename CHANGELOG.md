@@ -5,6 +5,9 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 
 ## [Unreleased]
 
+- Add opt-in `context --relevance-v2` retrieval with a bounded, evidence-backed
+  relationship index. The default ranking and pack schema remain compatible.
+
 Phase 1.2: cross-platform validation and independent evaluation.
 
 ### Verified
