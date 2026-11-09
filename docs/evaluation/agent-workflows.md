@@ -42,8 +42,9 @@ The repeated request starts a new worker and rereads the repository.
 
 ## A/B harness
 
-Model-driven A/B execution remains pending. Native host connection and tool
-calls are tracked separately from whether an agent chooses to call the tool.
+The first model-driven comparison is documented in the
+[Phase 3.1 pilot results](mcp-pilot-results.md). Native host connection and
+tool calls are tracked separately from whether an agent chooses to call the tool.
 
 1. Pin the ContextAnvil commit, the client and model versions, and the
    client permissions. Run `node bench/agent-eval.js prepare <new-directory>`

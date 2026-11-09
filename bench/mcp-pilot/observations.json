@@ -1,0 +1,193 @@
+[
+  {
+    "caseId": "slugify",
+    "arm": "A",
+    "correct": true,
+    "discovered": [
+      "src/string-utils.js"
+    ],
+    "changed": [
+      "src/string-utils.js"
+    ],
+    "toolCalls": 3,
+    "toolSequence": [
+      "Grep",
+      "Read",
+      "Edit"
+    ],
+    "contextAnvilCalls": 0,
+    "contextBytes": 0,
+    "elapsedMs": 18126,
+    "toolErrors": 0,
+    "model": "claude-sonnet-5-5",
+    "connected": false,
+    "exitCode": 0,
+    "usage": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 2901,
+      "cache_read_input_tokens": 21656,
+      "output_tokens": 493
+    }
+  },
+  {
+    "caseId": "slugify",
+    "arm": "B",
+    "correct": true,
+    "discovered": [
+      "src/string-utils.js"
+    ],
+    "changed": [
+      "src/string-utils.js"
+    ],
+    "toolCalls": 3,
+    "toolSequence": [
+      "Grep",
+      "Read",
+      "Edit"
+    ],
+    "contextAnvilCalls": 0,
+    "contextBytes": 0,
+    "elapsedMs": 13169,
+    "toolErrors": 0,
+    "model": "claude-sonnet-5-5",
+    "connected": true,
+    "exitCode": 0,
+    "usage": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 2901,
+      "cache_read_input_tokens": 24436,
+      "output_tokens": 495
+    }
+  },
+  {
+    "caseId": "navigation",
+    "arm": "B",
+    "correct": true,
+    "discovered": [
+      "app/layout.tsx",
+      "components/Navigation.test.tsx",
+      "components/Navigation.tsx"
+    ],
+    "changed": [
+      "components/Navigation.tsx"
+    ],
+    "toolCalls": 2,
+    "toolSequence": [
+      "Grep",
+      "Edit"
+    ],
+    "contextAnvilCalls": 0,
+    "contextBytes": 0,
+    "elapsedMs": 14189,
+    "toolErrors": 0,
+    "model": "claude-sonnet-5-5",
+    "connected": true,
+    "exitCode": 0,
+    "usage": {
+      "input_tokens": 6,
+      "cache_creation_input_tokens": 7211,
+      "cache_read_input_tokens": 13499,
+      "output_tokens": 483
+    }
+  },
+  {
+    "caseId": "navigation",
+    "arm": "A",
+    "correct": true,
+    "discovered": [
+      "app/layout.tsx",
+      "components/Navigation.test.tsx",
+      "components/Navigation.tsx"
+    ],
+    "changed": [
+      "components/Navigation.tsx"
+    ],
+    "toolCalls": 3,
+    "toolSequence": [
+      "Grep",
+      "Read",
+      "Edit"
+    ],
+    "contextAnvilCalls": 0,
+    "contextBytes": 0,
+    "elapsedMs": 29186,
+    "toolErrors": 0,
+    "model": "claude-sonnet-5-5",
+    "connected": false,
+    "exitCode": 0,
+    "usage": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 3187,
+      "cache_read_input_tokens": 22144,
+      "output_tokens": 603
+    }
+  },
+  {
+    "caseId": "members",
+    "arm": "A",
+    "correct": true,
+    "discovered": [
+      "app/Http/Controllers/UserController.php",
+      "database/migrations/2024_01_01_000000_create_users_table.php",
+      "resources/views/welcome.blade.php",
+      "routes/web.php",
+      "tests/Feature/UserTest.php"
+    ],
+    "changed": [
+      "routes/web.php"
+    ],
+    "toolCalls": 3,
+    "toolSequence": [
+      "Grep",
+      "Read",
+      "Edit"
+    ],
+    "contextAnvilCalls": 0,
+    "contextBytes": 0,
+    "elapsedMs": 15324,
+    "toolErrors": 0,
+    "model": "claude-sonnet-5-5",
+    "connected": false,
+    "exitCode": 0,
+    "usage": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 3190,
+      "cache_read_input_tokens": 22200,
+      "output_tokens": 574
+    }
+  },
+  {
+    "caseId": "members",
+    "arm": "B",
+    "correct": true,
+    "discovered": [
+      "app/Http/Controllers/UserController.php",
+      "database/migrations/2024_01_01_000000_create_users_table.php",
+      "resources/views/welcome.blade.php",
+      "routes/web.php",
+      "tests/Feature/UserTest.php"
+    ],
+    "changed": [
+      "routes/web.php"
+    ],
+    "toolCalls": 3,
+    "toolSequence": [
+      "Grep",
+      "Read",
+      "Edit"
+    ],
+    "contextAnvilCalls": 0,
+    "contextBytes": 0,
+    "elapsedMs": 9511,
+    "toolErrors": 0,
+    "model": "claude-sonnet-5-5",
+    "connected": true,
+    "exitCode": 0,
+    "usage": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 3190,
+      "cache_read_input_tokens": 24980,
+      "output_tokens": 594
+    }
+  }
+]

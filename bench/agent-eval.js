@@ -6,15 +6,16 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const [action, destination, caseId, arm] = process.argv.slice(2);
 const cases = [
   { id: 'slugify', prompt: 'Update slugify so leading and trailing whitespace does not produce hyphens. Preserve lowercasing and internal whitespace collapsing.', relevant: ['src/string-utils.js'] },
-  { id: 'greet', prompt: 'Update greet so an empty or whitespace-only name produces "hello stranger". Preserve the existing output for nonblank names.', relevant: ['src/index.js', 'test/index.test.js'] },
+  { id: 'navigation', fixture: 'next-app', prompt: 'Add a Contact link pointing to /contact to the main navigation. Preserve the existing links and navigation label.', relevant: ['components/Navigation.tsx'] },
+  { id: 'members', fixture: 'laravel-app', prompt: 'Add a GET /members alias for the existing users index action. Preserve the existing /users route and controller behavior.', relevant: ['routes/web.php', 'app/Http/Controllers/UserController.php'] },
 ];
-const fixture = fileURLToPath(new URL('../test/fixtures/node-lib', import.meta.url));
 assert.ok(destination, 'Use prepare <new-directory>, grade <directory> <case> <A|B>, or summarize <observations.json>.');
 
 if (action === 'prepare') {
   const root = path.resolve(destination);
   fs.mkdirSync(root);
   for (const item of cases) {
+    const fixture = fileURLToPath(new URL('../test/fixtures/' + (item.fixture ?? 'node-lib'), import.meta.url));
     for (const variant of ['A', 'B']) {
       fs.cpSync(fixture, path.join(root, item.id + '-' + variant), { recursive: true, errorOnExist: true, force: false });
     }
@@ -29,11 +30,18 @@ if (action === 'prepare') {
     assert.equal(slugify('  Hello   World  '), 'hello-world');
     assert.equal(slugify(' \t '), '');
     assert.equal(slugify('A B'), 'a-b');
+  } else if (caseId === 'navigation') {
+    const source = fs.readFileSync(path.join(repo, 'components/Navigation.tsx'), 'utf8');
+    for (const [url, label] of [['/', 'Home'], ['/about', 'About'], ['/contact', 'Contact']]) {
+      assert.ok(source.includes('<Link href="' + url + '">' + label + '</Link>')
+        || source.includes("<Link href='" + url + "'>" + label + '</Link>'));
+    }
+    assert.ok(source.includes('aria-label="Main"') || source.includes("aria-label='Main'"));
   } else {
-    const { greet } = await import(pathToFileURL(path.join(repo, 'src/index.js')));
-    assert.equal(greet(''), 'hello stranger');
-    assert.equal(greet(' \t '), 'hello stranger');
-    assert.equal(greet('a'), 'hello a');
+    const routes = fs.readFileSync(path.join(repo, 'routes/web.php'), 'utf8');
+    for (const url of ['/users', '/members']) {
+      assert.ok(routes.includes("Route::get('" + url + "', [UserController::class, 'index']);"));
+    }
   }
   console.log(JSON.stringify({ caseId, arm, correct: true }));
 } else if (action === 'summarize') {
