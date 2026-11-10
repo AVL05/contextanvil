@@ -105,6 +105,9 @@ export function renderDoctor(report) {
       if (f.evidence.length) {
         out.push(`          at ${f.evidence.slice(0, 4).map((e) => (e.line ? `${e.path}:${e.line}` : e.path)).join(', ')}${f.evidence.length > 4 ? ', ...' : ''}`);
       }
+      for (const e of f.evidence) {
+        if (e.excerpt) out.push(`          source (untrusted): ${e.excerpt}`);
+      }
       out.push(`          ${f.detail}`);
       if (f.recommendation) out.push(`          fix: ${f.recommendation}`);
     }

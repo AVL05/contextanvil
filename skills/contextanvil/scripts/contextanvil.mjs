@@ -4,7 +4,7 @@
 // no dependencies. Only the read-only commands are exposed here.
 import { readFileSync } from 'node:fs';
 
-const ALLOWED =new Set(['scan', 'doctor', 'context', '--help', '-h', 'help', '--version', '-v']);
+const ALLOWED = new Set(['scan', 'doctor', 'context', '--help', '-h', 'help', '--version', '-v']);
 const [major] = process.versions.node.split('.').map(Number);
 
 if (major < 22) {
@@ -18,7 +18,7 @@ if (args[0] === 'manifest') {
   process.exit(2);
 }
 if (args.length && !ALLOWED.has(args[0])) {
-  process.stderr.write(`contextanvil: unknown command "${args[0]}". Use scan, doctor or context.\n`);
+  process.stderr.write('contextanvil: unknown command. Use scan, doctor or context.\n');
   process.exit(2);
 }
 

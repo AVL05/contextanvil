@@ -133,7 +133,7 @@ export function snapshotRepository(root, options = {}) {
   checkText(text);
   validate(manifest);
   if (findSecrets(text).length) fail('Snapshot contains potentially sensitive metadata.');
-  return { manifest, text, root: scan.root,
+  return { manifest, text, root: reader.root,
     reads: reader.filesRead() + scan.ignoreIo.reads, bytesRead: reader.bytesRead() + scan.ignoreIo.bytes };
 }
 

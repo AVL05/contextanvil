@@ -73,14 +73,15 @@ export function detect(ctx) {
     if (isPlainObject(pkg?.prettier)) { prettier = pkg.prettier; prettierPath = 'package.json'; }
   }
   if (prettier) {
-    const keys = ['semi', 'singleQuote', 'tabWidth', 'useTabs', 'printWidth', 'trailingComma'];
-    const parts = keys.filter((k) => prettier[k] !== undefined).map((k) => `${k}=${JSON.stringify(prettier[k])}`);
+    const types = { semi: 'boolean', singleQuote: 'boolean', tabWidth: 'number', useTabs: 'boolean', printWidth: 'number', trailingComma: 'string' };
+    const entries = Object.entries(types).filter(([key, type]) => typeof prettier[key] === type).map(([key]) => [key, prettier[key]]);
+    const parts = entries.map(([key, value]) => `${key}=${JSON.stringify(value)}`);
     if (parts.length) {
       ctx.addFact({
         kind: 'convention', id: 'convention:prettier',
         claim: `Prettier options: ${parts.join(', ')}`,
         evidence: [{ path: prettierPath, line: prettierPath === 'package.json' ? ctx.jsonLine('package.json', 'prettier') : undefined }],
-        data: { options: Object.fromEntries(keys.filter((k) => prettier[k] !== undefined).map((k) => [k, prettier[k]])) },
+        data: { options: Object.fromEntries(entries) },
       });
     }
   }

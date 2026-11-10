@@ -10,6 +10,7 @@
  * catastrophic backtracking. test/security.test.js feeds adversarial inputs.
  */
 import { basename } from './paths.js';
+import { neutralize } from './sanitize.js';
 
 const SAFE_ENV_SUFFIXES = new Set(['example', 'sample', 'template', 'dist', 'defaults', 'schema']);
 const MAX_FINDINGS_PER_RULE = 200;
@@ -59,7 +60,6 @@ function looksLikeRealValue(value) {
  * a cheap `hint` substring that must be present for the rule to run at all.
  */
 const RULES = [
-  { type: 'private-key', hint: 'PRIVATE KEY', re: /-----BEGIN [A-Z ]{0,30}PRIVATE KEY-----[\s\S]{0,8000}?(?:-----END [A-Z ]{0,30}PRIVATE KEY-----|(?=-----BEGIN )|$)/g },
   { type: 'aws-access-key', re: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g },
   { type: 'github-token', re: /\b(?:gh[pousr]_[A-Za-z0-9]{36,255}|github_pat_[A-Za-z0-9_]{50,255})\b/g },
   { type: 'slack-token', re: /\bxox[abprs]-[A-Za-z0-9-]{10,200}\b/g },
@@ -99,6 +99,23 @@ function lineLocator(text) {
   };
 }
 
+// Locate delimiters with a linear pass and no limit on the body length. An
+// unclosed block is hidden through the next key header or end of input.
+function* privateKeyBlocks(text) {
+  if (!text.includes('PRIVATE KEY-----')) return;
+  let start = null;
+  for (const marker of text.matchAll(/-----(BEGIN|END) ([A-Z ]{0,30}PRIVATE KEY)-----/g)) {
+    if (marker[1] === 'BEGIN') {
+      if (start) yield [start.index, marker.index];
+      start = marker;
+    } else if (start && start[2] === marker[2]) {
+      yield [start.index, marker.index + marker[0].length];
+      start = null;
+    }
+  }
+  if (start) yield [start.index, text.length];
+}
+
 /**
  * Locate probable secrets. Never returns the secret value itself.
  * @returns {{ type: string, line: number }[]}
@@ -107,6 +124,13 @@ export function findSecrets(text) {
   const found = [];
   const seen = new Set();
   const lineOf = lineLocator(text);
+  for (const [start] of privateKeyBlocks(text)) {
+    const line = lineOf(start);
+    if (seen.has(`private-key:${line}`)) continue;
+    seen.add(`private-key:${line}`);
+    found.push({ type: 'private-key', line });
+    if (found.length >= MAX_FINDINGS_PER_RULE) break;
+  }
   for (const { type, re, accept, hint } of RULES) {
     if (hint && !text.includes(hint)) continue;
     re.lastIndex = 0;
@@ -127,6 +151,16 @@ export function findSecrets(text) {
 /** Replace probable secrets with `[REDACTED:<type>]`. */
 export function redact(text) {
   let out = text;
+  if (text.includes('PRIVATE KEY-----')) {
+    const chunks = [];
+    let cursor = 0;
+    for (const [start, end] of privateKeyBlocks(text)) {
+      const breaks = text.slice(start, end).match(/\r?\n/g) ?? [];
+      chunks.push(text.slice(cursor, start), '[REDACTED:private-key]', breaks.join(''));
+      cursor = end;
+    }
+    out = chunks.join('') + text.slice(cursor);
+  }
   for (const rule of RULES) {
     const { type, re, group, accept, hint } = rule;
     if (hint && !out.includes(hint)) continue;
@@ -142,4 +176,9 @@ export function redact(text) {
     });
   }
   return out;
+}
+
+/** Redact before neutralising so display markers cannot disrupt secret matching. */
+export function safeText(text) {
+  return neutralize(redact(text)).text;
 }

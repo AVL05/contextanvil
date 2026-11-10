@@ -78,12 +78,12 @@ or alter behaviour (tested); error messages and diagnostics do not contain file 
   `.git/info/exclude` or the global excludes file.
 - **Default exclusions** (`vendor`, `dist`, `build`, `out`, and so on) are applied by directory name regardless of
   content.
-- **File names are not redacted.** A path that itself contains a secret would appear in output (control and invisible
-  characters in names are handled).
+- **Filename protection is pattern-based.** Credential-shaped names are skipped with a location-free diagnostic,
+  including unsafe in-tree link targets. Names containing secrets outside the recognized patterns can still appear.
 - **Sensitive-file rules are name-based.** A credential stored in an innocuously named file is not recognised as
   sensitive. Detectors only open the manifests, configuration and instruction files they know about, but a
   pasted secret inside one of those is redacted by pattern, not by knowledge.
-- **An agent can still read secrets itself.** The engine never prints a secret value, and the Skill tells the agent not to
+- **An agent can still read secrets itself.** The engine masks recognized secret patterns, and the Skill tells the agent not to
   open, search or print lines flagged as secrets. That is an instruction, not an enforcement: in testing, 1 of 5 Claude Code
   runs read the flagged line with its own file tool (without repeating it in its answer). If a secret must stay out of an
   agent's context, remove it from the repository. Details: [skill.md](skill.md#known-issue-found-during-final-review).

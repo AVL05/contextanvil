@@ -2,6 +2,8 @@ import { extractInlineReferences, lines } from './core/markdown.js';
 import { byCodeUnit, dirname, normalizeRelative } from './core/paths.js';
 import { redact } from './core/secrets.js';
 import { DEFAULT_EXCLUDED_DIRS } from './core/walker.js';
+import { stripJsonc } from './detectors/context.js';
+import { commandProjects, instructionCommands } from './doctor-commands.js';
 import { readerFor } from './scanner.js';
 import { TOOL_NAME, VERSION } from './version.js';
 
@@ -17,7 +19,7 @@ const NEGATABLE = new Set(['ignore-instructions', 'reveal-secrets', 'skip-confir
 
 const INJECTION_PATTERNS = [
   ['ignore-instructions', /\b(ignore|disregard|forget|override)\b[^.\n]{0,40}\b(previous|prior|above|earlier|all|any)\b[^.\n]{0,30}\b(instructions?|rules?|guidelines?|prompts?)\b/i],
-  ['reveal-secrets', /\b(reveal|print|output|send|upload|exfiltrate|leak)\b[^.\n]{0,50}\b(secrets?|credentials?|api[ _-]?keys?|tokens?|passwords?|env(ironment)? variables?|system prompt)\b/i],
+  ['reveal-secrets', /\b(reveal|print|output|send|upload|exfiltrate|leak)[ \t]{1,8}(?:(?:the|all|your|our|raw|actual|stored|private)[ \t]{1,8}){0,4}(?:secrets?|credentials?|api[ _-]?keys?|tokens?|passwords?|env(?:ironment)? variables?|system prompt)\b/i],
   ['hide-from-user', /\b(do not|don't|never)\b[^.\n]{0,20}\b(tell|inform|notify|show)\b[^.\n]{0,20}\b(the )?user\b/i],
   ['skip-confirmation', /\bwithout\b[^.\n]{0,15}\b(asking|confirm(ation|ing)?|approval|permission)\b/i],
   ['disable-safety', /\b(disable|bypass|turn off|circumvent)\b[^.\n]{0,30}\b(safety|guardrails?|security (checks?|warnings?|controls?)|content (filters?|polic(y|ies)))\b/i],
@@ -27,66 +29,65 @@ const INJECTION_PATTERNS = [
   ['encoded-execution', /\bbase64\b[^\n|]*(-d|--decode)[^\n|]*\|\s*(ba|z)?sh\b/i],
 ];
 
-const MANAGER_BUILTINS = new Set([
-  'install', 'i', 'ci', 'add', 'remove', 'rm', 'uninstall', 'update', 'upgrade', 'up', 'init', 'publish', 'pack', 'audit',
-  'outdated', 'link', 'unlink', 'exec', 'x', 'dlx', 'create', 'config', 'cache', 'login', 'logout', 'whoami', 'view', 'info',
-  'ls', 'list', 'prune', 'dedupe', 'rebuild', 'root', 'bin', 'prefix', 'doctor', 'help', 'why', 'version', 'workspace',
-  'workspaces', 'patch', 'import', 'store', 'set', 'get', 'pm', 'run', 'run-script',
-]);
 const PLACEHOLDER_PATH = /(^|\/)(path|your|my|foo|bar|example|some|dir|folder)(\/|$)|\.\.\.|<|>/i;
+const GUIDE_IMPORT = /^\s*@([\w.@/-]{1,512}\.md)\s*$/i;
+const GUIDE_LINK = /^\[([^\]\r\n]{1,80})\]\(([\w.@/-]{1,400}\.md)\)$/i;
+const PATH_EXAMPLE = /\b(?:for example|sample (?:link|path)|placeholder|e\.g\.)\b/i;
+const EXTERNAL_SCOPE = /\b(?:another|external|upstream|separate|other) (?:git |github )?(?:repository|repo)\b/i;
+const GENERATED = /\b(?:generated|build output|artifacts?|written to|gitignored|not tracked|where binaries are built)\b/i;
+const SOURCE_LOCATION = /\b(?:source|implemented|implementation|hardcoded|checked[- ]in|tracked)\b/i;
 
 function finding(severity, category, id, title, detail, evidence = [], recommendation) {
   return { id, severity, category, title, detail, evidence, ...(recommendation ? { recommendation } : {}) };
 }
 
-/** Text that is clearly a command: fenced code lines and inline code spans (never prose). */
-function* codeSegments(text) {
-  for (const l of lines(text)) {
-    if (l.inFence) {
-      if (!/^ {0,3}(```|~~~)/.test(l.text)) yield { text: l.text, line: l.number };
-    } else {
-      for (const m of l.text.matchAll(/`([^`\n]+)`/g)) yield { text: m[1], line: l.number };
-    }
-  }
+function pathCandidates(doc, value, via) {
+  const parent = dirname(doc.path);
+  const relative = normalizeRelative(parent ? `${parent}/${value}` : value);
+  return [...new Set([relative, ...(via === 'code' ? [normalizeRelative(value)] : [])].filter(Boolean))];
 }
 
-function managersIn(text) {
-  const found = new Map();
-  for (const seg of codeSegments(text)) {
-    for (const m of seg.text.matchAll(/\b(npm|yarn|pnpm|bun)\s+(install|ci|i|add|run|test|start|build|dev|exec|x|dlx|lint)\b/g)) {
-      if (!found.has(m[1])) found.set(m[1], seg.line);
-    }
+function agentConfig(text) {
+  let config;
+  try {
+    config = JSON.parse(stripJsonc(text));
+  } catch {
+    return null;
   }
-  return found;
+  const hooks = config?.hooks && typeof config.hooks === 'object';
+  const servers = config?.mcpServers ?? config?.servers;
+  if (!hooks && (!servers || typeof servers !== 'object')) return null;
+  const entries = Object.values(servers ?? {});
+  return {
+    hooks,
+    local: entries.some((server) => typeof server?.command === 'string'),
+    remote: entries.some((server) => typeof server?.url === 'string'),
+  };
 }
 
-function scriptReferences(text) {
-  const refs = [];
-  for (const l of codeSegments(text)) {
-    for (const m of l.text.matchAll(/\b(npm|yarn|pnpm|bun)\s+(?:(?:run|run-script)\s+)?([A-Za-z][\w:.-]*)/g)) {
-      const explicitRun = /\b(?:run|run-script)\s/.test(m[0]);
-      const name = m[2];
-      if (!explicitRun && MANAGER_BUILTINS.has(name)) continue;
-      if (explicitRun && name === 'run') continue;
-      refs.push({ manager: m[1], name, line: l.line, text: m[0].replace(/\s+/g, ' ') });
-    }
-  }
-  return refs;
+function lifecycleDetail({ runner, name }) {
+  if (runner !== 'composer') return `Node package managers may invoke ${name} during installation or preparation, depending on the command and flags.`;
+  if (name === 'post-autoload-dump') return 'Composer may invoke this hook after regenerating the autoloader.';
+  const timing = name.startsWith('pre-') ? 'before' : 'after';
+  const event = name.includes('-update-') ? 'updating dependencies' : 'installing locked dependencies';
+  return `Composer may invoke this hook ${timing} ${event}.`;
 }
 
 /**
  * Diagnose the context configuration of a scanned repository.
  * Pure function of the scan; reads files only through the scan's safe reader.
  */
-export function diagnose(scan) {
+export function diagnose(scan, { excerpts = false } = {}) {
   const reader = readerFor(scan);
   const findings = [];
   const docs = scan.documents;
   const facts = scan.facts;
   const scripts = facts.filter((f) => f.kind === 'script' && !f.data.runner);
-  const scriptNames = new Set(scripts.map((f) => f.data.name));
   const hasNodeManifest = facts.some((f) => f.id === 'manifest:package.json' && f.confidence !== 'low');
-  const lockManagers = facts.filter((f) => f.kind === 'package-manager').map((f) => f.data.manager);
+  const docScopes = new Map(docs.map((d) => [d.path, d.scope]));
+  const independent = (doc) => !doc.symlinkTo || docScopes.get(doc.symlinkTo) !== doc.scope;
+  const projects = commandProjects(scan, reader);
+  const commands = docs.filter(independent).flatMap((d) => instructionCommands(d, projects));
 
   // ---- missing -------------------------------------------------------------
   if (!docs.length) {
@@ -109,8 +110,9 @@ export function diagnose(scan) {
     }
   }
   for (const d of docs) {
-    const nonHeading = d.text.split('\n').filter((l) => l.trim() && !/^\s*#/.test(l)).join('\n');
-    if (nonHeading.length < 80) {
+    const nonHeading = d.text.split('\n').filter((l) => l.trim() && !l.trimStart().startsWith('#')).join('\n').trim();
+    const imported = nonHeading.length <= 512 && (GUIDE_IMPORT.test(nonHeading) || GUIDE_LINK.test(nonHeading));
+    if (nonHeading.length < 80 && !imported && (!d.scope || !nonHeading)) {
       findings.push(finding('warning', 'missing', 'instruction-empty', `${d.path} has almost no content`,
         'The file contains less than 80 characters outside headings.', [{ path: d.path }], 'Describe build, test and style conventions, or remove the file.'));
     }
@@ -125,9 +127,10 @@ export function diagnose(scan) {
   const rootDocs = docs.filter((d) => d.scope === '');
   if (docs.length && hasNodeManifest) {
     for (const role of ['test', 'build']) {
-      const script = scripts.find((f) => f.data.role === role);
+      const script = scripts.find((f) => f.data.name === role);
       if (!script) continue;
-      const mentioned = rootDocs.some((d) => scriptReferences(d.text).some((r) => r.name === script.data.name) || d.text.toLowerCase().includes(script.data.command.toLowerCase()));
+      const mentioned = commands.some((command) => command.scope === '' && command.name === role)
+        || rootDocs.some((d) => d.text.toLowerCase().includes(script.data.command.toLowerCase()));
       if (!mentioned && rootDocs.length) {
         findings.push(finding('info', 'missing', `instructions-omit-${role}`, `Instructions do not mention the ${role} command`,
           `package.json defines a "${script.data.name}" script, but no root instruction file refers to it.`,
@@ -137,25 +140,29 @@ export function diagnose(scan) {
   }
 
   // ---- conflict ------------------------------------------------------------
-  const managerByDoc = new Map();
-  for (const d of docs) {
-    if (d.symlinkTo) continue;
-    const m = managersIn(d.text);
-    if (m.size) managerByDoc.set(d, m);
+  const managerByProject = new Map();
+  for (const command of commands) {
+    const project = projects.load(command.scope);
+    if (command.alternative || !project || (!command.install && project.scripts.has(command.name))) continue;
+    if (!managerByProject.has(project)) managerByProject.set(project, new Map());
+    const managers = managerByProject.get(project);
+    if (!managers.has(command.manager)) managers.set(command.manager, command);
   }
-  const mentionedManagers = new Set([...managerByDoc.values()].flatMap((m) => [...m.keys()]));
-  if (mentionedManagers.size > 1) {
-    const evidence = [];
-    for (const [d, m] of managerByDoc) for (const [mgr, line] of m) evidence.push({ path: d.path, line, note: mgr });
-    findings.push(finding('warning', 'conflict', 'conflicting-package-managers', 'Instructions mention different package managers',
-      `Commands for ${[...mentionedManagers].sort(byCodeUnit).join(', ')} appear in the instruction files. Agents may run the wrong one.`,
-      evidence, 'Standardise on one package manager across all instruction files.'));
-  } else if (mentionedManagers.size === 1 && lockManagers.length === 1 && !lockManagers.includes([...mentionedManagers][0])) {
-    const mgr = [...mentionedManagers][0];
-    const [d, m] = [...managerByDoc.entries()][0];
-    findings.push(finding('warning', 'conflict', 'instruction-lockfile-mismatch', `Instructions use ${mgr} but the project uses ${lockManagers[0]}`,
-      `The lockfile/packageManager field indicates ${lockManagers[0]}.`, [{ path: d.path, line: m.get(mgr) }, { path: scan.facts.find((f) => f.kind === 'package-manager').source }],
-      `Update the instructions to use ${lockManagers[0]}, or migrate the project.`));
+  for (const [project, managers] of managerByProject) {
+    const names = [...managers.keys()].sort(byCodeUnit);
+    if (names.length > 1 && [...managers.values()].some((command) => command.install)) {
+      const evidence = [...managers.values()].map(({ path, line, manager }) => ({ path, line, note: manager }));
+      findings.push(finding('warning', 'conflict', 'conflicting-package-managers', 'Instructions give conflicting package-manager guidance',
+        `Commands for ${names.join(', ')} apply to ${project.path}.`, evidence, 'Clarify which package manager owns this project.'));
+    } else if (project.manager) {
+      const command = [...managers.values()].find((c) => c.install && c.manager !== project.manager);
+      if (!command) continue;
+      findings.push(finding('warning', 'conflict', 'instruction-lockfile-mismatch',
+        `Instructions install with ${command.manager} but the project uses ${project.manager}`,
+        `The lockfile/packageManager field for ${project.path} indicates ${project.manager}.`,
+        [{ path: command.path, line: command.line }, ...project.managerEvidence],
+        `Verify the install workflow and document the command for ${project.manager}.`));
+    }
   }
   for (const diag of scan.diagnostics) {
     if (diag.code === 'multiple-lockfiles') {
@@ -177,40 +184,52 @@ export function diagnose(scan) {
   }
 
   // ---- stale ---------------------------------------------------------------
-  if (hasNodeManifest) {
-    for (const d of rootDocs) {
-      const reported = new Set();
-      for (const ref of scriptReferences(d.text)) {
-        const key = `${d.path}:${ref.name}`;
-        if (reported.has(key) || scriptNames.has(ref.name)) continue;
-        reported.add(key);
-        findings.push(finding('warning', 'stale', 'missing-script-reference', `${d.path} references script "${ref.name}" that package.json does not define`,
-          `"${ref.text}" appears in the instructions but package.json has no such script. Heuristic: medium confidence.`,
-          [{ path: d.path, line: ref.line }], 'Update the instruction or add the script.'));
-      }
-    }
+  const reportedScripts = new Set();
+  for (const ref of commands) {
+    if (!ref.name || ref.alternative) continue;
+    const project = projects.load(ref.scope);
+    if (!project || project.scripts.has(ref.name)) continue;
+    const key = JSON.stringify([ref.path, project.path, ref.name]);
+    if (reportedScripts.has(key)) continue;
+    reportedScripts.add(key);
+    findings.push(finding('warning', 'stale', 'missing-script-reference', `${ref.path} references script "${ref.name}" that ${project.path} does not define`,
+      `"${ref.text}" was checked against ${project.path} using the documented scope. Heuristic: medium confidence.`,
+      [{ path: ref.path, line: ref.line }, { path: project.path }], 'Verify the working directory and update the script reference.'));
   }
   for (const d of docs) {
+    if (!independent(d)) continue;
     const reported = new Set();
-    for (const ref of extractInlineReferences(d.text)) {
+    const docLines = [...lines(d.text)];
+    const imports = docLines.filter((line) => !line.inFence && line.text.length <= 512)
+      .flatMap((line) => {
+        const match = GUIDE_IMPORT.exec(line.text);
+        return match ? [{ value: match[1], line: line.number, via: 'import' }] : [];
+      });
+    for (const ref of [...imports, ...extractInlineReferences(d.text)].sort((a, b) => a.line - b.line)) {
       const value = ref.value.replace(/[#?].*$/, '').replace(/[.,;:]+$/, '');
       if (!value || /^[a-z][a-z0-9+.-]*:/i.test(value) || value.startsWith('//') || value.startsWith('~') || value.startsWith('/')) continue;
       if (/[*{}$|=\s]/.test(value) || PLACEHOLDER_PATH.test(value)) continue;
-      if (!value.includes('/') || !(/\.[A-Za-z0-9]{1,6}$/.test(value) || value.endsWith('/'))) continue;
+      if ((ref.via === 'code' && !value.includes('/')) || !(/\.[A-Za-z0-9]{1,6}$/.test(value) || value.endsWith('/'))) continue;
       if (!/^[\w@.\-/]+$/.test(value)) continue;
-      const fromRoot = normalizeRelative(value);
-      const fromDoc = normalizeRelative(`${dirname(d.path) ? `${dirname(d.path)}/` : ''}${value}`);
-      if (!fromRoot) continue;
-      const first = fromRoot.split('/')[0];
-      if (DEFAULT_EXCLUDED_DIRS.has(first) || fromRoot.startsWith('storage/') || fromRoot.startsWith('bootstrap/cache')) continue;
-      if (reader.exists(fromRoot) || (fromDoc && reader.exists(fromDoc))) continue;
+      const context = docLines.slice(Math.max(0, ref.line - 2), ref.line + 1)
+        .filter((line) => !line.inFence && line.text.length <= 4000).map((line) => line.text.trim()).join(' ');
+      const sourceLine = docLines[ref.line - 1].text;
+      if (PATH_EXAMPLE.test(sourceLine) || EXTERNAL_SCOPE.test(sourceLine)
+        || (/(?:\bvendored\b|\bdependency\b)/i.test(context) && /^(?:lib|vendor)\//.test(value))
+        || GENERATED.test(sourceLine)) continue;
+      const candidates = pathCandidates(d, value, ref.via);
+      if (!candidates.length || candidates.some((p) => reader.exists(p))) continue;
+      const target = normalizeRelative(value) ?? candidates[0];
+      const first = target.split('/')[0];
+      if ((DEFAULT_EXCLUDED_DIRS.has(first) && !(first === 'build' && SOURCE_LOCATION.test(context) && candidates.some((p) => reader.exists(dirname(p)))))
+        || (target.startsWith('target/') && reader.has('Cargo.toml')) || target.startsWith('storage/') || target.startsWith('bootstrap/cache')) continue;
       // A partial path such as "features/" is usually relative to some other directory (src/, app/, ...).
-      if (scan.files.some((f) => f.path.startsWith(`${fromRoot}/`) || f.path.includes(`/${fromRoot}/`) || f.path.endsWith(`/${fromRoot}`))) continue;
-      if (reported.has(fromRoot)) continue;
-      reported.add(fromRoot);
-      findings.push(finding('warning', 'stale', 'missing-path-reference', `${d.path} references ${fromRoot}, which does not exist`,
-        'The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).',
-        [{ path: d.path, line: ref.line }], 'Fix the path or remove the reference.'));
+      if (ref.via === 'code' && scan.files.some((f) => f.path.startsWith(`${target}/`) || f.path.includes(`/${target}/`) || f.path.endsWith(`/${target}`))) continue;
+      if (reported.has(target)) continue;
+      reported.add(target);
+      findings.push(finding('warning', 'stale', 'missing-path-reference', `${d.path} references ${target}, which does not exist`,
+        `No matching path was found from the instruction directory${ref.via === 'code' ? ' or repository root' : ''}. Heuristic: medium confidence.`,
+        [{ path: d.path, line: ref.line }], 'Verify the intended scope, then correct or qualify the reference.'));
       if (reported.size >= 15) break;
     }
   }
@@ -277,30 +296,41 @@ export function diagnose(scan) {
     }
   }
   for (const s of scan.sensitiveFiles) {
-    findings.push(finding('warning', 'unsafe', 'sensitive-file-not-ignored', `${s.path} (${s.reason}) is not covered by ignore rules`,
-      'ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.', [{ path: s.path }], 'Add it to .gitignore (and remove it from history if it was committed).'));
+    findings.push(finding('info', 'unsafe', 'sensitive-file-not-ignored', `${s.path} (${s.reason}) is not covered by ignore rules`,
+      'The filename suggests this file may contain sensitive data. ContextAnvil did not read it or check whether Git tracks it.',
+      [{ path: s.path }], 'Verify the intended role and tracking status before deciding whether to ignore or secure the file.'));
   }
   if (!scan.files.some((f) => f.path === '.gitignore')) {
     findings.push(finding('info', 'unsafe', 'no-gitignore', 'No .gitignore at the repository root', 'Without ignore rules, build output and local files may end up in agent context.', [], 'Add a .gitignore.'));
   }
   for (const f of facts.filter((x) => x.kind === 'script' && x.data.runsOnInstall)) {
-    findings.push(finding('info', 'unsafe', 'install-time-script', `Script "${f.data.name}" runs automatically during install`,
-      'ContextAnvil never executes it, but agents that run an install will.', [{ path: f.evidence[0].path, line: f.evidence[0].line }]));
+    findings.push(finding('info', 'unsafe', 'install-time-script', `Lifecycle script "${f.data.name}" can run automatically`,
+      lifecycleDetail(f.data), [{ path: f.evidence[0].path, line: f.evidence[0].line }],
+      'Review this script and the package-manager command before installing dependencies.'));
   }
   for (const f of facts.filter((x) => x.kind === 'config' && x.data.category === 'agent')) {
-    const text = reader.read(f.source) ?? '';
-    const hooks = /"hooks"\s*:/.test(text);
-    const mcp = /"mcpServers"\s*:|"servers"\s*:/.test(text) || /mcp\.json$/.test(f.source);
-    if (hooks || mcp) {
-      findings.push(finding('info', 'unsafe', 'agent-executable-config', `${f.source} can run commands on an agent's behalf`,
-        `${hooks ? 'It defines hooks. ' : ''}${mcp ? 'It configures MCP servers. ' : ''}Review the commands before trusting this repository with an agent.`, [{ path: f.source }]));
-    }
+    const config = agentConfig(reader.read(f.source) ?? '');
+    if (!config) continue;
+    const behavior = [
+      config.hooks && 'It declares an agent hook section.',
+      config.local && 'It declares local MCP commands.',
+      config.remote && 'It declares remote MCP endpoints.',
+    ].filter(Boolean).join(' ');
+    findings.push(finding('info', 'unsafe', 'agent-executable-config', `${f.source} declares agent integration settings`,
+      behavior || 'No local command or remote endpoint was identified in the settings.',
+      [{ path: f.source }], 'Review the settings before enabling the integration.'));
   }
 
   // ---- scan quality ----------------------------------------------------------
   for (const diag of scan.diagnostics) {
-    if (['malformed-json', 'instruction-unreadable', 'file-limit', 'depth-limit', 'symlink-escape', 'unreadable-directory', 'file-too-large', 'detector-failed'].includes(diag.code)) {
-      findings.push(finding(diag.level === 'error' ? 'error' : 'warning', 'scan', diag.code, diag.message, 'This limits how complete the analysis is.', diag.path ? [{ path: diag.path, line: diag.line }] : []));
+    if (['malformed-json', 'instruction-unreadable', 'file-limit', 'depth-limit', 'symlink-escape', 'unreadable-directory', 'file-too-large', 'detector-failed',
+      'credential-filename', 'unsafe-symlink-target'].includes(diag.code)) {
+      const testFixture = diag.code === 'malformed-json' && diag.path?.split('/').slice(0, -1).includes('fixtures')
+        && diag.path.split('/').some((part) => ['test', 'tests', '__tests__'].includes(part));
+      const severity = diag.level === 'error' ? 'error' : testFixture ? 'info' : 'warning';
+      findings.push(finding(severity, 'scan', diag.code, diag.message,
+        testFixture ? 'This file is in a test fixture directory and may be intentionally invalid.' : 'This limits how complete the analysis is.',
+        diag.path ? [{ path: diag.path, line: diag.line }] : []));
     }
   }
 
@@ -319,6 +349,18 @@ export function diagnose(scan) {
 
   const summary = { error: 0, warning: 0, info: 0 };
   for (const f of sorted) summary[f.severity]++;
+  if (excerpts) {
+    const documents = new Map(docs.map((doc) => [doc.path, { lines: doc.text.split(/\r?\n/), secrets: new Set(doc.secretFindings.map((s) => s.line)) }]));
+    for (const f of sorted) {
+      if (f.category !== 'stale' && f.category !== 'conflict') continue;
+      for (const evidence of f.evidence.slice(0, 4)) {
+        const doc = documents.get(evidence.path);
+        const line = doc?.lines[evidence.line - 1]?.trim();
+        if (!line || doc.secrets.has(evidence.line) || line.includes('[REDACTED:')) continue;
+        evidence.excerpt = line.length > 120 ? `${line.slice(0, 117)}...` : line;
+      }
+    }
+  }
   return { schemaVersion: DOCTOR_SCHEMA_VERSION, tool: { name: TOOL_NAME, version: VERSION }, root: scan.root, summary, findings: sorted };
 }
 

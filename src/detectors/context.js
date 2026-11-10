@@ -1,4 +1,5 @@
 import { createFact } from '../core/facts.js';
+import { safeText } from '../core/secrets.js';
 
 /** Strip comments and trailing commas so tsconfig-style JSONC can be parsed with JSON.parse. */
 export function stripJsonc(text) {
@@ -84,7 +85,7 @@ export function createDetectorContext({ root, files, reader, diagnostics }) {
     readJson: (rel) => parseJson(rel, { jsonc: false }),
     readJsonc: (rel) => parseJson(rel, { jsonc: true }),
     diag(level, code, message, path, extra = {}) {
-      diagnostics.push({ level, code, message, ...(path ? { path } : {}), ...extra });
+      diagnostics.push({ level, code, message: safeText(message), ...(path ? { path: safeText(path) } : {}), ...extra });
     },
 
     /** 1-based line of the first line matching a string or RegExp, or undefined. */

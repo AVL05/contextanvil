@@ -1,7 +1,7 @@
 import { parseSections } from '../core/markdown.js';
 import { dirname } from '../core/paths.js';
 import { neutralize } from '../core/sanitize.js';
-import { findSecrets, redact } from '../core/secrets.js';
+import { findSecrets, safeText } from '../core/secrets.js';
 
 export const id = 'instructions';
 
@@ -27,9 +27,9 @@ export function detect(ctx) {
       continue;
     }
     const secretFindings = findSecrets(meta.text);
-    const { text: visible, found: hidden } = neutralize(meta.text);
-    const safeText = redact(visible);
-    const { headings, sections } = parseSections(safeText);
+    const { found: hidden } = neutralize(meta.text);
+    const text = safeText(meta.text);
+    const { headings, sections } = parseSections(text);
     const scope = /^\.(github|cursor)\//.test(f.path) || f.path.startsWith('.cursorrules') ? '' : dirname(f.path);
     const doc = {
       path: f.path,
@@ -38,13 +38,13 @@ export function detect(ctx) {
       bytes: meta.bytes,
       estimatedTokens: Math.ceil(meta.bytes / 4),
       sha256: meta.sha256.slice(0, 16),
-      lines: safeText.split('\n').length,
+      lines: text.split('\n').length,
       symlinkTo: f.symlinkTo ?? null,
       headings,
       sections,
       secretFindings,
       hiddenCharacters: hidden,
-      text: safeText,
+      text,
     };
     ctx.documents.push(doc);
     ctx.addFact({

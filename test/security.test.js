@@ -9,9 +9,10 @@ import { createReader } from '../src/core/reader.js';
 import { neutralize } from '../src/core/sanitize.js';
 import { classifySensitivePath, findSecrets, redact } from '../src/core/secrets.js';
 import { diagnose } from '../src/doctor.js';
-import { renderDoctor, renderScan } from '../src/render/text.js';
+import { run } from '../src/cli/index.js';
+import { renderDoctor, renderScan, scanToJson } from '../src/render/text.js';
 import { scanRepository } from '../src/scanner.js';
-import { FAKE, makeRepo, trySymlink } from './helpers.js';
+import { FAKE, collector, makeRepo, trySymlink } from './helpers.js';
 
 test('detected secret-shaped script names do not leak through fact identifiers', (t) => {
   const secret = FAKE.aws();
@@ -20,6 +21,80 @@ test('detected secret-shaped script names do not leak through fact identifiers',
   const scan = scanRepository(repo.root);
   assert.ok(scan.facts.some((fact) => fact.kind === 'script'));
   assert.ok(!JSON.stringify(scan.facts).includes(secret));
+});
+
+test('secret-shaped filenames, symbol names and script names stay out of analysis output', (t) => {
+  const secret = FAKE.aws();
+  const repo = makeRepo({
+    [`src/${secret}/index.js`]: 'export const inaccessible = true;',
+    [`test-${secret}.js`]: 'export const inaccessible = true;',
+    [`.env.${secret}`]: 'ignored secret contents',
+    'src/entry.js': `export const ${secret} = 1;\nexport const entry = true;\n`,
+    'package.json': JSON.stringify({ scripts: { [secret]: 'echo ok' } }),
+    'AGENTS.md': `# Entry guide\n\nKey: ${secret}\nChange the entry symbol in \`src/entry.js\`.\n`,
+  });
+  t.after(repo.cleanup);
+  const scan = scanRepository(repo.root);
+  const pack = compileContext(scan, 'Change the entry symbol in src/entry.js');
+  const taskPack = compileContext(scan, `Change the entry symbol in src/entry.js using ${secret}`);
+  const doctor = diagnose(scan);
+  for (const output of [scan, scanToJson(scan, { includeFiles: true }), pack, taskPack, doctor, renderScan(scan), renderDoctor(doctor)]) {
+    assert.ok(!JSON.stringify(output).includes(secret));
+  }
+  assert.ok(pack.files.find((f) => f.path === 'src/entry.js')?.symbols.some((s) => s.name === 'entry'));
+  assert.ok(scan.diagnostics.some((d) => d.code === 'credential-filename' && d.path === undefined));
+});
+
+test('CLI error messages redact credential-shaped root paths in text and JSON', async (t) => {
+  const repo = makeRepo();
+  t.after(repo.cleanup);
+  const missing = path.join(repo.root, FAKE.github());
+  for (const args of [['doctor', missing], ['manifest', 'create', missing, '--output', path.join(repo.base, 'manifest'), '--json']]) {
+    const stdout = collector();
+    const stderr = collector();
+    assert.equal(await run(args, { stdout, stderr }), 3);
+    assert.ok(!(stdout.text + stderr.text).includes(FAKE.github()));
+    assert.match(stdout.text + stderr.text, /\[REDACTED:github-token\]/);
+  }
+});
+
+test('manifest diagnostics and invalid nested config data do not disclose credential-shaped values', (t) => {
+  const secret = FAKE.github();
+  const repo = makeRepo({
+    'package.json': JSON.stringify({ packageManager: `${secret}@1` }),
+    'package-lock.json': '{}',
+    '.prettierrc.json': JSON.stringify({ semi: true, tabWidth: { [secret]: { value: secret } } }),
+  });
+  t.after(repo.cleanup);
+  const scan = scanRepository(repo.root);
+  for (const output of [scan, scanToJson(scan), diagnose(scan), compileContext(scan, 'Check formatting conventions')]) {
+    assert.ok(!JSON.stringify(output).includes(secret));
+  }
+  assert.deepEqual(scan.facts.find((fact) => fact.id === 'convention:prettier').data.options, { semi: true });
+});
+
+test('redaction preserves original evidence lines and omits secret-bearing excerpts', (t) => {
+  const repo = makeRepo({
+    'AGENTS.md': ['# Guide', FAKE.privateKey(), 'Read the [guide](docs/absent.md).', `Do not expose ${FAKE.aws()}.`].join('\n'),
+  });
+  t.after(repo.cleanup);
+  const report = diagnose(scanRepository(repo.root), { excerpts: true });
+  const stale = report.findings.find((f) => f.id === 'missing-path-reference');
+  assert.deepEqual(stale.evidence[0], { path: 'AGENTS.md', line: 5, excerpt: 'Read the [guide](docs/absent.md).' });
+  for (const f of report.findings.filter((item) => item.id === 'secret-in-instructions')) {
+    assert.ok(f.evidence.every((e) => !e.excerpt));
+  }
+});
+
+test('an oversized or unfinished private-key block is hidden while preserving its line boundaries', () => {
+  const [header, body, footer] = FAKE.privateKey().split('\n');
+  const lines = Array.from({ length: 160 }, () => body);
+  const input = [header, ...lines, footer, 'after the key'].join('\r\n');
+  const redacted = redact(input);
+  assert.ok(!redacted.includes(body));
+  assert.equal(redacted.split('\r\n').length, input.split('\r\n').length);
+  assert.match(redacted, /after the key$/);
+  assert.ok(!redact([header, ...lines].join('\n')).includes(body));
 });
 
 function timed(fn) {
@@ -40,6 +115,7 @@ const HOSTILE = {
   'long heading line': `# ${'x '.repeat(N / 4)}${'#'.repeat(10)}`,
   'many spaces after hash': `#${' '.repeat(N)}x`,
   'many secret-like lines': Array.from({ length: 4000 }, (_, i) => `token_${i} = ${'Ab1'.repeat(8)}${i}`).join('\n'),
+  'repeated shell quotes and link markers': '`[";'.repeat(N / 4),
 };
 
 test('regression: hostile text cannot cause catastrophic regex backtracking (secrets, headings)', () => {

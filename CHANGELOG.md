@@ -5,6 +5,14 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 
 ## [Unreleased]
 
+- Check supported Node commands against the owning package, including nested guides, literal directory changes
+  and single-workspace selectors. Treat explicit alternatives, conditional examples and output snippets conservatively.
+- Resolve local guide links and imports in context. Allow short forwarding files and scoped overrides. Explain
+  evidence and uncertainty for path, package-manager, lifecycle and agent-configuration findings.
+- Add opt-in `doctor --excerpts` for short, redacted instruction evidence. Preserve line numbers across
+  multi-line redaction and protect credential-shaped filenames, diagnostics and context symbols.
+- Preserve the original Doctor accuracy benchmark and separate development tests from future holdout evaluation.
+
 - Add the `contextanvil` Agent Skill (`skills/contextanvil/`) for Claude Code and OpenAI Codex, installable with
   `npx skills add AVL05/contextanvil`. It bundles the analysis engine and a read-only launcher, so no CLI install is needed.
   Add `npm run skill:sync` / `skill:check`, `test/skill.test.js` and `docs/skill.md`. The README is now organised around the Skill.

@@ -1,3 +1,5 @@
+import { safeText } from './core/secrets.js';
+
 /** Exit codes used by the CLI. */
 export const EXIT = Object.freeze({
   OK: 0,
@@ -17,7 +19,7 @@ export class ContextAnvilError extends Error {
    * @param {{ exitCode?: number }} [options]
    */
   constructor(code, message, { exitCode = EXIT.RUNTIME } = {}) {
-    super(message);
+    super(safeText(message));
     this.name = 'ContextAnvilError';
     this.code = code;
     this.exitCode = exitCode;

@@ -2,6 +2,7 @@ import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { parseByteSize } from '../compiler/budget.js';
 import { compileContext } from '../compiler/compile.js';
+import { safeText } from '../core/secrets.js';
 import { diagnose, exceedsThreshold } from '../doctor.js';
 import { ContextAnvilError, EXIT, usageError } from '../errors.js';
 import { diffManifest, snapshotRepository } from '../manifest/model.js';
@@ -21,7 +22,7 @@ const LIMIT_FLAGS = {
 const COMMANDS = {
   scan: { options: { json: { type: 'boolean' }, files: { type: 'boolean' }, ...LIMIT_FLAGS } },
   context: { options: { json: { type: 'boolean' }, budget: { type: 'string' }, top: { type: 'string' }, 'max-content-files': { type: 'string' }, ...LIMIT_FLAGS } },
-  doctor: { options: { json: { type: 'boolean' }, 'fail-on': { type: 'string' }, ...LIMIT_FLAGS } },
+  doctor: { options: { json: { type: 'boolean' }, excerpts: { type: 'boolean' }, 'fail-on': { type: 'string' }, ...LIMIT_FLAGS } },
   manifest: { options: { json: { type: 'boolean' }, output: { type: 'string' }, manifest: { type: 'string' }, ...LIMIT_FLAGS } },
 };
 
@@ -89,7 +90,10 @@ function runManifest(positionals, values, env) {
  * @returns {Promise<number>} Exit code.
  */
 export async function run(argv, io = {}) {
-  const env = { stdout: io.stdout ?? process.stdout, stderr: io.stderr ?? process.stderr, cwd: io.cwd ?? process.cwd() };
+  const ascii = (stream) => ({
+    write: (value) => stream.write(value.replace(/[^\x09\x0a\x0d\x20-\x7e]/g, (ch) => '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0'))),
+  });
+  const env = { stdout: ascii(io.stdout ?? process.stdout), stderr: ascii(io.stderr ?? process.stderr), cwd: io.cwd ?? process.cwd() };
   try {
     return execute(argv, env);
   } catch (err) {
@@ -103,10 +107,10 @@ export async function run(argv, io = {}) {
       return err.exitCode;
     }
     if (err?.code?.startsWith?.('ERR_PARSE_ARGS')) {
-      env.stderr.write(`contextanvil: ${err.message}\nRun "contextanvil --help" for usage.\n`);
+      env.stderr.write(`contextanvil: ${safeText(err.message)}\nRun "contextanvil --help" for usage.\n`);
       return EXIT.USAGE;
     }
-    env.stderr.write(`contextanvil: unexpected ${err?.name ?? 'error'}${process.env.CONTEXTANVIL_DEBUG ? `\n${err?.stack}` : ' (set CONTEXTANVIL_DEBUG=1 for details)'}\n`);
+    env.stderr.write('contextanvil: unexpected analysis error\n');
     return EXIT.RUNTIME;
   }
 }
@@ -163,7 +167,7 @@ function execute(argv, env) {
     else env.stdout.write(pack.rendered);
     return EXIT.OK;
   }
-  const report = diagnose(scan);
+  const report = diagnose(scan, { excerpts: values.excerpts });
   if (values.json) writeJson(env, report);
   else env.stdout.write(renderDoctor(report));
   return exceedsThreshold(report, values['fail-on'] ?? 'warning') ? EXIT.FINDINGS : EXIT.OK;
