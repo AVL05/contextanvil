@@ -84,8 +84,7 @@ checks that the secret is not printed, and compares a digest of the repository b
 3. **Symlinks.** The installer links `.claude/skills/contextanvil` to the `.agents` copy. This worked for Claude Code on
    Windows 11 in the test. Where creating symlinks is not permitted, use `--copy`.
 4. **Linux and macOS** were not tested with the real agents. The engine's own test suite runs on all three platforms in CI.
-5. **Install from GitHub.** `npx skills add AVL05/contextanvil` resolves against the default branch. See the pull request for the
-   result of installing from the feature branch.
+5. **Install from GitHub.** `npx skills add AVL05/contextanvil` resolves against the default branch, so it works only after this work is merged. Installing from the pushed branch with `npx skills add AVL05/contextanvil#feat/agent-skill` was verified: the same files were installed and the launcher ran. The bare command was not run against `main`, because `main` has no Skill yet.
 6. **Language.** Codex answered in Spanish in testing (the machine's Codex configuration, not the Skill); the Skill content is English.
 
 ## What was not tested
