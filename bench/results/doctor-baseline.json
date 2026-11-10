@@ -1,0 +1,3154 @@
+{
+  "baselineEngine": "c8b2624b743902db0cdbd9f3eeb5ee91b85aa2bb",
+  "engineHead": "c8b2624b743902db0cdbd9f3eeb5ee91b85aa2bb",
+  "node": "v24.22.2",
+  "platform": "win32",
+  "freeze": {
+    "README.md": "93ba6fdfcabd5897aee2d4d12993f14f38453eee28097be61c233680fb279a4e",
+    "corpus.json": "10034d3f53d7fb57f2e1230eae77d8ad401a95151a66ca3a11f9526d0595d229",
+    "labels.tsv": "01a88a1f97cfed8305e2cfde4e3589ef5b9e2804f3191e6c8a4dafeeab16c270"
+  },
+  "summary": {
+    "overall": {
+      "TP": 3,
+      "FP": 10,
+      "FN": 3,
+      "TN": 26,
+      "ambiguous": 14,
+      "unsupported": 9,
+      "precision": {
+        "success": 3,
+        "total": 13,
+        "value": 0.23076923076923078,
+        "wilson95": [
+          0.08179379092465713,
+          0.5025687399512693
+        ]
+      },
+      "recall": {
+        "success": 3,
+        "total": 6,
+        "value": 0.5,
+        "wilson95": [
+          0.18761280689940868,
+          0.8123871931005913
+        ]
+      },
+      "f1": 0.3157894736842105,
+      "falsePositiveRate": {
+        "success": 10,
+        "total": 36,
+        "value": 0.2777777777777778,
+        "wilson95": [
+          0.15848170025813796,
+          0.43992800216345146
+        ]
+      },
+      "evidenceAccuracy": {
+        "success": 3,
+        "total": 3,
+        "value": 1,
+        "wilson95": [
+          0.43849391955098227,
+          1
+        ]
+      },
+      "severityAccuracy": {
+        "success": 3,
+        "total": 3,
+        "value": 1,
+        "wilson95": [
+          0.43849391955098227,
+          1
+        ]
+      }
+    },
+    "byCategory": {
+      "missing": {
+        "TP": 0,
+        "FP": 3,
+        "FN": 0,
+        "TN": 2,
+        "ambiguous": 12,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 3,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.5615060804490177
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 3,
+          "total": 5,
+          "value": 0.6,
+          "wilson95": [
+            0.23071993220883708,
+            0.8823817688407467
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "conflict": {
+        "TP": 0,
+        "FP": 2,
+        "FN": 0,
+        "TN": 2,
+        "ambiguous": 2,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 2,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.6576280471103807
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 2,
+          "total": 4,
+          "value": 0.5,
+          "wilson95": [
+            0.15003570882017148,
+            0.8499642911798285
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "stale": {
+        "TP": 0,
+        "FP": 5,
+        "FN": 3,
+        "TN": 21,
+        "ambiguous": 0,
+        "unsupported": 6,
+        "precision": {
+          "success": 0,
+          "total": 5,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.43449149475208104
+          ]
+        },
+        "recall": {
+          "success": 0,
+          "total": 3,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.5615060804490177
+          ]
+        },
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 5,
+          "total": 26,
+          "value": 0.19230769230769232,
+          "wilson95": [
+            0.08506935771788268,
+            0.3787663615465
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "unsafe": {
+        "TP": 3,
+        "FP": 0,
+        "FN": 0,
+        "TN": 1,
+        "ambiguous": 0,
+        "unsupported": 3,
+        "precision": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        },
+        "recall": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        },
+        "f1": 1,
+        "falsePositiveRate": {
+          "success": 0,
+          "total": 1,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.7934567085261071
+          ]
+        },
+        "evidenceAccuracy": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        },
+        "severityAccuracy": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        }
+      },
+      "scan": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      }
+    },
+    "byEcosystem": {
+      "Next.js / React": {
+        "TP": 0,
+        "FP": 2,
+        "FN": 0,
+        "TN": 2,
+        "ambiguous": 2,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 2,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.6576280471103807
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 2,
+          "total": 4,
+          "value": 0.5,
+          "wilson95": [
+            0.15003570882017148,
+            0.8499642911798285
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "Rust": {
+        "TP": 0,
+        "FP": 2,
+        "FN": 0,
+        "TN": 3,
+        "ambiguous": 1,
+        "unsupported": 2,
+        "precision": {
+          "success": 0,
+          "total": 2,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.6576280471103807
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 2,
+          "total": 5,
+          "value": 0.4,
+          "wilson95": [
+            0.1176182311592533,
+            0.769280067791163
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "Go": {
+        "TP": 0,
+        "FP": 1,
+        "FN": 0,
+        "TN": 4,
+        "ambiguous": 2,
+        "unsupported": 2,
+        "precision": {
+          "success": 0,
+          "total": 1,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.7934567085261071
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 1,
+          "total": 5,
+          "value": 0.2,
+          "wilson95": [
+            0.03622316096978745,
+            0.6244717358814613
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "TypeScript / React": {
+        "TP": 0,
+        "FP": 2,
+        "FN": 2,
+        "TN": 10,
+        "ambiguous": 1,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 2,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.6576280471103807
+          ]
+        },
+        "recall": {
+          "success": 0,
+          "total": 2,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.6576280471103807
+          ]
+        },
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 2,
+          "total": 12,
+          "value": 0.16666666666666666,
+          "wilson95": [
+            0.04696414761482223,
+            0.44803635738467273
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "JavaScript": {
+        "TP": 0,
+        "FP": 1,
+        "FN": 0,
+        "TN": 2,
+        "ambiguous": 1,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 1,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.7934567085261071
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 1,
+          "total": 3,
+          "value": 0.3333333333333333,
+          "wilson95": [
+            0.0614903152761605,
+            0.7923450448735121
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "PHP / Laravel": {
+        "TP": 2,
+        "FP": 1,
+        "FN": 0,
+        "TN": 1,
+        "ambiguous": 3,
+        "unsupported": 4,
+        "precision": {
+          "success": 2,
+          "total": 3,
+          "value": 0.6666666666666666,
+          "wilson95": [
+            0.2076549551264879,
+            0.9385096847238394
+          ]
+        },
+        "recall": {
+          "success": 2,
+          "total": 2,
+          "value": 1,
+          "wilson95": [
+            0.34237195288961925,
+            1
+          ]
+        },
+        "f1": 0.8,
+        "falsePositiveRate": {
+          "success": 1,
+          "total": 2,
+          "value": 0.5,
+          "wilson95": [
+            0.09452865480086614,
+            0.9054713451991339
+          ]
+        },
+        "evidenceAccuracy": {
+          "success": 2,
+          "total": 2,
+          "value": 1,
+          "wilson95": [
+            0.34237195288961925,
+            1
+          ]
+        },
+        "severityAccuracy": {
+          "success": 2,
+          "total": 2,
+          "value": 1,
+          "wilson95": [
+            0.34237195288961925,
+            1
+          ]
+        }
+      },
+      "Python": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 2,
+        "ambiguous": 1,
+        "unsupported": 1,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": {
+          "success": 0,
+          "total": 2,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.6576280471103807
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "PHP": {
+        "TP": 1,
+        "FP": 1,
+        "FN": 1,
+        "TN": 2,
+        "ambiguous": 3,
+        "unsupported": 0,
+        "precision": {
+          "success": 1,
+          "total": 2,
+          "value": 0.5,
+          "wilson95": [
+            0.09452865480086614,
+            0.9054713451991339
+          ]
+        },
+        "recall": {
+          "success": 1,
+          "total": 2,
+          "value": 0.5,
+          "wilson95": [
+            0.09452865480086614,
+            0.9054713451991339
+          ]
+        },
+        "f1": 0.5,
+        "falsePositiveRate": {
+          "success": 1,
+          "total": 3,
+          "value": 0.3333333333333333,
+          "wilson95": [
+            0.0614903152761605,
+            0.7923450448735121
+          ]
+        },
+        "evidenceAccuracy": {
+          "success": 1,
+          "total": 1,
+          "value": 1,
+          "wilson95": [
+            0.20654329147389294,
+            1
+          ]
+        },
+        "severityAccuracy": {
+          "success": 1,
+          "total": 1,
+          "value": 1,
+          "wilson95": [
+            0.20654329147389294,
+            1
+          ]
+        }
+      }
+    },
+    "byId": {
+      "agents-without-claude": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 4,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "cargo-command-reference": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 2,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "claude-without-agents": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 1,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "composer-script-reference": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 1,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "conflicting-package-managers": {
+        "TP": 0,
+        "FP": 2,
+        "FN": 0,
+        "TN": 1,
+        "ambiguous": 0,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 2,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.6576280471103807
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 2,
+          "total": 3,
+          "value": 0.6666666666666666,
+          "wilson95": [
+            0.2076549551264879,
+            0.9385096847238394
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "duplicate-instructions": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 1,
+        "ambiguous": 1,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": {
+          "success": 0,
+          "total": 1,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.7934567085261071
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "go-command-reference": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 2,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "install-time-script": {
+        "TP": 3,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 0,
+        "precision": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        },
+        "recall": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        },
+        "f1": 1,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        },
+        "severityAccuracy": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        }
+      },
+      "instruction-empty": {
+        "TP": 0,
+        "FP": 3,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 3,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.5615060804490177
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 3,
+          "total": 3,
+          "value": 1,
+          "wilson95": [
+            0.43849391955098227,
+            1
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "instruction-large": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 1,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "instruction-lockfile-mismatch": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 1,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "instruction-oversized": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 3,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "instructions-omit-build": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 1,
+        "ambiguous": 2,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": {
+          "success": 0,
+          "total": 1,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.7934567085261071
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "instructions-omit-test": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 1,
+        "ambiguous": 1,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": {
+          "success": 0,
+          "total": 1,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.7934567085261071
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "missing-path-reference": {
+        "TP": 0,
+        "FP": 3,
+        "FN": 3,
+        "TN": 16,
+        "ambiguous": 0,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 3,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.5615060804490177
+          ]
+        },
+        "recall": {
+          "success": 0,
+          "total": 3,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.5615060804490177
+          ]
+        },
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 3,
+          "total": 19,
+          "value": 0.15789473684210525,
+          "wilson95": [
+            0.055203710399278266,
+            0.3756592764317668
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "missing-script-reference": {
+        "TP": 0,
+        "FP": 2,
+        "FN": 0,
+        "TN": 5,
+        "ambiguous": 0,
+        "unsupported": 0,
+        "precision": {
+          "success": 0,
+          "total": 2,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.6576280471103807
+          ]
+        },
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": {
+          "success": 2,
+          "total": 7,
+          "value": 0.2857142857142857,
+          "wilson95": [
+            0.0822171657090155,
+            0.6410709098517873
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "python-command-reference": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 1,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "remote-powershell-execution": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 1,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "remote-shell-substitution": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 0,
+        "ambiguous": 0,
+        "unsupported": 2,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": null,
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      },
+      "suspicious-instruction:skip-confirmation": {
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "TN": 1,
+        "ambiguous": 0,
+        "unsupported": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "falsePositiveRate": {
+          "success": 0,
+          "total": 1,
+          "value": 0,
+          "wilson95": [
+            0,
+            0.7934567085261071
+          ]
+        },
+        "evidenceAccuracy": null,
+        "severityAccuracy": null
+      }
+    }
+  },
+  "cases": [
+    {
+      "row": 2,
+      "repo": "agentsmd/agents.md",
+      "category": "conflict",
+      "id": "conflicting-package-managers",
+      "verdict": "harmless",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "Line 10 explicitly gives interchangeable alternatives for the same dev script.",
+      "ecosystem": "Next.js / React",
+      "findings": [
+        1
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 3,
+      "repo": "agentsmd/agents.md",
+      "category": "conflict",
+      "id": "instruction-lockfile-mismatch",
+      "verdict": "ambiguous",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "package.json:26 and pnpm-lock.yaml establish pnpm, but the guide presents npm script invocations as alternatives, not as dependency installation instructions.",
+      "ecosystem": "Next.js / React",
+      "findings": [],
+      "result": "ambiguous"
+    },
+    {
+      "row": 4,
+      "repo": "agentsmd/agents.md",
+      "category": "stale",
+      "id": "missing-script-reference",
+      "verdict": "harmless",
+      "path": "AGENTS.md",
+      "line": 36,
+      "key": "\"test\"",
+      "severity": null,
+      "rationale": "The test entry is explicitly conditional and there is no test script in package.json.",
+      "ecosystem": "Next.js / React",
+      "findings": [
+        2
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 5,
+      "repo": "agentsmd/agents.md",
+      "category": "stale",
+      "id": "missing-script-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 10,
+      "key": "\"dev\"",
+      "severity": null,
+      "rationale": "All three invocations resolve the declared dev script after dependencies are installed.",
+      "ecosystem": "Next.js / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 6,
+      "repo": "agentsmd/agents.md",
+      "category": "missing",
+      "id": "agents-without-claude",
+      "verdict": "ambiguous",
+      "path": "AGENTS.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The absence is factual, but support for a second agent is not specified.",
+      "ecosystem": "Next.js / React",
+      "findings": [
+        3
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 7,
+      "repo": "agentsmd/agents.md",
+      "category": "missing",
+      "id": "instructions-omit-build",
+      "verdict": "non-issue",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The build command is documented with a deliberate prohibition for interactive sessions.",
+      "ecosystem": "Next.js / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 46,
+      "repo": "astral-sh/ruff",
+      "category": "missing",
+      "id": "instruction-empty",
+      "verdict": "non-issue",
+      "path": "CLAUDE.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The file imports the root guide.",
+      "ecosystem": "Rust",
+      "findings": [
+        1
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 47,
+      "repo": "astral-sh/ruff",
+      "category": "missing",
+      "id": "instruction-large",
+      "verdict": "ambiguous",
+      "path": "AGENTS.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "Size is observable but harm from the cross-project guide was not measured.",
+      "ecosystem": "Rust",
+      "findings": [
+        7
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 48,
+      "repo": "astral-sh/ruff",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 148,
+      "key": "generics/legacy",
+      "severity": null,
+      "rationale": "The paragraph is relative to the mdtest suite; the folder exists inside that suite.",
+      "ecosystem": "Rust",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 49,
+      "repo": "astral-sh/ruff",
+      "category": "stale",
+      "id": "cargo-command-reference",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 95,
+      "key": null,
+      "severity": null,
+      "rationale": "Cargo target validation is outside the Node script checker.",
+      "ecosystem": "Rust",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 62,
+      "repo": "charmbracelet/crush",
+      "category": "missing",
+      "id": "instruction-empty",
+      "verdict": "non-issue",
+      "path": "internal/cmd/stats/AGENTS.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "One focused formatting instruction adds useful local guidance on top of the root guide.",
+      "ecosystem": "Go",
+      "findings": [
+        1
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 63,
+      "repo": "charmbracelet/crush",
+      "category": "missing",
+      "id": "agents-without-claude",
+      "verdict": "ambiguous",
+      "path": "AGENTS.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The absence of a second agent guide is factual. The need is unknown.",
+      "ecosystem": "Go",
+      "findings": [
+        3
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 64,
+      "repo": "charmbracelet/crush",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 12,
+      "key": "github.com/charmbracelet/crush",
+      "severity": null,
+      "rationale": "This is the module identifier declared in go.mod, not a file.",
+      "ecosystem": "Go",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 65,
+      "repo": "charmbracelet/crush",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 197,
+      "key": "internal/ui/AGENTS.md",
+      "severity": null,
+      "rationale": "The nested instruction file is tracked.",
+      "ecosystem": "Go",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 66,
+      "repo": "charmbracelet/crush",
+      "category": "stale",
+      "id": "go-command-reference",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 105,
+      "key": null,
+      "severity": null,
+      "rationale": "Validation of Go or Task commands is outside scope.",
+      "ecosystem": "Go",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 8,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "issue",
+      "path": "design/AGENTS.md",
+      "line": 35,
+      "key": "rfc-state-sync.md",
+      "severity": "warning",
+      "rationale": "The linked RFC is absent from the pinned tree.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "FN"
+    },
+    {
+      "row": 9,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "issue",
+      "path": "design/AGENTS.md",
+      "line": 36,
+      "key": "rfc-state-v2-batching.md",
+      "severity": "warning",
+      "rationale": "The linked RFC is absent from the pinned tree.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "FN"
+    },
+    {
+      "row": 10,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 90,
+      "key": "agents/tsconfig",
+      "severity": null,
+      "rationale": "This is an exported package subpath, declared in packages/agents/package.json.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 11,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 140,
+      "key": "design/test-coverage-matrix.md",
+      "severity": null,
+      "rationale": "The cited design file is present.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 12,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "packages/agents/AGENTS.md",
+      "line": 409,
+      "key": "mcp/server/index.ts",
+      "severity": null,
+      "rationale": "The layout prose uses paths under the package src directory. The server source is present there.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 13,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "packages/agents/AGENTS.md",
+      "line": 409,
+      "key": "mcp/client/index.ts",
+      "severity": null,
+      "rationale": "The layout prose uses paths under the package src directory. The client source is present there.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 14,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "packages/agents/AGENTS.md",
+      "line": 409,
+      "key": "mcp/server/legacy-agent.ts",
+      "severity": null,
+      "rationale": "The layout prose uses paths under the package src directory. The legacy source is present there.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 15,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "harmless",
+      "path": "examples/AGENTS.md",
+      "line": 179,
+      "key": "src/styles.css",
+      "severity": null,
+      "rationale": "The path describes the template inside each full-stack example.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 16,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "harmless",
+      "path": "docs/AGENTS.md",
+      "line": 34,
+      "key": "state.md",
+      "severity": null,
+      "rationale": "The line illustrates package-relative link syntax.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 17,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "harmless",
+      "path": "agent-think/AGENTS.md",
+      "line": 144,
+      "key": "ca/warp-ca.crt",
+      "severity": null,
+      "rationale": "The CA file is deliberately gitignored and supplied by setup.",
+      "ecosystem": "TypeScript / React",
+      "findings": [
+        3
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 18,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-script-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 69,
+      "key": "\"test:react\"",
+      "severity": null,
+      "rationale": "The script is defined in root package.json.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 19,
+      "repo": "cloudflare/agents",
+      "category": "stale",
+      "id": "missing-script-reference",
+      "verdict": "non-issue",
+      "path": "packages/agents/AGENTS.md",
+      "line": 396,
+      "key": "\"evals\"",
+      "severity": null,
+      "rationale": "The script belongs to packages/agents/package.json.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 20,
+      "repo": "cloudflare/agents",
+      "category": "missing",
+      "id": "instructions-omit-test",
+      "verdict": "non-issue",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The root instructions explicitly document pnpm run test.",
+      "ecosystem": "TypeScript / React",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 21,
+      "repo": "cloudflare/agents",
+      "category": "conflict",
+      "id": "conflicting-package-managers",
+      "verdict": "non-issue",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "pnpm is the repository workflow. npm in the prose describes published packages.",
+      "ecosystem": "TypeScript / React",
+      "findings": [
+        2
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 22,
+      "repo": "cloudflare/agents",
+      "category": "missing",
+      "id": "instruction-oversized",
+      "verdict": "ambiguous",
+      "path": "packages/agents/AGENTS.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "This is a scoped reference. Size alone does not establish a context problem.",
+      "ecosystem": "TypeScript / React",
+      "findings": [
+        1
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 23,
+      "repo": "eslint/eslint",
+      "category": "stale",
+      "id": "missing-script-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 42,
+      "key": "\"start\"",
+      "severity": null,
+      "rationale": "The command explicitly changes into docs and docs/package.json defines start.",
+      "ecosystem": "JavaScript",
+      "findings": [
+        1
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 24,
+      "repo": "eslint/eslint",
+      "category": "stale",
+      "id": "missing-script-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 26,
+      "key": "\"test\"",
+      "severity": null,
+      "rationale": "The root manifest defines test.",
+      "ecosystem": "JavaScript",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 25,
+      "repo": "eslint/eslint",
+      "category": "missing",
+      "id": "instructions-omit-build",
+      "verdict": "ambiguous",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The first build-like script updates documentation links. It is not a canonical build entry point.",
+      "ecosystem": "JavaScript",
+      "findings": [
+        7
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 26,
+      "repo": "eslint/eslint",
+      "category": "conflict",
+      "id": "conflicting-package-managers",
+      "verdict": "non-issue",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The listed commands use npm. The test:pnpm script name is not a pnpm invocation.",
+      "ecosystem": "JavaScript",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 34,
+      "repo": "filamentphp/filament",
+      "category": "missing",
+      "id": "instruction-empty",
+      "verdict": "non-issue",
+      "path": "CLAUDE.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The short file imports the existing AGENTS.md rather than omitting instructions.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [
+        1
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 35,
+      "repo": "filamentphp/filament",
+      "category": "missing",
+      "id": "instructions-omit-test",
+      "verdict": "ambiguous",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "Composer is the documented main test flow. The JS-specific test command could still benefit contributors.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [
+        6
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 36,
+      "repo": "filamentphp/filament",
+      "category": "stale",
+      "id": "missing-script-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 36,
+      "key": "\"build-demo\"",
+      "severity": null,
+      "rationale": "package.json defines this command. The destination is conditional.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 37,
+      "repo": "filamentphp/filament",
+      "category": "stale",
+      "id": "composer-script-reference",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 31,
+      "key": null,
+      "severity": null,
+      "rationale": "Composer script declarations are outside the stale command checker.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 27,
+      "repo": "laravel/laravel",
+      "category": "conflict",
+      "id": "duplicate-instructions",
+      "verdict": "ambiguous",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The two entry files are identical. It is unknown whether the template generation makes duplication intentional.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [
+        3
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 28,
+      "repo": "laravel/laravel",
+      "category": "missing",
+      "id": "instructions-omit-build",
+      "verdict": "ambiguous",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The root guide is an explicit bootstrap for generated project instructions.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [
+        2
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 29,
+      "repo": "laravel/laravel",
+      "category": "unsafe",
+      "id": "install-time-script",
+      "verdict": "security-issue",
+      "path": "composer.json",
+      "line": 51,
+      "key": "post-autoload-dump",
+      "severity": "info",
+      "rationale": "Composer declares an automatic lifecycle hook. Surface it as a review signal.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [
+        4
+      ],
+      "result": "TP",
+      "evidenceCorrect": true,
+      "severityCorrect": true
+    },
+    {
+      "row": 30,
+      "repo": "laravel/laravel",
+      "category": "unsafe",
+      "id": "install-time-script",
+      "verdict": "security-issue",
+      "path": "composer.json",
+      "line": 55,
+      "key": "post-update-cmd",
+      "severity": "info",
+      "rationale": "Composer declares an update lifecycle hook, which is relevant to setup involving dependency updates.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [
+        5
+      ],
+      "result": "TP",
+      "evidenceCorrect": true,
+      "severityCorrect": true
+    },
+    {
+      "row": 31,
+      "repo": "laravel/laravel",
+      "category": "unsafe",
+      "id": "remote-shell-substitution",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 20,
+      "key": null,
+      "severity": null,
+      "rationale": "The bootstrap asks the user to run downloaded code through shell substitution. The existing pipe detector does not cover this form.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 32,
+      "repo": "laravel/laravel",
+      "category": "unsafe",
+      "id": "remote-powershell-execution",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 26,
+      "key": null,
+      "severity": null,
+      "rationale": "The Windows prerequisite downloads and evaluates a script. There is no corresponding detector.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 33,
+      "repo": "laravel/laravel",
+      "category": "unsafe",
+      "id": "remote-shell-substitution",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 32,
+      "key": null,
+      "severity": null,
+      "rationale": "The Linux prerequisite also invokes remote shell code via substitution.",
+      "ecosystem": "PHP / Laravel",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 58,
+      "repo": "modelcontextprotocol/go-sdk",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 28,
+      "key": "scripts/server-conformance.sh",
+      "severity": null,
+      "rationale": "The referenced script exists in the source snapshot.",
+      "ecosystem": "Go",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 59,
+      "repo": "modelcontextprotocol/go-sdk",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 29,
+      "key": "scripts/client-conformance.sh",
+      "severity": null,
+      "rationale": "The referenced script exists in the source snapshot.",
+      "ecosystem": "Go",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 60,
+      "repo": "modelcontextprotocol/go-sdk",
+      "category": "stale",
+      "id": "go-command-reference",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 22,
+      "key": null,
+      "severity": null,
+      "rationale": "Validation of Go package/test targets is outside scope.",
+      "ecosystem": "Go",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 61,
+      "repo": "modelcontextprotocol/go-sdk",
+      "category": "missing",
+      "id": "agents-without-claude",
+      "verdict": "ambiguous",
+      "path": "AGENTS.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The second agent client is not a documented target.",
+      "ecosystem": "Go",
+      "findings": [
+        1
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 50,
+      "repo": "nushell/nushell",
+      "category": "conflict",
+      "id": "duplicate-instructions",
+      "verdict": "non-issue",
+      "path": null,
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "CLAUDE.md is an in-tree symlink to AGENTS.md and cannot drift independently.",
+      "ecosystem": "Rust",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 51,
+      "repo": "nushell/nushell",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "harmless",
+      "path": "AGENTS.md",
+      "line": 15,
+      "key": "target/debug",
+      "severity": null,
+      "rationale": "Cargo build output is explicitly described as generated and configurable.",
+      "ecosystem": "Rust",
+      "findings": [
+        1
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 52,
+      "repo": "nushell/nushell",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 18,
+      "key": "devdocs/rust_style.md",
+      "severity": null,
+      "rationale": "The linked Rust style guide is tracked.",
+      "ecosystem": "Rust",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 53,
+      "repo": "nushell/nushell",
+      "category": "stale",
+      "id": "cargo-command-reference",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 17,
+      "key": null,
+      "severity": null,
+      "rationale": "Cargo test target correctness is outside scope.",
+      "ecosystem": "Rust",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 54,
+      "repo": "openai/openai-python",
+      "category": "missing",
+      "id": "agents-without-claude",
+      "verdict": "ambiguous",
+      "path": "AGENTS.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "There is no stated requirement to support a second agent.",
+      "ecosystem": "Python",
+      "findings": [
+        7
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 55,
+      "repo": "openai/openai-python",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 33,
+      "key": ".github/workflows/ci.yml",
+      "severity": null,
+      "rationale": "The workflow exists at the pinned commit.",
+      "ecosystem": "Python",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 56,
+      "repo": "openai/openai-python",
+      "category": "unsafe",
+      "id": "suspicious-instruction:skip-confirmation",
+      "verdict": "non-issue",
+      "path": "AGENTS.md",
+      "line": 34,
+      "key": null,
+      "severity": null,
+      "rationale": "The workflow description explicitly restricts privileges and disallows automatic merging.",
+      "ecosystem": "Python",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 57,
+      "repo": "openai/openai-python",
+      "category": "stale",
+      "id": "python-command-reference",
+      "verdict": "unsupported",
+      "path": "AGENTS.md",
+      "line": 20,
+      "key": null,
+      "severity": null,
+      "rationale": "Python version consistency across manifests and CI is outside scope.",
+      "ecosystem": "Python",
+      "findings": [],
+      "result": "unsupported"
+    },
+    {
+      "row": 38,
+      "repo": "phpstan/phpstan-src",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "issue",
+      "path": "turbo-ext/CLAUDE.md",
+      "line": 72,
+      "key": "build/TurboAttributeCollector.php",
+      "severity": "warning",
+      "rationale": "The stated source location omits PHPStan/Build. The file is at build/PHPStan/Build/TurboAttributeCollector.php.",
+      "ecosystem": "PHP",
+      "findings": [],
+      "result": "FN"
+    },
+    {
+      "row": 39,
+      "repo": "phpstan/phpstan-src",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "harmless",
+      "path": "turbo-ext/CLAUDE.md",
+      "line": 627,
+      "key": "lib/PhpParser/ParserAbstract.php",
+      "severity": null,
+      "rationale": "The preceding sentence explicitly scopes the path to a vendored dependency.",
+      "ecosystem": "PHP",
+      "findings": [
+        5
+      ],
+      "result": "FP"
+    },
+    {
+      "row": 40,
+      "repo": "phpstan/phpstan-src",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "non-issue",
+      "path": "turbo-ext/CLAUDE.md",
+      "line": 372,
+      "key": "PN_REDUCE_SPLIT_1/2",
+      "severity": null,
+      "rationale": "This is compact notation for two C symbols, not a filesystem path.",
+      "ecosystem": "PHP",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 41,
+      "repo": "phpstan/phpstan-src",
+      "category": "stale",
+      "id": "missing-path-reference",
+      "verdict": "harmless",
+      "path": "turbo-ext/CLAUDE.md",
+      "line": 69,
+      "key": "vendor/turbo-class-map.php",
+      "severity": null,
+      "rationale": "The instructions explicitly identify the file as generated by Composer.",
+      "ecosystem": "PHP",
+      "findings": [],
+      "result": "TN"
+    },
+    {
+      "row": 42,
+      "repo": "phpstan/phpstan-src",
+      "category": "missing",
+      "id": "claude-without-agents",
+      "verdict": "ambiguous",
+      "path": "CLAUDE.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The project does not promise instructions for other clients.",
+      "ecosystem": "PHP",
+      "findings": [
+        6
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 43,
+      "repo": "phpstan/phpstan-src",
+      "category": "missing",
+      "id": "instruction-oversized",
+      "verdict": "ambiguous",
+      "path": "CLAUDE.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The measured length is large, but audience and context cost are policy decisions.",
+      "ecosystem": "PHP",
+      "findings": [
+        1
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 44,
+      "repo": "phpstan/phpstan-src",
+      "category": "missing",
+      "id": "instruction-oversized",
+      "verdict": "ambiguous",
+      "path": "turbo-ext/CLAUDE.md",
+      "line": null,
+      "key": null,
+      "severity": null,
+      "rationale": "The long reference is scoped to the extension directory.",
+      "ecosystem": "PHP",
+      "findings": [
+        2
+      ],
+      "result": "ambiguous"
+    },
+    {
+      "row": 45,
+      "repo": "phpstan/phpstan-src",
+      "category": "unsafe",
+      "id": "install-time-script",
+      "verdict": "security-issue",
+      "path": "composer.json",
+      "line": 138,
+      "key": "post-autoload-dump",
+      "severity": "info",
+      "rationale": "The pinned Composer script conditionally invokes the tracked generator. Surface the hook without inferring malicious behavior.",
+      "ecosystem": "PHP",
+      "findings": [
+        7
+      ],
+      "result": "TP",
+      "evidenceCorrect": true,
+      "severityCorrect": true
+    }
+  ],
+  "unmatched": [
+    {
+      "repo": "astral-sh/ruff",
+      "ecosystem": "Rust",
+      "finding": 2
+    },
+    {
+      "repo": "astral-sh/ruff",
+      "ecosystem": "Rust",
+      "finding": 3
+    },
+    {
+      "repo": "astral-sh/ruff",
+      "ecosystem": "Rust",
+      "finding": 4
+    },
+    {
+      "repo": "astral-sh/ruff",
+      "ecosystem": "Rust",
+      "finding": 5
+    },
+    {
+      "repo": "astral-sh/ruff",
+      "ecosystem": "Rust",
+      "finding": 6
+    },
+    {
+      "repo": "astral-sh/ruff",
+      "ecosystem": "Rust",
+      "finding": 8
+    },
+    {
+      "repo": "charmbracelet/crush",
+      "ecosystem": "Go",
+      "finding": 2
+    },
+    {
+      "repo": "cloudflare/agents",
+      "ecosystem": "TypeScript / React",
+      "finding": 4
+    },
+    {
+      "repo": "cloudflare/agents",
+      "ecosystem": "TypeScript / React",
+      "finding": 5
+    },
+    {
+      "repo": "cloudflare/agents",
+      "ecosystem": "TypeScript / React",
+      "finding": 6
+    },
+    {
+      "repo": "cloudflare/agents",
+      "ecosystem": "TypeScript / React",
+      "finding": 7
+    },
+    {
+      "repo": "cloudflare/agents",
+      "ecosystem": "TypeScript / React",
+      "finding": 8
+    },
+    {
+      "repo": "eslint/eslint",
+      "ecosystem": "JavaScript",
+      "finding": 2
+    },
+    {
+      "repo": "eslint/eslint",
+      "ecosystem": "JavaScript",
+      "finding": 3
+    },
+    {
+      "repo": "eslint/eslint",
+      "ecosystem": "JavaScript",
+      "finding": 4
+    },
+    {
+      "repo": "eslint/eslint",
+      "ecosystem": "JavaScript",
+      "finding": 5
+    },
+    {
+      "repo": "eslint/eslint",
+      "ecosystem": "JavaScript",
+      "finding": 6
+    },
+    {
+      "repo": "filamentphp/filament",
+      "ecosystem": "PHP / Laravel",
+      "finding": 2
+    },
+    {
+      "repo": "filamentphp/filament",
+      "ecosystem": "PHP / Laravel",
+      "finding": 3
+    },
+    {
+      "repo": "filamentphp/filament",
+      "ecosystem": "PHP / Laravel",
+      "finding": 4
+    },
+    {
+      "repo": "filamentphp/filament",
+      "ecosystem": "PHP / Laravel",
+      "finding": 5
+    },
+    {
+      "repo": "filamentphp/filament",
+      "ecosystem": "PHP / Laravel",
+      "finding": 7
+    },
+    {
+      "repo": "laravel/laravel",
+      "ecosystem": "PHP / Laravel",
+      "finding": 1
+    },
+    {
+      "repo": "nushell/nushell",
+      "ecosystem": "Rust",
+      "finding": 2
+    },
+    {
+      "repo": "openai/openai-python",
+      "ecosystem": "Python",
+      "finding": 1
+    },
+    {
+      "repo": "openai/openai-python",
+      "ecosystem": "Python",
+      "finding": 2
+    },
+    {
+      "repo": "openai/openai-python",
+      "ecosystem": "Python",
+      "finding": 3
+    },
+    {
+      "repo": "openai/openai-python",
+      "ecosystem": "Python",
+      "finding": 4
+    },
+    {
+      "repo": "openai/openai-python",
+      "ecosystem": "Python",
+      "finding": 5
+    },
+    {
+      "repo": "openai/openai-python",
+      "ecosystem": "Python",
+      "finding": 6
+    },
+    {
+      "repo": "phpstan/phpstan-src",
+      "ecosystem": "PHP",
+      "finding": 3
+    },
+    {
+      "repo": "phpstan/phpstan-src",
+      "ecosystem": "PHP",
+      "finding": 4
+    }
+  ],
+  "reports": [
+    {
+      "repo": "agentsmd/agents.md",
+      "commit": "d001185d792eb6402a58e4cbef1c228b309ec25d",
+      "ecosystem": "Next.js / React",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 1
+        },
+        "findings": [
+          {
+            "id": "conflicting-package-managers",
+            "severity": "warning",
+            "category": "conflict",
+            "title": "Instructions mention different package managers",
+            "detail": "Commands for npm, pnpm, yarn appear in the instruction files. Agents may run the wrong one.",
+            "evidence": [
+              {
+                "path": "AGENTS.md",
+                "line": 8,
+                "note": "npm"
+              },
+              {
+                "path": "AGENTS.md",
+                "line": 10,
+                "note": "pnpm"
+              },
+              {
+                "path": "AGENTS.md",
+                "line": 10,
+                "note": "yarn"
+              }
+            ],
+            "recommendation": "Standardise on one package manager across all instruction files."
+          },
+          {
+            "id": "missing-script-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "AGENTS.md references script \"test\" that package.json does not define",
+            "detail": "\"npm run test\" appears in the instructions but package.json has no such script. Heuristic: medium confidence.",
+            "evidence": [
+              {
+                "path": "AGENTS.md",
+                "line": 36
+              }
+            ],
+            "recommendation": "Update the instruction or add the script."
+          },
+          {
+            "id": "agents-without-claude",
+            "severity": "info",
+            "category": "missing",
+            "title": "AGENTS.md exists but CLAUDE.md does not",
+            "detail": "Tools that read CLAUDE.md will not see your AGENTS.md unless CLAUDE.md points to it.",
+            "evidence": [
+              {
+                "path": "AGENTS.md"
+              }
+            ],
+            "recommendation": "Consider a CLAUDE.md that references AGENTS.md instead of duplicating it."
+          }
+        ]
+      }
+    },
+    {
+      "repo": "astral-sh/ruff",
+      "commit": "3cd7c518989cb1f0656db144c8caf42b97d58673",
+      "ecosystem": "Rust",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 6,
+          "info": 2
+        },
+        "findings": [
+          {
+            "id": "instruction-empty",
+            "severity": "warning",
+            "category": "missing",
+            "title": "CLAUDE.md has almost no content",
+            "detail": "The file contains less than 80 characters outside headings.",
+            "evidence": [
+              {
+                "path": "CLAUDE.md"
+              }
+            ],
+            "recommendation": "Describe build, test and style conventions, or remove the file."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "playground/.npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "playground/.npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "playground/api/.dev.vars (environment file) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "playground/api/.dev.vars"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "playground/api/.npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "playground/api/.npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "playground/deploy/.npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "playground/deploy/.npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "scripts/ty_benchmark/.npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "scripts/ty_benchmark/.npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "instruction-large",
+            "severity": "info",
+            "category": "missing",
+            "title": "AGENTS.md is large (~5095 estimated tokens)",
+            "detail": "Consider whether every section is needed in every session.",
+            "evidence": [
+              {
+                "path": "AGENTS.md"
+              }
+            ]
+          },
+          {
+            "id": "agent-executable-config",
+            "severity": "info",
+            "category": "unsafe",
+            "title": ".claude/settings.json can run commands on an agent's behalf",
+            "detail": "It defines hooks. Review the commands before trusting this repository with an agent.",
+            "evidence": [
+              {
+                "path": ".claude/settings.json"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo": "charmbracelet/crush",
+      "commit": "fedf5b82b392d2e02226b196c83f593c03d27803",
+      "ecosystem": "Go",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 1
+        },
+        "findings": [
+          {
+            "id": "instruction-empty",
+            "severity": "warning",
+            "category": "missing",
+            "title": "internal/cmd/stats/AGENTS.md has almost no content",
+            "detail": "The file contains less than 80 characters outside headings.",
+            "evidence": [
+              {
+                "path": "internal/cmd/stats/AGENTS.md"
+              }
+            ],
+            "recommendation": "Describe build, test and style conventions, or remove the file."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": ".envrc (environment file) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": ".envrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "agents-without-claude",
+            "severity": "info",
+            "category": "missing",
+            "title": "AGENTS.md exists but CLAUDE.md does not",
+            "detail": "Tools that read CLAUDE.md will not see your AGENTS.md unless CLAUDE.md points to it.",
+            "evidence": [
+              {
+                "path": "AGENTS.md"
+              }
+            ],
+            "recommendation": "Consider a CLAUDE.md that references AGENTS.md instead of duplicating it."
+          }
+        ]
+      }
+    },
+    {
+      "repo": "cloudflare/agents",
+      "commit": "55752144ac2c553e0ea8047b37c69e073ecd1755",
+      "ecosystem": "TypeScript / React",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 6,
+          "info": 2
+        },
+        "findings": [
+          {
+            "id": "instruction-oversized",
+            "severity": "warning",
+            "category": "missing",
+            "title": "packages/agents/AGENTS.md is very large (~8949 estimated tokens)",
+            "detail": "Large instruction files consume context in every session that loads them and dilute the important rules.",
+            "evidence": [
+              {
+                "path": "packages/agents/AGENTS.md"
+              }
+            ],
+            "recommendation": "Split it by directory scope or trim to the rules that change behaviour."
+          },
+          {
+            "id": "conflicting-package-managers",
+            "severity": "warning",
+            "category": "conflict",
+            "title": "Instructions mention different package managers",
+            "detail": "Commands for npm, pnpm appear in the instruction files. Agents may run the wrong one.",
+            "evidence": [
+              {
+                "path": "AGENTS.md",
+                "line": 55,
+                "note": "pnpm"
+              },
+              {
+                "path": "agent-think/AGENTS.md",
+                "line": 148,
+                "note": "npm"
+              },
+              {
+                "path": "agent-think/AGENTS.md",
+                "line": 175,
+                "note": "pnpm"
+              },
+              {
+                "path": "examples/AGENTS.md",
+                "line": 9,
+                "note": "pnpm"
+              },
+              {
+                "path": "guides/AGENTS.md",
+                "line": 41,
+                "note": "pnpm"
+              },
+              {
+                "path": "packages/agents/AGENTS.md",
+                "line": 247,
+                "note": "pnpm"
+              }
+            ],
+            "recommendation": "Standardise on one package manager across all instruction files."
+          },
+          {
+            "id": "missing-path-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "agent-think/AGENTS.md references ca/warp-ca.crt, which does not exist",
+            "detail": "The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).",
+            "evidence": [
+              {
+                "path": "agent-think/AGENTS.md",
+                "line": 144
+              }
+            ],
+            "recommendation": "Fix the path or remove the reference."
+          },
+          {
+            "id": "missing-path-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "docs/AGENTS.md references src/content/docs/agents, which does not exist",
+            "detail": "The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).",
+            "evidence": [
+              {
+                "path": "docs/AGENTS.md",
+                "line": 26
+              }
+            ],
+            "recommendation": "Fix the path or remove the reference."
+          },
+          {
+            "id": "missing-script-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "AGENTS.md references script \"dev\" that package.json does not define",
+            "detail": "\"pnpm dev\" appears in the instructions but package.json has no such script. Heuristic: medium confidence.",
+            "evidence": [
+              {
+                "path": "AGENTS.md",
+                "line": 81
+              }
+            ],
+            "recommendation": "Update the instruction or add the script."
+          },
+          {
+            "id": "missing-script-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "AGENTS.md references script \"packages\" that package.json does not define",
+            "detail": "\"npm packages\" appears in the instructions but package.json has no such script. Heuristic: medium confidence.",
+            "evidence": [
+              {
+                "path": "AGENTS.md",
+                "line": 10
+              }
+            ],
+            "recommendation": "Update the instruction or add the script."
+          },
+          {
+            "id": "agents-without-claude",
+            "severity": "info",
+            "category": "missing",
+            "title": "AGENTS.md exists but CLAUDE.md does not",
+            "detail": "Tools that read CLAUDE.md will not see your AGENTS.md unless CLAUDE.md points to it.",
+            "evidence": [
+              {
+                "path": "AGENTS.md"
+              }
+            ],
+            "recommendation": "Consider a CLAUDE.md that references AGENTS.md instead of duplicating it."
+          },
+          {
+            "id": "agent-executable-config",
+            "severity": "info",
+            "category": "unsafe",
+            "title": ".mcp.json can run commands on an agent's behalf",
+            "detail": "It configures MCP servers. Review the commands before trusting this repository with an agent.",
+            "evidence": [
+              {
+                "path": ".mcp.json"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo": "eslint/eslint",
+      "commit": "af4c3a9cc7c770419532b191ac465d4a1566eb0c",
+      "ecosystem": "JavaScript",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 5,
+          "info": 2
+        },
+        "findings": [
+          {
+            "id": "missing-script-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "AGENTS.md references script \"start\" that package.json does not define",
+            "detail": "\"npm start\" appears in the instructions but package.json has no such script. Heuristic: medium confidence.",
+            "evidence": [
+              {
+                "path": "AGENTS.md",
+                "line": 42
+              }
+            ],
+            "recommendation": "Update the instruction or add the script."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": ".npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": ".npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "file-too-large",
+            "severity": "warning",
+            "category": "scan",
+            "title": "File exceeds the 524288-byte read limit and was not read",
+            "detail": "This limits how complete the analysis is.",
+            "evidence": [
+              {
+                "path": "tests/bench/large.js"
+              }
+            ]
+          },
+          {
+            "id": "malformed-json",
+            "severity": "warning",
+            "category": "scan",
+            "title": "Could not parse tests/fixtures/config-file/broken-package-json/package.json as JSON (near line 7)",
+            "detail": "This limits how complete the analysis is.",
+            "evidence": [
+              {
+                "path": "tests/fixtures/config-file/broken-package-json/package.json",
+                "line": 7
+              }
+            ]
+          },
+          {
+            "id": "malformed-json",
+            "severity": "warning",
+            "category": "scan",
+            "title": "Could not parse tests/fixtures/ignored-paths/broken-package-json/package.json as JSON (near line 10)",
+            "detail": "This limits how complete the analysis is.",
+            "evidence": [
+              {
+                "path": "tests/fixtures/ignored-paths/broken-package-json/package.json",
+                "line": 10
+              }
+            ]
+          },
+          {
+            "id": "agents-without-claude",
+            "severity": "info",
+            "category": "missing",
+            "title": "AGENTS.md exists but CLAUDE.md does not",
+            "detail": "Tools that read CLAUDE.md will not see your AGENTS.md unless CLAUDE.md points to it.",
+            "evidence": [
+              {
+                "path": "AGENTS.md"
+              }
+            ],
+            "recommendation": "Consider a CLAUDE.md that references AGENTS.md instead of duplicating it."
+          },
+          {
+            "id": "instructions-omit-build",
+            "severity": "info",
+            "category": "missing",
+            "title": "Instructions do not mention the build command",
+            "detail": "package.json defines a \"build:docs:update-links\" script, but no root instruction file refers to it.",
+            "evidence": [
+              {
+                "path": "package.json",
+                "line": 51
+              }
+            ],
+            "recommendation": "Document how to build the project."
+          }
+        ]
+      }
+    },
+    {
+      "repo": "filamentphp/filament",
+      "commit": "9d78093cfebdc96c077b1d8dbf94b41738f28992",
+      "ecosystem": "PHP / Laravel",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 5,
+          "info": 2
+        },
+        "findings": [
+          {
+            "id": "instruction-empty",
+            "severity": "warning",
+            "category": "missing",
+            "title": "CLAUDE.md has almost no content",
+            "detail": "The file contains less than 80 characters outside headings.",
+            "evidence": [
+              {
+                "path": "CLAUDE.md"
+              }
+            ],
+            "recommendation": "Describe build, test and style conventions, or remove the file."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": ".npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": ".npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "docs-assets/app/.env (environment file) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "docs-assets/app/.env"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "docs-assets/app/.npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "docs-assets/app/.npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "docs-assets/screenshots/.npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "docs-assets/screenshots/.npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "instructions-omit-test",
+            "severity": "info",
+            "category": "missing",
+            "title": "Instructions do not mention the test command",
+            "detail": "package.json defines a \"test:js\" script, but no root instruction file refers to it.",
+            "evidence": [
+              {
+                "path": "package.json",
+                "line": 5
+              }
+            ],
+            "recommendation": "Document how to test the project."
+          },
+          {
+            "id": "no-gitignore",
+            "severity": "info",
+            "category": "unsafe",
+            "title": "No .gitignore at the repository root",
+            "detail": "Without ignore rules, build output and local files may end up in agent context.",
+            "evidence": [],
+            "recommendation": "Add a .gitignore."
+          }
+        ]
+      }
+    },
+    {
+      "repo": "laravel/laravel",
+      "commit": "def7ce14811161f3c689a71ca8abc1369da44bd6",
+      "ecosystem": "PHP / Laravel",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 1,
+          "info": 4
+        },
+        "findings": [
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": ".npmrc (credential store) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": ".npmrc"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "instructions-omit-build",
+            "severity": "info",
+            "category": "missing",
+            "title": "Instructions do not mention the build command",
+            "detail": "package.json defines a \"build\" script, but no root instruction file refers to it.",
+            "evidence": [
+              {
+                "path": "package.json",
+                "line": 6
+              }
+            ],
+            "recommendation": "Document how to build the project."
+          },
+          {
+            "id": "duplicate-instructions",
+            "severity": "info",
+            "category": "conflict",
+            "title": "Identical instruction files",
+            "detail": "AGENTS.md and CLAUDE.md have identical content and can drift apart.",
+            "evidence": [
+              {
+                "path": "AGENTS.md"
+              },
+              {
+                "path": "CLAUDE.md"
+              }
+            ],
+            "recommendation": "Keep one file and have the other reference it (or use a symlink)."
+          },
+          {
+            "id": "install-time-script",
+            "severity": "info",
+            "category": "unsafe",
+            "title": "Script \"post-autoload-dump\" runs automatically during install",
+            "detail": "ContextAnvil never executes it, but agents that run an install will.",
+            "evidence": [
+              {
+                "path": "composer.json",
+                "line": 51
+              }
+            ]
+          },
+          {
+            "id": "install-time-script",
+            "severity": "info",
+            "category": "unsafe",
+            "title": "Script \"post-update-cmd\" runs automatically during install",
+            "detail": "ContextAnvil never executes it, but agents that run an install will.",
+            "evidence": [
+              {
+                "path": "composer.json",
+                "line": 55
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo": "modelcontextprotocol/go-sdk",
+      "commit": "328036ea2090c83f28c41a42ee4c9e5ec7393a4f",
+      "ecosystem": "Go",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 1
+        },
+        "findings": [
+          {
+            "id": "agents-without-claude",
+            "severity": "info",
+            "category": "missing",
+            "title": "AGENTS.md exists but CLAUDE.md does not",
+            "detail": "Tools that read CLAUDE.md will not see your AGENTS.md unless CLAUDE.md points to it.",
+            "evidence": [
+              {
+                "path": "AGENTS.md"
+              }
+            ],
+            "recommendation": "Consider a CLAUDE.md that references AGENTS.md instead of duplicating it."
+          }
+        ]
+      }
+    },
+    {
+      "repo": "nushell/nushell",
+      "commit": "a4819256a2d875ca42c8600242388da291f3beaa",
+      "ecosystem": "Rust",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0
+        },
+        "findings": [
+          {
+            "id": "missing-path-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "AGENTS.md references target/debug, which does not exist",
+            "detail": "The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).",
+            "evidence": [
+              {
+                "path": "AGENTS.md",
+                "line": 15
+              }
+            ],
+            "recommendation": "Fix the path or remove the reference."
+          },
+          {
+            "id": "missing-path-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "CLAUDE.md references target/debug, which does not exist",
+            "detail": "The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).",
+            "evidence": [
+              {
+                "path": "CLAUDE.md",
+                "line": 15
+              }
+            ],
+            "recommendation": "Fix the path or remove the reference."
+          }
+        ]
+      }
+    },
+    {
+      "repo": "openai/openai-python",
+      "commit": "3d573c04ef9ceafcba682ae5a98b3971a062a777",
+      "ecosystem": "Python",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 6,
+          "info": 1
+        },
+        "findings": [
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "tests/fixtures/mtls/client-chain.pem (key or state file) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "tests/fixtures/mtls/client-chain.pem"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "tests/fixtures/mtls/client.key (key or state file) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "tests/fixtures/mtls/client.key"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "tests/fixtures/mtls/root.pem (key or state file) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "tests/fixtures/mtls/root.pem"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "tests/fixtures/mtls/server-chain.pem (key or state file) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "tests/fixtures/mtls/server-chain.pem"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "sensitive-file-not-ignored",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "tests/fixtures/mtls/server.key (key or state file) is not covered by ignore rules",
+            "detail": "ContextAnvil did not read it. Verify the file is not tracked by git and is listed in .gitignore.",
+            "evidence": [
+              {
+                "path": "tests/fixtures/mtls/server.key"
+              }
+            ],
+            "recommendation": "Add it to .gitignore (and remove it from history if it was committed)."
+          },
+          {
+            "id": "suspicious-instruction:reveal-secrets",
+            "severity": "warning",
+            "category": "unsafe",
+            "title": "AGENTS.md contains text that tries to steer an agent (reveal-secrets)",
+            "detail": "Line 15: \"- Keep build/publish jobs separate; grant `id-token: write` only to the trusted upload-only job with\". ContextAnvil treats this as data and never follows it. Review whether you intend agents to follow it.",
+            "evidence": [
+              {
+                "path": "AGENTS.md",
+                "line": 15
+              }
+            ],
+            "recommendation": "Remove or rewrite the line if it was not written deliberately."
+          },
+          {
+            "id": "agents-without-claude",
+            "severity": "info",
+            "category": "missing",
+            "title": "AGENTS.md exists but CLAUDE.md does not",
+            "detail": "Tools that read CLAUDE.md will not see your AGENTS.md unless CLAUDE.md points to it.",
+            "evidence": [
+              {
+                "path": "AGENTS.md"
+              }
+            ],
+            "recommendation": "Consider a CLAUDE.md that references AGENTS.md instead of duplicating it."
+          }
+        ]
+      }
+    },
+    {
+      "repo": "phpstan/phpstan-src",
+      "commit": "24ba68cf280ea45f341189d42e7252970901914a",
+      "ecosystem": "PHP",
+      "report": {
+        "schemaVersion": 1,
+        "tool": {
+          "name": "contextanvil",
+          "version": "0.1.1"
+        },
+        "summary": {
+          "error": 0,
+          "warning": 5,
+          "info": 2
+        },
+        "findings": [
+          {
+            "id": "instruction-oversized",
+            "severity": "warning",
+            "category": "missing",
+            "title": "CLAUDE.md is very large (~8423 estimated tokens)",
+            "detail": "Large instruction files consume context in every session that loads them and dilute the important rules.",
+            "evidence": [
+              {
+                "path": "CLAUDE.md"
+              }
+            ],
+            "recommendation": "Split it by directory scope or trim to the rules that change behaviour."
+          },
+          {
+            "id": "instruction-oversized",
+            "severity": "warning",
+            "category": "missing",
+            "title": "turbo-ext/CLAUDE.md is very large (~15786 estimated tokens)",
+            "detail": "Large instruction files consume context in every session that loads them and dilute the important rules.",
+            "evidence": [
+              {
+                "path": "turbo-ext/CLAUDE.md"
+              }
+            ],
+            "recommendation": "Split it by directory scope or trim to the rules that change behaviour."
+          },
+          {
+            "id": "missing-path-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "apigen/infra/CLAUDE.md references website/infra, which does not exist",
+            "detail": "The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).",
+            "evidence": [
+              {
+                "path": "apigen/infra/CLAUDE.md",
+                "line": 133
+              }
+            ],
+            "recommendation": "Fix the path or remove the reference."
+          },
+          {
+            "id": "missing-path-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "turbo-ext/CLAUDE.md references lib/PhpParser/Parser/Php8.php, which does not exist",
+            "detail": "The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).",
+            "evidence": [
+              {
+                "path": "turbo-ext/CLAUDE.md",
+                "line": 629
+              }
+            ],
+            "recommendation": "Fix the path or remove the reference."
+          },
+          {
+            "id": "missing-path-reference",
+            "severity": "warning",
+            "category": "stale",
+            "title": "turbo-ext/CLAUDE.md references lib/PhpParser/ParserAbstract.php, which does not exist",
+            "detail": "The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).",
+            "evidence": [
+              {
+                "path": "turbo-ext/CLAUDE.md",
+                "line": 627
+              }
+            ],
+            "recommendation": "Fix the path or remove the reference."
+          },
+          {
+            "id": "claude-without-agents",
+            "severity": "info",
+            "category": "missing",
+            "title": "CLAUDE.md exists but AGENTS.md does not",
+            "detail": "Agents that read AGENTS.md (for example OpenAI Codex) will not see these instructions.",
+            "evidence": [
+              {
+                "path": "CLAUDE.md"
+              }
+            ],
+            "recommendation": "Consider an AGENTS.md as the shared source and have CLAUDE.md reference it."
+          },
+          {
+            "id": "install-time-script",
+            "severity": "info",
+            "category": "unsafe",
+            "title": "Script \"post-autoload-dump\" runs automatically during install",
+            "detail": "ContextAnvil never executes it, but agents that run an install will.",
+            "evidence": [
+              {
+                "path": "composer.json",
+                "line": 138
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
