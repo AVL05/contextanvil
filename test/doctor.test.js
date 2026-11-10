@@ -270,6 +270,19 @@ test('nested install instructions are checked against the owning project lockfil
   assert.deepEqual(results[0].evidence, [{ path: 'apps/demo/AGENTS.md', line: 3 }, { path: 'apps/demo/yarn.lock' }]);
 });
 
+test('an umbrella guide does not assign child-package commands to an ancestor manifest', (t) => {
+  const repo = makeRepo({
+    'package.json': '{"scripts":{"test":"node --test"}}',
+    'collections/AGENTS.md': '# Collection\n\nUse `pnpm dev` inside any component package to preview it.\n',
+    'collections/one/package.json': '{"scripts":{"dev":"vite"}}',
+    'collections/two/package.json': '{"scripts":{"dev":"vite"}}',
+    'collections/one/src/AGENTS.md': '# Local\n\nUse `pnpm run unavailable` when checking this package.\n',
+  });
+  t.after(repo.cleanup);
+  assert.deepEqual(find(report(repo.root), 'missing-script-reference').map((f) => f.evidence[0].path),
+    ['collections/one/src/AGENTS.md']);
+});
+
 test('alternatives, conditions and non-shell examples do not assert a single workflow', (t) => {
   const repo = makeRepo({
     'package.json': '{"scripts":{"dev":"vite","build":"vite build"}}',

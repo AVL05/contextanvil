@@ -42,6 +42,12 @@ function* commands(text) {
 export function commandProjects(scan, reader) {
   const manifests = new Map(scan.files.filter((file) => file.path === 'package.json' || file.path.endsWith('/package.json'))
     .map((file) => [dirname(file.path), file.path]));
+  const manifestAncestors = new Set();
+  for (const scope of manifests.keys()) {
+    for (let parent = dirname(scope); parent && !manifestAncestors.has(parent); parent = dirname(parent)) {
+      manifestAncestors.add(parent);
+    }
+  }
   const names = new Map();
   const loaded = new Map();
 
@@ -81,7 +87,8 @@ export function commandProjects(scan, reader) {
       const target = directory(base, relative);
       return target === '' || (target !== null && reader.exists(target)) ? target : null;
     },
-    nearest(scope) {
+    nearest(scope, explicit = false) {
+      if (!explicit && manifestAncestors.has(scope) && !manifests.has(scope)) return null;
       while (scope !== null) {
         if (manifests.has(scope)) return scope;
         scope = scope ? dirname(scope) : null;
@@ -126,7 +133,10 @@ function parseInvocation(tokens, cwd, projects) {
     if (['--cwd', '--prefix', '-C', '--dir'].includes(option)) {
       const dir = projects.changeDirectory(cwd, value);
       scope = dir === null ? null : projects.nearest(dir);
-    } else if (scope !== null) scope = projects.workspace(scope, value);
+    } else {
+      const owner = projects.nearest(cwd, true);
+      scope = owner === null ? null : projects.workspace(owner, value);
+    }
   }
   const action = args[start];
   if (!action || start >= end) return null;
