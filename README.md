@@ -7,7 +7,7 @@ your coding agent to audit `AGENTS.md` and `CLAUDE.md`, find instructions that a
 suspicious, and prepare source-cited context for complex tasks. It bundles a deterministic, offline,
 read-only analysis engine, so there is nothing else to install and no service to configure.
 
-> **Status: pre-release.** The Skill, the engine and their tests are implemented. The package is not published
+> **Status: beta.** The Skill, the engine and their tests are implemented. The package is not published
 > to npm and does not need to be. The ranking behind context preparation has modest measured accuracy (see
 > [How well does the ranking work?](#how-well-does-the-ranking-work)), and **no experiment has shown that the
 > Skill saves tokens or improves coding results.** See [Limitations](#limitations).
@@ -31,8 +31,7 @@ When your agent decides the task calls for it, the Skill runs a bundled analyser
 - Instruction files rot. A command that no longer exists, a second package manager, a pasted secret: agents
   follow these confidently. The audit finds them with evidence you can check.
 - Instruction files are an attack surface. The audit flags hidden and hijacking text before an agent reads it.
-- It is cheap to leave installed: the Skill's description tells the agent when **not** to use it, and the
-  analysis is local, offline and read-only.
+- It is local, offline and read-only, and the Skill's description tells the agent when **not** to use it.
 
 What it does not do: it does not call any model or API, run any repository code, or change any repository file.
 
@@ -50,12 +49,15 @@ that one directory.
 Prerequisites: **Node.js 22 or later** on the machine that runs your agent. No npm install, no network access,
 no account and no MCP server are needed after the files are copied.
 
+**Windows and Codex.** Codex runs commands in a sandbox as a different Windows user. A Node.js that lives in your profile
+folder, for example one managed by nvm-windows, is on `PATH` but cannot be executed there ("Access denied"), and the Skill
+will report that Node.js is unavailable. The minimum workaround is a Node.js 22+ in a location every local user can read,
+such as `C:\Program Files\nodejs`, then a new Codex session. This was verified with a Node.js binary already under
+`C:\Program Files`; the official installer and other Windows setups were not tested. Details: [docs/skill.md](docs/skill.md).
+
 Manual install, without the installer: copy `skills/contextanvil/` from this repository to
 `.claude/skills/contextanvil/` (Claude Code) and/or `.agents/skills/contextanvil/` (Codex), project-level or under
 your home directory.
-
-> `npx skills add AVL05/contextanvil` installs from the default branch, so it works once this work is merged.
-> Until then, install from a checkout: `npx skills add ./path/to/contextanvil`.
 
 ## Use it
 
@@ -95,8 +97,8 @@ as untrusted data. Details live in `skills/contextanvil/references/`.
 
 ## Verified compatibility
 
-Tested on Windows 11 with Node.js 24.22.2, Claude Code 2.1.318 and Codex CLI 0.166.0: install with
-`npx skills add`, discovery by both agents, running the bundled analyser from the installed location, auditing a
+Tested on Windows 11 with Node.js 24.22.2, Claude Code 2.1.318 and Codex CLI 0.166.0: install from the default branch with
+`npx skills add AVL05/contextanvil`, discovery by both agents, running the bundled analyser from the installed location, auditing a
 repository with intentional defects, matching evidence, and an unchanged repository afterwards. Results and
 platform-specific limitations, including a Codex-on-Windows sandbox problem, are in
 [docs/skill.md](docs/skill.md). Linux and macOS were not tested with the real agents.
@@ -482,7 +484,11 @@ See the [manifest format and storage guarantees](docs/design/phase-2-manifests.m
   development machine, 0.1 s once files are cached, see [docs/performance.md](docs/performance.md)) and about 100 MB of memory.
   Synchronous, single-threaded, no deadline (a design exists in [docs/design/](docs/design/deadlines-and-partial-results.md)).
   `--max-content-files` bounds the reading.
-- **Secret detection is heuristic** and not a replacement for a dedicated scanner.
+- **Secret detection is heuristic and not comprehensive**; it is not a replacement for a dedicated scanner. The tool never prints
+  the secrets it recognises, but unrecognised formats can appear in output.
+- **Agents can still read secrets themselves.** The Skill instructs agents not to open lines flagged as secrets, but an agent
+  can ignore that: in testing, 1 of 5 Claude Code runs read the flagged line with its own file tool (without repeating it). If a
+  secret must stay out of an agent's context, remove it from the repository.
 - **Heuristic doctor checks** (stale references, hijacking phrases) can produce false positives and false
   negatives; they are labelled as such.
 - **Race conditions**: the window between checking and reading a file is narrowed, not closed; do not scan a tree that an
