@@ -12,13 +12,19 @@ read-only analysis engine, so there is nothing else to install and no service to
 > [How well does the ranking work?](#how-well-does-the-ranking-work)), and **no experiment has shown that the
 > Skill saves tokens or improves coding results.** See [Limitations](#limitations).
 
+**Contents:** [What it does](#what-it-does) | [Why install it](#why-install-it) | [Install](#install) |
+[Use it](#use-it) | [Troubleshooting](#troubleshooting) | [When agents should use it](#when-agents-should-use-it) |
+[CLI and engine reference](#cli-and-engine-reference) | [Limitations](#limitations) | [Roadmap](#roadmap) |
+[Development](#development) | [Contributing](#contributing)
+
 ## What it does
 
 When your agent decides the task calls for it, the Skill runs a bundled analyser and uses the result:
 
 - **Audit instructions**: finds conflicting package managers, scripts and paths that no longer exist, secrets,
   hidden or invisible characters, and text that tries to steer an agent (for example "ignore previous
-  instructions"). Every finding cites `path:line`.
+  instructions"). Every finding cites `path:line`. The consistency checks (package managers against the lockfile,
+  scripts against `package.json`) are strongest for Node.js projects; see [Limitations](#limitations).
 - **Inspect repository facts**: languages, frameworks, scripts, entry points and conventions, each marked
   `observed` (read from a file) or `inferred` (a heuristic).
 - **Prepare context**: for a complex task in an unfamiliar codebase, a ranked list of relevant files with reasons, applicable
@@ -55,6 +61,8 @@ will report that Node.js is unavailable. The minimum workaround is a Node.js 22+
 such as `C:\Program Files\nodejs`, then a new Codex session. This was verified with a Node.js binary already under
 `C:\Program Files`; the official installer and other Windows setups were not tested. Details: [docs/skill.md](docs/skill.md).
 
+Where creating symlinks is not permitted, add `--copy` to install a plain copy instead of a link.
+
 Manual install, without the installer: copy `skills/contextanvil/` from this repository to
 `.claude/skills/contextanvil/` (Claude Code) and/or `.agents/skills/contextanvil/` (Codex), project-level or under
 your home directory.
@@ -79,8 +87,20 @@ node .agents/skills/contextanvil/scripts/contextanvil.mjs context "add rate limi
 node .agents/skills/contextanvil/scripts/contextanvil.mjs scan . --json
 ```
 
-`doctor` exits `1` when it has findings. Only these read-only commands are exposed through the Skill launcher;
-the `manifest` command, which writes files, is not.
+`doctor` exits `1` when it reports a warning or an error (`--fail-on error` limits that to errors, `--fail-on never`
+always exits `0`); informational notes alone exit `0`. Only the read-only commands (`scan`, `context`, `doctor`)
+are exposed through the Skill launcher; the `manifest` command, which writes files, is refused.
+
+## Troubleshooting
+
+| Symptom | Cause and next step |
+| ------- | ------------------- |
+| The agent says Node.js is unavailable, "not recognized" or "Access denied" | The Skill needs Node.js 22+ reachable from the agent's shell. On Windows with Codex, a per-user Node.js (for example nvm-windows) cannot run inside the sandbox; see [Windows and Codex](#install) and [docs/skill.md](docs/skill.md). |
+| The agent never uses the Skill | Activation is the agent's decision. Name it (`use the contextanvil skill ...`) or, in Claude Code, run `/contextanvil`. |
+| `doctor` exits `1` | It reported at least a warning. Read the findings; `--fail-on never` is for scripts that must not fail. |
+| `doctor` reports a path or script as missing but it is only an example | Those checks are heuristic (medium confidence) and say so. Verify the cited line before changing anything. |
+| A report says the analysis was partial | A limit was reached (file count, depth, file size). The `scan` findings name it; raise it with `--max-files`, `--max-depth` or `--max-file-size`. |
+| Symlink creation fails during install | Install with the installer's `--copy` option, or copy the Skill directory by hand (see [Install](#install)). |
 
 ## When agents should use it
 
@@ -169,18 +189,20 @@ node bin/contextanvil.js --help
 contextanvil scan [path]                 Analyse a repository and report what was found
 contextanvil context "<task>" [path]     Compile focused context for a task
 contextanvil doctor [path]               Diagnose missing, conflicting, stale or unsafe context
+contextanvil manifest <action> <path>    Create, verify, diff or update a repository snapshot
 contextanvil --help | --version
 ```
 
 `path` defaults to the current directory. Every command accepts `--json`. Shared options:
 `--max-files <n>`, `--max-depth <n>`, `--max-file-size <size>`, `--no-gitignore`.
 
-Exit codes: `0` success, `1` doctor findings at or above `--fail-on`, `2` usage error, `3` runtime error.
+Exit codes: `0` success, `1` `doctor` findings at or above `--fail-on` (default `warning`) or a `manifest verify`
+mismatch, `2` usage error, `3` runtime error.
 
 ### `scan`
 
 The output below is real, from the sample project in `test/fixtures/next-app` (trimmed to the first
-sections):
+sections; the `Root:` line is shortened to a relative path, the tool prints the absolute one):
 
 ```text
 $ contextanvil scan test/fixtures/next-app
@@ -429,11 +451,13 @@ crafted `.gitignore`) and several smaller issues; the review, its findings and t
 
 - Node.js 22 or later.
 - **Verified on GitHub Actions** ([run 42620223366](https://github.com/AVL05/contextanvil/actions/runs/42620223366), commit `ac2c1a3`): Ubuntu, macOS (arm64) and Windows, each with Node.js 22.23, 24.22 and 26.13 (the
-  current LTS at the time): the full test suite (127 tests; 126 pass and 1 is skipped on Windows because a POSIX file-permission
+  current LTS at the time): the full test suite (127 tests at that commit; 126 pass and 1 is skipped on Windows because a POSIX file-permission
   test cannot run there; 127 pass on Ubuntu and macOS), CLI smoke and exit-code checks, run-to-run identical output, and a
-  **byte-identical digest of the complete output across all nine combinations**. Linux and macOS have *not* been checked on a
-  real developer machine.
-- **Verified locally**: Windows 11, Node.js 24.22.2.
+  **byte-identical digest of the complete output across all nine combinations**. The latest workflow run on the default
+  branch at the time of writing ([run 42807533627](https://github.com/AVL05/contextanvil/actions/runs/42807533627), commit
+  `dfb6f9d`) also passed all eleven jobs. Linux and macOS have *not* been checked on a real developer machine.
+- **Verified locally**: Windows 11, Node.js 24.22.2. The suite has since grown to 147 tests: 145 pass and 2 are skipped on
+  Windows (a directory-rename test that open handles can block, and the POSIX-permission test).
 - Workflow: [.github/workflows/ci.yml](.github/workflows/ci.yml); actions are pinned to commit SHAs. It was validated by GitHub
   accepting and running it; `actionlint` was not available.
 - Output is ASCII-only so legacy Windows consoles render it correctly.
@@ -471,6 +495,9 @@ See the [manifest format and storage guarantees](docs/design/phase-2-manifests.m
   was measured on a small sample of the author's own repositories. It is not evidence about repositories in general, and it
   says nothing about AI agent outcomes. **There are no agent-based experiments**: no claim is made that
   using ContextAnvil reduces tokens, cost or errors.
+- **Instruction checks are Node.js-centred.** Conflicts between package managers, the lockfile and `package.json` scripts are
+  understood for Node.js manifests. PHP/Laravel projects get facts and ranking but fewer consistency checks, and other
+  languages are only counted by file extension. `doctor` does not compare instructions with arbitrary technologies in use.
 - **Import relations are JavaScript, TypeScript and PHP only** (relative imports, `tsconfig`/`jsconfig` path aliases,
   PSR-4 `use` statements, Laravel `view()` calls).
 - **Static analysis only.** Because nothing is executed, runtime-registered routes, generated code and
@@ -500,14 +527,16 @@ See the [manifest format and storage guarantees](docs/design/phase-2-manifests.m
 
 ## Roadmap
 
-What exists today is described above. Everything below is **planned and not implemented**; details in
-[docs/roadmap.md](docs/roadmap.md). A technical design for Phase 2 exists ([docs/design/phase-2-manifests.md](docs/design/phase-2-manifests.md))
-but no code:
+What exists today is described above, including the explicit `manifest` commands (design:
+[docs/design/phase-2-manifests.md](docs/design/phase-2-manifests.md)). Everything below is **planned and not implemented**;
+details and the phase numbering are in [docs/roadmap.md](docs/roadmap.md):
 
-2. Persistent context manifests and live diffs. Verified read skipping and safe instruction generation remain separate work.
-3. An MCP server exposing repository context and project rules. Not planned while the Skill is the primary delivery path.
-4. A visual dashboard for project understanding, evidence inspection and conflict resolution.
-5. Reproducible agent benchmarks comparing agent workflows with and without ContextAnvil.
+- A verified incremental read cache and safe generation of instruction files (the remainder of Phase 2).
+- An MCP server exposing repository context and project rules (Phase 3). Not planned while the Skill is the primary
+  delivery path.
+- A visual dashboard for project understanding, evidence inspection and conflict resolution (Phase 4).
+- Reproducible agent benchmarks comparing agent workflows with and without ContextAnvil (Phase 5). Until these exist, no
+  claim is made about tokens, cost or coding results.
 
 Every phase must keep provider independence and user control.
 

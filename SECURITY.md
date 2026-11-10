@@ -8,8 +8,8 @@ security reports seriously.
 Please **do not open a public issue** for a vulnerability.
 
 Use GitHub's private vulnerability reporting on the project repository (Security tab, "Report a
-vulnerability"). Maintainers: enable "Private vulnerability reporting" in the repository settings when the
-repository is published, and add a fallback contact address here.
+vulnerability"). If that option is not shown, open a public issue that says only that you have a security report and
+asks for a private channel; do not put any details, proof of concept or secrets in it.
 
 Include: the ContextAnvil version (`contextanvil --version`), your Node.js version and OS, a minimal
 repository or file set that reproduces the problem, and the impact you believe it has. Do not include real
@@ -36,7 +36,8 @@ Only the latest released version receives security fixes while the project is on
 
 ## Out of scope
 
-- Behaviour of AI agents or providers that receive generated context.
+- Behaviour of AI agents or providers that receive generated context, including an agent that ignores the Skill's
+  instruction not to open secret-flagged lines (a documented residual risk).
 - Secrets that ContextAnvil is documented not to detect (see "Known limitations" in `docs/security.md`),
   unless a documented pattern fails to match.
 - Vulnerabilities in scanned repositories themselves.

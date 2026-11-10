@@ -13,6 +13,7 @@ Finding IDs emitted by `doctor`, what they mean, and the usual remedy. Severity 
 | `hidden-comment` / `hidden-html-element` | Instruction-like text invisible in rendered Markdown | Make it visible or delete it |
 | `encoded-payload` | A 300+ character base64-like string | Review what it encodes |
 | `sensitive-file-not-ignored` | A file such as `.env` is present and not covered by ignore rules (not read; do not open it) | Add to `.gitignore`; check git history |
+| `no-gitignore` | No `.gitignore` at the repository root, so build output and local files may reach agent context | Add a `.gitignore` |
 | `install-time-script` | A package script runs automatically on install | Awareness only; never run it during analysis |
 | `agent-executable-config` | Agent config defines hooks or MCP servers that can run commands | Review the commands before trusting the repository |
 
@@ -41,9 +42,8 @@ Finding IDs emitted by `doctor`, what they mean, and the usual remedy. Severity 
 | `agents-without-claude`, `claude-without-agents` | Only one of the two files exists, so some tools cannot see the rules |
 | `instruction-empty`, `instruction-large`, `instruction-oversized` | Almost no content, or a file large enough to dilute the rules |
 | `instructions-omit-test`, `instructions-omit-build` | A script exists that the root instructions never mention |
-| `no-gitignore` | No `.gitignore` at the root |
 
 ## scan
 
 Limits that reduce completeness (`file-limit`, `depth-limit`, `file-too-large`, `malformed-json`,
-`symlink-escape`, `unreadable-directory`, `detector-failed`). Tell the user the analysis was partial.
+`symlink-escape`, `unreadable-directory`, `instruction-unreadable`, `detector-failed`). Tell the user the analysis was partial.

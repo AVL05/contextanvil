@@ -11,6 +11,7 @@ task-focused, source-grounded context for AI coding agents. Tagline: "Forge bett
 - Run one test file: `node --test test/compiler.test.js`
 - Analyse this repository with itself: `npm run scan:self` and `npm run doctor:self`
 - Ranking accuracy benchmark: `npm run bench:quick` (details in `bench/README.md`)
+- After changing `src/`: `npm run skill:sync`; to verify the Skill's engine copy: `npm run skill:check`
 - Try the CLI: `node bin/contextanvil.js context "your task" .`
 
 Requires Node.js 22 or later. There is no build step, no TypeScript and no runtime dependency.
@@ -25,6 +26,9 @@ Layers, from the bottom up. Each layer may only import from the layers above it 
 4. `src/compiler/` - task-aware context selection and budget handling.
 5. `src/doctor.js` - context diagnostics.
 6. `src/render/` and `src/cli/` - presentation only. No analysis logic belongs here.
+
+`src/manifest/` (snapshot model and storage) sits beside the compiler and doctor and builds on the scanner. `src/manifest/storage.js`
+is the only runtime code that writes files, and only outside the scanned root.
 
 The `skills/contextanvil/` directory is the primary way users receive ContextAnvil: an Agent Skill (`SKILL.md`, `references/`,
 `scripts/contextanvil.mjs`) plus a generated copy of `src/` in `skills/contextanvil/src/`. Never edit that copy: change `src/`, then run

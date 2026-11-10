@@ -139,7 +139,8 @@ deliberate trade of speed for coverage and safety. Scan and compile are single-t
 
 Every dataset, run in two separate processes, produced byte-identical scan, context-pack and doctor output (both
 versions). CI additionally compares a digest of that output between operating systems and Node.js versions
-(`bench/digest.js`); that comparison has been prepared but **has not run remotely yet**.
+(`bench/digest.js`); that comparison ran on GitHub Actions on Ubuntu, macOS and Windows with Node.js 22, 24 and 26 and the
+digests were byte-identical (see the README, "Supported environments").
 
 ## Honest reading of the results
 

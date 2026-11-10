@@ -83,6 +83,10 @@ or alter behaviour (tested); error messages and diagnostics do not contain file 
 - **Sensitive-file rules are name-based.** A credential stored in an innocuously named file is not recognised as
   sensitive. Detectors only open the manifests, configuration and instruction files they know about, but a
   pasted secret inside one of those is redacted by pattern, not by knowledge.
+- **An agent can still read secrets itself.** The engine never prints a secret value, and the Skill tells the agent not to
+  open, search or print lines flagged as secrets. That is an instruction, not an enforcement: in testing, 1 of 5 Claude Code
+  runs read the flagged line with its own file tool (without repeating it in its answer). If a secret must stay out of an
+  agent's context, remove it from the repository. Details: [skill.md](skill.md#known-issue-found-during-final-review).
 - **Generated context goes to whatever you send it to.** ContextAnvil does not transmit it; what an agent or
   provider does with it is outside this tool's control.
 - **Not independently audited.** This review was done by the author of the code.

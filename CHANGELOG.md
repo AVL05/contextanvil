@@ -11,6 +11,12 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 - Add explicit `manifest create`, `verify`, `diff`, and `update` commands with
   canonical source hashes, fact provenance, and atomic external publication.
   Refreshes reconstruct from live files and skip writes when unchanged.
+- Skill: agents are told never to open, search or print lines that `doctor` flagged as secrets, and to verify other lines
+  by range. This lowers the risk but does not remove it (documented in `docs/skill.md`).
+- Security: fact identifiers now pass through the same redaction as claims, so a secret-shaped name cannot appear in output.
+- Documentation: the README is organised around the Skill and gained a troubleshooting table; the roadmap, security notes,
+  finding catalogue and contributing guide were brought in line with the implemented manifest commands, the Skill and the
+  verified CI results. `doctor` exit-code behaviour (informational notes alone exit `0`) is now stated correctly.
 
 Phase 1.2: cross-platform validation and independent evaluation.
 

@@ -52,8 +52,8 @@ Not measured: how often agents activate it falsely on unrelated tasks, and wheth
 ## Installation tests
 
 Environment: Windows 11, Node.js 24.22.2, Claude Code 2.1.318, Codex CLI 0.166.0, the `skills` installer fetched
-by `npx`. The Skill was installed from a local checkout into throw-away projects (project scope), because the Skill
-was not yet on `main`. Test repository: a generated project with intentional defects (conflicting `pnpm`/`npm`/`yarn`
+by `npx`. The Skill was installed from a local checkout into throw-away projects (project scope), because at that
+time the Skill was not yet on `main`. Test repository: a generated project with intentional defects (conflicting `pnpm`/`npm`/`yarn`
 commands, a missing script, three missing paths, a prompt-injection phrase, a hidden-character line, a hide-from-user
 phrase, and a fake AWS-format key assembled at run time).
 
@@ -93,7 +93,10 @@ checks that the secret is not printed, and compares a digest of the repository b
 3. **Symlinks.** The installer links `.claude/skills/contextanvil` to the `.agents` copy. This worked for Claude Code on
    Windows 11 in the test. Where creating symlinks is not permitted, use `--copy`.
 4. **Linux and macOS** were not tested with the real agents. The engine's own test suite runs on all three platforms in CI.
-5. **Install from GitHub.** `npx skills add AVL05/contextanvil` resolves against the default branch, so it works only after this work is merged. Installing from the pushed branch with `npx skills add AVL05/contextanvil#feat/agent-skill` was verified: the same files were installed and the launcher ran. The bare command was not run against `main`, because `main` has no Skill yet.
+5. **Install from GitHub.** `npx skills add AVL05/contextanvil` resolves against the default branch, which now contains the
+   Skill. The installation tests in the table above used a local checkout; installing from the then-pushed feature branch
+   (`npx skills add AVL05/contextanvil#feat/agent-skill`) installed the same files and the launcher ran. The runs described
+   under "Known issue found during final review" used the default-branch install.
 6. **Language.** Codex answered in Spanish in testing (the machine's Codex configuration, not the Skill); the Skill content is English.
 
 ## What was not tested

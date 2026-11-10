@@ -23,8 +23,8 @@ secret redaction; ignore, symlink and traversal safety.
   ignore-pattern matching), terminal-escape and hidden-character neutralisation, payload redaction, narrowed
   check-then-open window, directory-size limit, broader sensitive-file and prompt-injection detection
   ([docs/security.md](security.md)).
-- **CI** prepared for Linux, macOS and Windows with Node 22, 24 and the current LTS, including a cross-platform output
-  digest comparison. *Remote verification is pending: the workflow has not run on GitHub yet.*
+- **CI** for Linux, macOS and Windows with Node 22, 24 and the current LTS, including a cross-platform output
+  digest comparison (its first remote results are recorded under Phase 1.2).
 - **Public API contract tests** pinning the exported names and result shapes.
 
 ### Phase 1.2: cross-platform validation and independent evaluation (v0.1.1+)
@@ -32,20 +32,28 @@ secret redaction; ignore, symlink and traversal safety.
 - GitHub Actions run green on Ubuntu, macOS and Windows with Node.js 22, 24 and 26, including a byte-identical output digest across all nine.
 - An independent ranking evaluation with frozen labels from real commit history (`bench/external/`); its sobering result is recorded.
 - Compile-time investigation (`docs/performance.md`) and a deterministic `--max-content-files` bound.
-- **Designs written, not implemented:** [deadlines and partial results](design/deadlines-and-partial-results.md) and
-  [persistent manifests](design/phase-2-manifests.md).
+- **Design written, not implemented:** [deadlines and partial results](design/deadlines-and-partial-results.md).
+
+### Phase 2 (partly implemented): persistent manifests and live diffs
+
+The [manifest implementation](design/phase-2-manifests.md) adds explicit `manifest create`, `verify`, `diff` and `update`
+commands. Snapshots persist source hashes and fact provenance outside the scanned tree; a refresh reconstructs live state
+and skips the write when the bytes are identical. Manifests are review artifacts: they never supply context to the compiler.
+Still not implemented: a verified incremental read cache, and safe generation of instruction files.
+
+### Agent Skill delivery (unreleased)
+
+ContextAnvil ships as an Agent Skill for Claude Code and OpenAI Codex (`skills/contextanvil/`), installable with
+`npx skills add AVL05/contextanvil`. The Skill bundles a generated copy of the engine and a launcher that exposes only the
+read-only commands. Design, installation tests and platform limitations: [docs/skill.md](skill.md). Whether the Skill saves
+tokens or improves coding results has not been measured (see Phase 5).
 
 ## Planned (not implemented)
 
-### Phase 2: persistent manifests and live diffs
-
-The [manifest implementation](design/phase-2-manifests.md) adds explicit
-create, verify, live diff and update. Snapshots persist provenance and hashes
-outside the scanned tree. Refresh reconstructs live state and skips an
-identical write. A verified incremental read cache and safe generation of
-instruction files remain future work.
-
 ### Phase 3: MCP server
+
+Status: **deferred.** It is not planned while the Skill is the primary delivery path, because the Skill needs no server.
+The design intent below applies if that changes.
 
 Goal: let MCP-capable agents ask for context instead of receiving a pasted pack.
 
@@ -85,13 +93,15 @@ accuracy*, speed and determinism; it does not involve any agent.)
 - Static analysis of the remaining zero-overlap cases (co-change history, synonyms) if it can stay local and deterministic.
 - More detectors (Python, Go, Rust, Ruby; Vue/Svelte specifics; monorepo workspace awareness).
 - Import/relationship extraction beyond JavaScript, TypeScript and PHP.
-- Reducing compile time at several thousand files (profile first; the 2.3 s at 5,000 files in v0.1.1 is mostly content reads).
+- Reducing compile time at several thousand files (profile first; a cold compile of 5,000 generated files takes seconds and is
+  mostly content reads, see [performance.md](performance.md)).
+- A launcher command that prints redacted excerpts, so an agent can verify findings without opening secret-flagged lines
+  itself (the residual risk is described in [skill.md](skill.md#known-issue-found-during-final-review)).
 - Optional file snippets in context packs (with the same redaction and budget accounting).
 - Reading `.git/info/exclude` and the global excludes file.
 - Opt-in inclusion of default-excluded directory names such as `build/`.
 - Pluggable tokenizer for exact token counts, as an optional adapter.
 - Optional semantic matching, if it can be made local, deterministic, explainable and opt-in.
 - A wall-clock deadline for scans.
-- Independent labels for the ranking benchmark, and a larger set of real repositories.
 
 Priorities depend on user feedback; open an issue to argue for a change.

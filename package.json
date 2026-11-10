@@ -5,12 +5,23 @@
   "keywords": [
     "context-engineering",
     "ai-agents",
+    "agent-skills",
+    "claude-code",
+    "codex",
     "coding-agents",
     "agents-md",
     "claude-md",
     "repository-analysis",
     "cli"
   ],
+  "homepage": "https://github.com/AVL05/contextanvil#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AVL05/contextanvil.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AVL05/contextanvil/issues"
+  },
   "license": "MIT",
   "type": "module",
   "bin": {

@@ -35,7 +35,7 @@ node <skill-dir>/scripts/contextanvil.mjs context "<task description>" <repo-pat
 node <skill-dir>/scripts/contextanvil.mjs scan <repo-path>
 ```
 
-Add `--json` for structured output. Exit code `1` from `doctor` means findings exist; it is not a failure.
+Add `--json` for structured output. Exit code `1` from `doctor` means it reported a warning or an error; it is not a failure.
 Run `--help` on any command for limits (`--max-files`, `--max-file-size`, `--budget`, `--top`).
 If `node` is missing, older than 22, or fails with "not recognized" or "Access denied", say so and stop. Do not
 install Node.js, copy executables, or change PATH or sandbox settings; see

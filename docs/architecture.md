@@ -58,8 +58,8 @@ A fact is the unit of knowledge (`src/core/facts.js`).
 | `data`       | Structured payload for programmatic use (strings redacted and neutralised).              |
 
 "Freshness" is a **content digest**, not a timestamp. File modification times change on every git
-checkout, so using them would make output differ between machines. Digests let a later run (Phase 2)
-decide whether a fact's source has changed.
+checkout, so using them would make output differ between machines. Digests let a later run (the `manifest verify` and
+`manifest diff` commands) decide whether a fact's source has changed.
 
 Facts are never fabricated. A detector emits a fact only when it can cite a file. Where a conclusion
 needs a heuristic (for example "tests are named `.test.`"), the fact is marked `inferred` and carries the

@@ -21,7 +21,9 @@ node bin/contextanvil.js scan .
 3. Run the targeted test file while iterating (`node --test test/compiler.test.js`) and the full `npm test` before
    you open a pull request.
 4. Run `npm run doctor:self`; the repository must keep a clean `doctor` result.
-5. Update `CHANGELOG.md` (under "Unreleased") and any documentation that your change affects.
+5. If you changed anything under `src/`, run `npm run skill:sync` and commit the regenerated `skills/contextanvil/src/`;
+   `npm run skill:check`, `npm test` and CI fail when the Skill's copy of the engine differs.
+6. Update `CHANGELOG.md` (under "Unreleased") and any documentation that your change affects.
 
 ## What a good change looks like
 
@@ -46,6 +48,14 @@ node bin/contextanvil.js scan .
 4. Add a regression test in `test/relevance.test.js` using a task that was not used for tuning.
 5. New benchmark tasks are welcome, especially labels by someone other than the code's author; label them before
    running the ranker.
+
+## Changing the Skill
+
+The Skill lives in `skills/contextanvil/`: edit `SKILL.md`, `references/` and `scripts/contextanvil.mjs` directly, but never the
+copy of the engine in `skills/contextanvil/src/` (it is generated from `src/`). Keep `SKILL.md` short, keep the rule that agents
+must not open secret-flagged lines, and make no claim that the Skill saves tokens or improves results: nothing measures that.
+Behaviour that the agents depend on is covered by `test/skill.test.js`; background and test results are in
+[docs/skill.md](docs/skill.md).
 
 ## Adding a detector
 
