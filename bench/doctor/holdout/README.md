@@ -37,3 +37,19 @@ evaluation or sealed ground truth.
    unmatched findings separately and distinguish sample uncertainty from
    population claims. Once inspected, the holdout is disclosed and cannot be
    reused for blind validation after tuning.
+
+## Evaluation infrastructure
+
+The reservation above is unchanged. The rest of this directory prepares the independent evaluation without
+running it. Start with the [status record](../../../docs/quality/doctor-holdout-status.md).
+
+| File | Purpose |
+| --- | --- |
+| [`RUNBOOK.md`](RUNBOOK.md) | The reproducible custodian procedure, from integrity check to report |
+| [`REVIEWER-INSTRUCTIONS.md`](REVIEWER-INSTRUCTIONS.md), [`rubric.md`](rubric.md), [`claims.tsv`](claims.tsv) | What each independent reviewer receives |
+| [`templates/`](templates/) | Blank label, adjudication, coverage, audit and attestation files |
+| [`gates.json`](gates.json) | Pre-registered, machine-readable release gates ([derivations](../../../docs/quality/doctor-release-gates.md)) |
+| [`identities.json`](identities.json) | Real Git tree ids, which the reservation's `tree` field does not hold (it repeats the commit id) |
+| [`tools/`](tools/) | Verify, materialize, package, validate, lock, execute and evaluate. Tested on synthetic repositories only |
+
+No snapshot, label, prediction or report is stored here. `tools/verify-inputs.mjs` fails if one appears.

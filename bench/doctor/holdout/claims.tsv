@@ -1,0 +1,44 @@
+claim_id	category	scope	nature	claim
+no-agent-instructions	missing	repository	either	The repository has no agent instruction document that an agent would read.
+agents-without-claude	missing	repository	cue-only	An AGENTS.md exists and no CLAUDE.md exists.
+claude-without-agents	missing	repository	cue-only	A CLAUDE.md exists and no AGENTS.md exists.
+instruction-empty	missing	document	either	An instruction document has too little substantive content to guide an agent, and does not delegate to another document.
+instruction-large	missing	document	cue-only	An instruction document is long enough to cost a noticeable share of an agent context window.
+instruction-oversized	missing	document	either	An instruction document is so long that agents are likely to truncate or ignore parts of it.
+instructions-omit-test	missing	repository	cue-only	The root package defines a test script that the instructions never mention.
+instructions-omit-build	missing	repository	cue-only	The root package defines a build script that the instructions never mention.
+conflicting-package-managers	conflict	document	either	Instructions tell the agent to use more than one package manager for the same purpose.
+instruction-lockfile-mismatch	conflict	document	either	Instructions use a package manager that differs from the one the repository commits to.
+multiple-lockfiles	conflict	repository	either	The root holds lockfiles for more than one Node package manager.
+package-manager-mismatch	conflict	repository	either	The packageManager field in the root manifest disagrees with the committed lockfiles.
+duplicate-instructions	conflict	repository	cue-only	Two or more instruction documents have identical content.
+missing-script-reference	stale	document	either	Instructions tell the agent to run a package script that the owning manifest does not define.
+missing-path-reference	stale	document	either	Instructions refer to a repository file or directory that does not exist at the referenced location.
+entrypoint-missing	stale	repository	either	A Node manifest names an entry point (main, module, exports, bin, start or dev target) that does not exist.
+secret-in-instructions	unsafe	document	either	An instruction document contains what appears to be a live credential value.
+terminal-control-characters	unsafe	document	either	An instruction document contains terminal control characters.
+hidden-characters	unsafe	document	either	An instruction document contains invisible or direction-changing characters.
+suspicious-instruction:ignore-instructions	unsafe	document	either	Text tells the agent to disregard its prior or higher-priority instructions.
+suspicious-instruction:reveal-secrets	unsafe	document	either	Text tells the agent to disclose secrets or its system prompt.
+suspicious-instruction:hide-from-user	unsafe	document	either	Text tells the agent to conceal actions or information from the user.
+suspicious-instruction:skip-confirmation	unsafe	document	either	Text tells the agent to act without the user approval or confirmation that would otherwise be expected.
+suspicious-instruction:disable-safety	unsafe	document	either	Text tells the agent to bypass or disable a security control.
+suspicious-instruction:role-override	unsafe	document	either	Text attempts to impose a different role or inject role delimiters.
+suspicious-instruction:exfiltrate-to-url	unsafe	document	either	Text tells the agent to send sensitive data to a literal URL.
+suspicious-instruction:pipe-to-shell	unsafe	document	either	Text tells the agent to pipe a downloaded script into a shell.
+suspicious-instruction:encoded-execution	unsafe	document	either	Text tells the agent to decode an encoded payload and execute it.
+hidden-comment	unsafe	document	cue-only	A comment invisible in rendered Markdown carries substantive text.
+hidden-html-element	unsafe	document	either	Markup hides content from a rendered view while leaving it visible to an agent.
+encoded-payload	unsafe	document	cue-only	A very long encoded-looking blob appears in an instruction document.
+sensitive-file-not-ignored	unsafe	repository	either	A file whose name conventionally holds credentials or keys is present and not covered by an ignore rule.
+no-gitignore	unsafe	repository	cue-only	The repository root has no .gitignore.
+install-time-script	unsafe	repository	cue-only	A manifest declares a script or event that runs automatically at install time.
+agent-executable-config	unsafe	repository	cue-only	An agent configuration file declares hooks or tool servers that can run commands or reach services.
+malformed-json	scan	document	either	A JSON manifest or configuration is syntactically invalid.
+instruction-unreadable	scan	document	either	An instruction document exists but cannot be read as text.
+file-limit	scan	repository	either	The repository has more files than an analysis can index.
+depth-limit	scan	repository	either	The repository nests directories deeper than an analysis can traverse.
+symlink-escape	scan	repository	either	A symbolic link resolves outside the repository.
+unreadable-directory	scan	repository	either	A directory cannot be read.
+file-too-large	scan	repository	either	A file is too large for an analysis to read.
+detector-failed	scan	repository	either	An analysis component raised an internal error.

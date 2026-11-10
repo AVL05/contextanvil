@@ -68,3 +68,9 @@ Compare the results with the preregistered gates. Passing CI is a separate
 engineering requirement. If the candidate fails a gate, develop fixes on
 separate inputs and reserve a new blind holdout before measuring release accuracy
 again. The disclosed holdout can still serve as regression evidence.
+
+## Supporting material
+
+The [runbook](../../bench/doctor/holdout/RUNBOOK.md) turns these steps into commands and file formats. The
+[release gates](doctor-release-gates.md) give the preregistered criteria and their derivations. The
+[status record](doctor-holdout-status.md) lists what is verified, what is blocked and what remains.

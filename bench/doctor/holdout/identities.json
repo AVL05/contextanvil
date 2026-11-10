@@ -1,0 +1,140 @@
+{
+  "note": "Custodian addendum to inputs.json, which is hash-pinned and unchanged. The tree field in inputs.json holds the commit SHA, so the real Git tree SHAs are recorded here from the commit objects. Only repository, commit, tree and path metadata were read; no file contents. entries counts blobs and trees in the recursive listing. ecosystem is a coarse label from each repository public identity, not from file inspection, and the custodian may correct it before the lock.",
+  "verifiedWith": "GitHub REST API git/commits and git/trees (metadata only)",
+  "expected": {
+    "repositories": 10,
+    "instructionPaths": 24
+  },
+  "repositories": [
+    {
+      "repository": "astral-sh/uv",
+      "currentFullName": "astral-sh/uv",
+      "commit": "419068541b7452193b72a240d345595595cca3e3",
+      "tree": "e2651a7ea7596b717235583937f8b4a3ef20e309",
+      "ecosystem": "Rust",
+      "licenseMetadata": "Apache-2.0",
+      "entries": 2385,
+      "symlinks": 1,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "bagisto/bagisto",
+      "currentFullName": "bagisto/bagisto",
+      "commit": "b740b83719bd698c93a07c4bc1c1f21f2cc169f1",
+      "tree": "0aae75e27eb0ba2bd252567c76dde11cbde925c7",
+      "ecosystem": "PHP",
+      "licenseMetadata": "MIT",
+      "entries": 6013,
+      "symlinks": 0,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "dagger/dagger",
+      "currentFullName": "dagger/dagger",
+      "commit": "9f15293b2d3960d9eeee567d2e50bd60dcf0df80",
+      "tree": "913faf228eae98644a9ad2d9b4fcaf919aa06910",
+      "ecosystem": "Go",
+      "licenseMetadata": "Apache-2.0",
+      "entries": 25358,
+      "symlinks": 3,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "facebook/react",
+      "currentFullName": "react/react",
+      "commit": "b05c0b75fd9778536152eead30814c9ca90c810a",
+      "tree": "71a0d017bad4f78b0821f9ed471f2d87bd008638",
+      "ecosystem": "JavaScript",
+      "licenseMetadata": "MIT",
+      "entries": 7918,
+      "symlinks": 0,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "jesseduffield/lazygit",
+      "currentFullName": "jesseduffield/lazygit",
+      "commit": "bd4062a1e745b47d87ee8d0b24649529ed28b499",
+      "tree": "89826a6a7d9b82d92b1deddb98e3b2a808cad26e",
+      "ecosystem": "Go",
+      "licenseMetadata": "MIT",
+      "entries": 2912,
+      "symlinks": 1,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "livewire/livewire",
+      "currentFullName": "livewire/livewire",
+      "commit": "e03c29c8181804cdafe9d5819b7ab5cc93adbf12",
+      "tree": "0fe8ac963c1605d0015d62b0e8e9f52f40198cde",
+      "ecosystem": "PHP",
+      "licenseMetadata": "MIT",
+      "entries": 1387,
+      "symlinks": 0,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "lobehub/lobehub",
+      "currentFullName": "lobehub/lobehub",
+      "commit": "01561bb2d50ffce033d03728910c97b02ad20e2f",
+      "tree": "03ba41ce4aacd25bdb97ed39d2421b8cc08a4269",
+      "ecosystem": "TypeScript",
+      "licenseMetadata": "NOASSERTION",
+      "entries": 28884,
+      "symlinks": 4,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "pnpm/pnpm",
+      "currentFullName": "pnpm/pnpm",
+      "commit": "35d6bb6f613b539f88d60ba0fd90afcd8496db81",
+      "tree": "84345a1eb028dc7869c730f7b83e684dfaf59ecd",
+      "ecosystem": "TypeScript",
+      "licenseMetadata": "MIT",
+      "entries": 14413,
+      "symlinks": 6,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "pydantic/pydantic",
+      "currentFullName": "pydantic/pydantic",
+      "commit": "560f0f96a37d6913afdfddb2de22030ef08e68c3",
+      "tree": "b6d35e0b9a3a2e480b3cae869b649e3ff58edbf2",
+      "ecosystem": "Python",
+      "licenseMetadata": "MIT",
+      "entries": 3783,
+      "symlinks": 2,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    },
+    {
+      "repository": "rectorphp/rector-src",
+      "currentFullName": "rectorphp/rector-src",
+      "commit": "6029e8ddbb90ab57874e6ea575dda80d7fdba338",
+      "tree": "b2938df2f621c49cc4ca176c9255ce9dd6514545",
+      "ecosystem": "PHP",
+      "licenseMetadata": "MIT",
+      "entries": 10899,
+      "symlinks": 2,
+      "submodules": 0,
+      "listingTruncated": false,
+      "reservedPathsVerified": true
+    }
+  ]
+}
