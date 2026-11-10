@@ -1,0 +1,262 @@
+{
+  "node": "v24.22.2",
+  "platform": "win32",
+  "runs": 7,
+  "summary": [
+    {
+      "repository": "next-app",
+      "baseline": {
+        "medianMilliseconds": 37.03070000000001,
+        "medianMaxRssKiB": 56248,
+        "samples": [
+          {
+            "milliseconds": 50.7098,
+            "maxRssKiB": 56200,
+            "findings": 5
+          },
+          {
+            "milliseconds": 46.985000000000014,
+            "maxRssKiB": 56664,
+            "findings": 5
+          },
+          {
+            "milliseconds": 39.9551,
+            "maxRssKiB": 56160,
+            "findings": 5
+          },
+          {
+            "milliseconds": 37.03070000000001,
+            "maxRssKiB": 56248,
+            "findings": 5
+          },
+          {
+            "milliseconds": 30.088399999999993,
+            "maxRssKiB": 56328,
+            "findings": 5
+          },
+          {
+            "milliseconds": 26.017899999999997,
+            "maxRssKiB": 56228,
+            "findings": 5
+          },
+          {
+            "milliseconds": 25.617399999999996,
+            "maxRssKiB": 56416,
+            "findings": 5
+          }
+        ]
+      },
+      "candidate": {
+        "medianMilliseconds": 33.060500000000005,
+        "medianMaxRssKiB": 56340,
+        "samples": [
+          {
+            "milliseconds": 43.868600000000015,
+            "maxRssKiB": 56520,
+            "findings": 5
+          },
+          {
+            "milliseconds": 56.1332,
+            "maxRssKiB": 56296,
+            "findings": 5
+          },
+          {
+            "milliseconds": 55.1065,
+            "maxRssKiB": 56340,
+            "findings": 5
+          },
+          {
+            "milliseconds": 33.060500000000005,
+            "maxRssKiB": 56532,
+            "findings": 5
+          },
+          {
+            "milliseconds": 30.648999999999994,
+            "maxRssKiB": 56548,
+            "findings": 5
+          },
+          {
+            "milliseconds": 27.8985,
+            "maxRssKiB": 56304,
+            "findings": 5
+          },
+          {
+            "milliseconds": 28.137399999999992,
+            "maxRssKiB": 56292,
+            "findings": 5
+          }
+        ]
+      }
+    },
+    {
+      "repository": "cloudflare--agents",
+      "baseline": {
+        "medianMilliseconds": 385.22130000000004,
+        "medianMaxRssKiB": 78096,
+        "samples": [
+          {
+            "milliseconds": 378.4504,
+            "maxRssKiB": 78260,
+            "findings": 8
+          },
+          {
+            "milliseconds": 380.3617,
+            "maxRssKiB": 78136,
+            "findings": 8
+          },
+          {
+            "milliseconds": 412.4636,
+            "maxRssKiB": 78036,
+            "findings": 8
+          },
+          {
+            "milliseconds": 411.0617,
+            "maxRssKiB": 77636,
+            "findings": 8
+          },
+          {
+            "milliseconds": 388.2001,
+            "maxRssKiB": 78096,
+            "findings": 8
+          },
+          {
+            "milliseconds": 385.22130000000004,
+            "maxRssKiB": 77816,
+            "findings": 8
+          },
+          {
+            "milliseconds": 369.33430000000004,
+            "maxRssKiB": 78180,
+            "findings": 8
+          }
+        ]
+      },
+      "candidate": {
+        "medianMilliseconds": 382.6594,
+        "medianMaxRssKiB": 76744,
+        "samples": [
+          {
+            "milliseconds": 428.9587,
+            "maxRssKiB": 76620,
+            "findings": 5
+          },
+          {
+            "milliseconds": 357.2913,
+            "maxRssKiB": 76744,
+            "findings": 5
+          },
+          {
+            "milliseconds": 395.4437,
+            "maxRssKiB": 76928,
+            "findings": 5
+          },
+          {
+            "milliseconds": 371.5131,
+            "maxRssKiB": 76560,
+            "findings": 5
+          },
+          {
+            "milliseconds": 382.6594,
+            "maxRssKiB": 76936,
+            "findings": 5
+          },
+          {
+            "milliseconds": 367.8016,
+            "maxRssKiB": 76588,
+            "findings": 5
+          },
+          {
+            "milliseconds": 466.87430000000006,
+            "maxRssKiB": 76908,
+            "findings": 5
+          }
+        ]
+      }
+    },
+    {
+      "repository": "phpstan--phpstan-src",
+      "baseline": {
+        "medianMilliseconds": 592.7011,
+        "medianMaxRssKiB": 80736,
+        "samples": [
+          {
+            "milliseconds": 589.2097,
+            "maxRssKiB": 79612,
+            "findings": 7
+          },
+          {
+            "milliseconds": 588.9635000000001,
+            "maxRssKiB": 81132,
+            "findings": 7
+          },
+          {
+            "milliseconds": 590.6896999999999,
+            "maxRssKiB": 80736,
+            "findings": 7
+          },
+          {
+            "milliseconds": 705.788,
+            "maxRssKiB": 80688,
+            "findings": 7
+          },
+          {
+            "milliseconds": 592.7011,
+            "maxRssKiB": 80368,
+            "findings": 7
+          },
+          {
+            "milliseconds": 671.0643,
+            "maxRssKiB": 81044,
+            "findings": 7
+          },
+          {
+            "milliseconds": 668.0813,
+            "maxRssKiB": 81092,
+            "findings": 7
+          }
+        ]
+      },
+      "candidate": {
+        "medianMilliseconds": 637.8651,
+        "medianMaxRssKiB": 80800,
+        "samples": [
+          {
+            "milliseconds": 694.784,
+            "maxRssKiB": 80800,
+            "findings": 6
+          },
+          {
+            "milliseconds": 655.0391,
+            "maxRssKiB": 80940,
+            "findings": 6
+          },
+          {
+            "milliseconds": 623.199,
+            "maxRssKiB": 79436,
+            "findings": 6
+          },
+          {
+            "milliseconds": 625.0389,
+            "maxRssKiB": 81096,
+            "findings": 6
+          },
+          {
+            "milliseconds": 616.5232,
+            "maxRssKiB": 80572,
+            "findings": 6
+          },
+          {
+            "milliseconds": 637.8651,
+            "maxRssKiB": 80352,
+            "findings": 6
+          },
+          {
+            "milliseconds": 650.0523,
+            "maxRssKiB": 80812,
+            "findings": 6
+          }
+        ]
+      }
+    }
+  ]
+}

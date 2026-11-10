@@ -51,6 +51,9 @@ Not measured: how often agents activate it falsely on unrelated tasks, and wheth
 
 ## Installation tests
 
+The [hardening verification](quality/doctor-hardening.md#skill-integration) records a fresh
+project-scope installer run and agent sessions. The results below describe earlier tests.
+
 Environment: Windows 11, Node.js 24.22.2, Claude Code 2.1.318, Codex CLI 0.166.0, the `skills` installer fetched
 by `npx`. The Skill was installed from a local checkout into throw-away projects (project scope), because at that
 time the Skill was not yet on `main`. Test repository: a generated project with intentional defects (conflicting `pnpm`/`npm`/`yarn`
