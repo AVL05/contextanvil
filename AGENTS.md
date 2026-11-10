@@ -26,6 +26,10 @@ Layers, from the bottom up. Each layer may only import from the layers above it 
 5. `src/doctor.js` - context diagnostics.
 6. `src/render/` and `src/cli/` - presentation only. No analysis logic belongs here.
 
+The `skills/contextanvil/` directory is the primary way users receive ContextAnvil: an Agent Skill (`SKILL.md`, `references/`,
+`scripts/contextanvil.mjs`) plus a generated copy of `src/` in `skills/contextanvil/src/`. Never edit that copy: change `src/`, then run
+`npm run skill:sync` (`npm run skill:check` and `test/skill.test.js` fail on drift). The launcher exposes read-only commands only.
+
 The `bench/` directory measures ranking quality, speed, memory and determinism. It is not part of the published package.
 
 The public API is `src/index.js`. A future MCP server or dashboard must call that API, not internals.

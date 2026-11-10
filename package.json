@@ -37,6 +37,8 @@
     "doctor:self": "node bin/contextanvil.js doctor .",
     "bench": "node bench/run.js --out bench/results/latest.json --md bench/results/latest.md",
     "bench:quick": "node bench/run.js --quick --no-perf",
-    "bench:digest": "node bench/digest.js"
+    "bench:digest": "node bench/digest.js",
+    "skill:sync": "node scripts/sync-skill.js",
+    "skill:check": "node scripts/sync-skill.js --check"
   }
 }

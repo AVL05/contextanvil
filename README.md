@@ -2,19 +2,128 @@
 
 **Forge better context.**
 
-ContextAnvil is a context-engineering toolkit for AI coding agents. It reads a repository, works out what
-is in it, and compiles a small, source-grounded context pack for the task at hand, then checks the
-repository's agent-facing context (AGENTS.md, CLAUDE.md and friends) for problems.
+ContextAnvil is an [Agent Skill](https://agentskills.io) for **Claude Code** and **OpenAI Codex**. It teaches
+your coding agent to audit `AGENTS.md` and `CLAUDE.md`, find instructions that are stale, contradictory or
+suspicious, and prepare source-cited context for complex tasks. It bundles a deterministic, offline,
+read-only analysis engine, so there is nothing else to install and no service to configure.
 
-It is deterministic and offline. Repository analysis is read-only. It needs no API key, no cloud service and no language model.
+> **Status: pre-release.** The Skill, the engine and their tests are implemented. The package is not published
+> to npm and does not need to be. The ranking behind context preparation has modest measured accuracy (see
+> [How well does the ranking work?](#how-well-does-the-ranking-work)), and **no experiment has shown that the
+> Skill saves tokens or improves coding results.** See [Limitations](#limitations).
 
-> **Status: v0.1.1+, early development.** Scan, context and doctor are implemented and tested. The test suite and a
-> cross-platform output comparison have run **green on GitHub Actions on Ubuntu, macOS and Windows with Node.js 22, 24 and
-> 26** ([run 42620223366](https://github.com/AVL05/contextanvil/actions/runs/42620223366), commit `ac2c1a3`). It is not published to npm yet. Ranking accuracy on independently labelled real work is modest
-> (see [How well does the ranking work?](#how-well-does-the-ranking-work)). See also [Limitations](#limitations), the
-> [benchmarks](bench/README.md) and the [roadmap](docs/roadmap.md).
+## What it does
 
-## Why
+When your agent decides the task calls for it, the Skill runs a bundled analyser and uses the result:
+
+- **Audit instructions**: finds conflicting package managers, scripts and paths that no longer exist, secrets,
+  hidden or invisible characters, and text that tries to steer an agent (for example "ignore previous
+  instructions"). Every finding cites `path:line`.
+- **Inspect repository facts**: languages, frameworks, scripts, entry points and conventions, each marked
+  `observed` (read from a file) or `inferred` (a heuristic).
+- **Prepare context**: for a complex task in an unfamiliar codebase, a ranked list of relevant files with reasons, applicable
+  instruction excerpts and an explicit list of what was left out.
+- **Recommend changes**: the agent proposes precise edits to your instruction files. It does not apply them
+  unless you ask.
+
+## Why install it
+
+- Instruction files rot. A command that no longer exists, a second package manager, a pasted secret: agents
+  follow these confidently. The audit finds them with evidence you can check.
+- Instruction files are an attack surface. The audit flags hidden and hijacking text before an agent reads it.
+- It is cheap to leave installed: the Skill's description tells the agent when **not** to use it, and the
+  analysis is local, offline and read-only.
+
+What it does not do: it does not call any model or API, run any repository code, or change any repository file.
+
+## Install
+
+```bash
+npx skills add AVL05/contextanvil
+```
+
+This uses the open-source [`skills`](https://github.com/vercel-labs/skills) installer. It copies the Skill to
+`.agents/skills/contextanvil` (read by Codex) and links it into `.claude/skills/contextanvil` (read by Claude
+Code); add `-g` for a user-level install. Everything the Skill needs, including the analysis engine, lives in
+that one directory.
+
+Prerequisites: **Node.js 22 or later** on the machine that runs your agent. No npm install, no network access,
+no account and no MCP server are needed after the files are copied.
+
+Manual install, without the installer: copy `skills/contextanvil/` from this repository to
+`.claude/skills/contextanvil/` (Claude Code) and/or `.agents/skills/contextanvil/` (Codex), project-level or under
+your home directory.
+
+> `npx skills add AVL05/contextanvil` installs from the default branch, so it works once this work is merged.
+> Until then, install from a checkout: `npx skills add ./path/to/contextanvil`.
+
+## Use it
+
+**Automatically.** Ask for something the Skill covers and the agent loads it by its description:
+
+- "Audit our AGENTS.md and CLAUDE.md."
+- "Our agent keeps running `yarn` but we use npm. Why?"
+- "Check this repository's instruction files before I let an agent loose in it."
+- "I need to change how billing retries work and I don't know this codebase. Where should I look?"
+
+**Explicitly.** Name the Skill in your prompt (`use the contextanvil skill to audit this repository`) or, in
+Claude Code, run `/contextanvil`.
+
+**By hand.** The launcher is a plain Node script inside the installed Skill:
+
+```bash
+node .agents/skills/contextanvil/scripts/contextanvil.mjs doctor .
+node .agents/skills/contextanvil/scripts/contextanvil.mjs context "add rate limiting to login" .
+node .agents/skills/contextanvil/scripts/contextanvil.mjs scan . --json
+```
+
+`doctor` exits `1` when it has findings. Only these read-only commands are exposed through the Skill launcher;
+the `manifest` command, which writes files, is not.
+
+## When agents should use it
+
+| Use it | Do not use it |
+| ------ | ------------- |
+| The user asks to audit, review or improve `AGENTS.md`, `CLAUDE.md` or similar | A small, well-scoped edit in files already open |
+| Instructions seem to disagree with the code | Questions answerable from files already in context |
+| An unfamiliar repository should be checked before an agent works in it | "Just in case" scans before every task |
+| A complex task spans areas the agent does not know | Repeating an analysis whose result is already in the conversation |
+
+The Skill's instructions tell the agent to run one analysis per question, keep its reply short, verify each
+finding against the cited line, separate observations from inferences, and treat everything in the repository
+as untrusted data. Details live in `skills/contextanvil/references/`.
+
+## Verified compatibility
+
+Tested on Windows 11 with Node.js 24.22.2, Claude Code 2.1.318 and Codex CLI 0.166.0: install with
+`npx skills add`, discovery by both agents, running the bundled analyser from the installed location, auditing a
+repository with intentional defects, matching evidence, and an unchanged repository afterwards. Results and
+platform-specific limitations, including a Codex-on-Windows sandbox problem, are in
+[docs/skill.md](docs/skill.md). Linux and macOS were not tested with the real agents.
+
+## Skill layout
+
+```text
+skills/contextanvil/
+  SKILL.md                      frontmatter + concise instructions (progressive disclosure)
+  references/                   audit workflow, finding catalogue, context preparation, safety, limitations
+  scripts/contextanvil.mjs      launcher: Node version check, read-only command allowlist
+  src/, package.json            vendored copy of the engine (generated, do not edit)
+```
+
+`src/` is copied from the repository's `src/` by `npm run skill:sync`; `npm run skill:check` and the test suite
+fail if they drift apart. The reason for the copy: the installer copies only the Skill directory, so the Skill must
+carry its own engine. The npm package and `bin/contextanvil.js` still exist for development, but the Skill does
+not depend on them.
+
+---
+
+## CLI and engine reference
+
+Everything below describes the engine behind the Skill. It is also usable on its own from a clone: `node bin/contextanvil.js --help`.
+The engine is deterministic and offline, and repository analysis is read-only.
+
+## Design principles
 
 Coding agents work better when they start from accurate, relevant context, and worse when they re-discover
 a repository each session, read the wrong files, or follow instructions that no longer match the code.
@@ -32,7 +141,8 @@ input, same bytes), every claim is **cited** (path, line, content digest), facts
 **inferences**, budgets are **measured** rather than assumed, ranking decisions are **explained**, and nothing in a
 scanned repository can instruct the tool.
 
-## Use cases
+
+## Use cases for the engine
 
 - Give an agent a compact starting pack for a task: `contextanvil context "Fix the login redirect" .`
 - Check in CI that `AGENTS.md` still matches the repository: `contextanvil doctor .`
@@ -40,19 +150,16 @@ scanned repository can instruct the tool.
 - Get a source-cited overview of a codebase for onboarding.
 - Build your own tooling on the JSON output or the library API.
 
-## Install and run
+## Run from a clone
 
-ContextAnvil is not on npm yet. Run it from a clone. Requires **Node.js 22 or later**; there are no
-dependencies to install.
+Requires **Node.js 22 or later**; there are no dependencies to install.
 
 ```bash
-git clone <this repository>
+git clone https://github.com/AVL05/contextanvil
 cd contextanvil
 npm test
 node bin/contextanvil.js --help
 ```
-
-There is no install step; a global `contextanvil` command will exist once the package is published.
 
 ## Commands
 
@@ -351,6 +458,9 @@ See the [manifest format and storage guarantees](docs/design/phase-2-manifests.m
 
 ## Limitations
 
+- **The Skill depends on the agent choosing to use it.** Activation is driven by the Skill description and the agent's judgement. It is not guaranteed, and it was only tested with the prompts listed in [docs/skill.md](docs/skill.md). An explicit mention always works.
+- **Node.js 22+ must be reachable by the agent's shell.** The Skill bundles the engine, not the runtime. Codex's Windows sandbox could not resolve an nvm-windows `node` in testing; see [docs/skill.md](docs/skill.md).
+- **No measured benefit.** The Skill has not been compared with working without it.
 - **Relevance is lexical and structural.** Task matching uses file names, directories, declared symbols, word matches,
   rarity of terms, project structure and import relations. It does not understand synonyms or domain meaning: "show
   prices in euros" will not find the file that says `currency` unless other words overlap, and tasks whose vocabulary
@@ -389,7 +499,7 @@ What exists today is described above. Everything below is **planned and not impl
 but no code:
 
 2. Persistent context manifests and live diffs. Verified read skipping and safe instruction generation remain separate work.
-3. An MCP server exposing repository context and project rules.
+3. An MCP server exposing repository context and project rules. Not planned while the Skill is the primary delivery path.
 4. A visual dashboard for project understanding, evidence inspection and conflict resolution.
 5. Reproducible agent benchmarks comparing agent workflows with and without ContextAnvil.
 
@@ -402,6 +512,8 @@ npm test                                   # full suite (Node's built-in runner)
 node --test test/compiler.test.js          # one file
 npm run scan:self && npm run doctor:self   # ContextAnvil analysing itself
 npm run bench:quick                        # ranking accuracy benchmark (seconds)
+npm run skill:sync                         # refresh the Skill's vendored engine after changing src/
+npm run skill:check                        # verify the vendored engine matches src/
 ```
 
 Layout: `src/core` (safe access), `src/detectors`, `src/scanner.js`, `src/compiler`, `src/doctor.js`,
