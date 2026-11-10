@@ -8,7 +8,8 @@ and propose fixes they can accept or reject.
 1. Run `node <skill-dir>/scripts/contextanvil.mjs doctor <repo-path>`. Use `--json` when you need to
    process findings; use the text report when you only need to read them.
 2. Group findings by category: `unsafe` first, then `conflict`, `stale`, `missing`, `scan`.
-3. For each finding you intend to report, open the cited `path` at the cited `line` and confirm it. The
+3. For each finding you intend to report, open the cited `path` at the cited `line` and confirm it, except secret findings: report their type and
+   location from the tool output without opening that line. The
    tool's matching is heuristic and several checks state "medium confidence" (a quoted path may be an
    example, a script reference may be illustrative).
 4. Classify each confirmed item:

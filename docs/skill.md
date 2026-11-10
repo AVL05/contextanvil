@@ -102,3 +102,12 @@ checks that the secret is not printed, and compares a digest of the repository b
 - Activation precision on unrelated tasks.
 - Large repositories through the agents (the engine's own performance numbers are in `docs/performance.md`).
 - Whether the Skill saves tokens or improves outcomes. No claim is made.
+
+## Known issue found during final review
+
+In one Claude Code run against the default-branch install, the agent's own `Grep` call returned the flagged secret line
+into its context while it was verifying findings. The value was not repeated in its answer, but it had been read. The Skill's
+instructions had told the agent both to open every cited line and never to read flagged files. They now say explicitly not to
+open, search or print secret-flagged lines and to read other lines by range. In three Claude Code runs after the change the
+fake key did not appear anywhere in the transcript. That is a small sample from a non-deterministic agent, so treat this as
+reduced risk, not a guarantee; the engine's own output never contains the value (covered by `test/skill.test.js`).
