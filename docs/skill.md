@@ -105,9 +105,12 @@ checks that the secret is not printed, and compares a digest of the repository b
 
 ## Known issue found during final review
 
-In one Claude Code run against the default-branch install, the agent's own `Grep` call returned the flagged secret line
-into its context while it was verifying findings. The value was not repeated in its answer, but it had been read. The Skill's
-instructions had told the agent both to open every cited line and never to read flagged files. They now say explicitly not to
-open, search or print secret-flagged lines and to read other lines by range. In three Claude Code runs after the change the
-fake key did not appear anywhere in the transcript. That is a small sample from a non-deterministic agent, so treat this as
-reduced risk, not a guarantee; the engine's own output never contains the value (covered by `test/skill.test.js`).
+In one Claude Code run against the default-branch install, the agent's own `Grep` call returned the flagged secret line into its
+context while it was verifying findings. The value was not repeated in its answer, but it had been read. The Skill's instructions had
+told the agent both to open every cited line and never to read flagged secrets. They now say explicitly not to open, search or print
+secret-flagged lines and to read other lines by range.
+
+**This reduces the risk but does not prevent it.** After the change, 4 of 5 Claude Code runs kept the fake key out of the transcript; in
+the fifth the agent read the whole `AGENTS.md` with its `Read` tool, putting the line into its context, again without repeating it in
+its answer. A Codex run skipped the flagged line explicitly. The engine's own output never contains the value (covered by
+`test/skill.test.js`). A structural fix, such as a launcher command that prints redacted excerpts for verification, was not built.
