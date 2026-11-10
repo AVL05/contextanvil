@@ -3,6 +3,7 @@ import { ContextAnvilError, usageError } from '../errors.js';
 import { refOf } from '../core/facts.js';
 import { byCodeUnit } from '../core/paths.js';
 import { sliceLines } from '../core/markdown.js';
+import { safeText } from '../core/secrets.js';
 import { readerFor } from '../scanner.js';
 import { TOOL_NAME, VERSION } from '../version.js';
 import { analyzeFiles, isScorable } from './analyze.js';
@@ -63,13 +64,14 @@ export function compileContext(scan, task, options = {}) {
 
   const reader = readerFor(scan);
   const fileSet = new Set(scan.files.map((f) => f.path));
-  const taskInfo = extractTaskTerms(task.trim(), fileSet);
+  const safeTask = safeText(task.trim());
+  const taskInfo = extractTaskTerms(safeTask, fileSet);
   const { terms, mentionedPaths } = taskInfo;
 
   // 1. Order candidate files by path-only relevance so the bounded content pass reads likely files first
   //    (smaller files first among the rest, so a few huge files cannot starve the budget).
   const candidates = scan.files.filter((f) => isScorable(f.path));
-  const intent = classifyIntent(task);
+  const intent = classifyIntent(safeTask);
   const preRank = rankFiles({ candidates, terms, mentioned: mentionedPaths, intent, analyses: new Map() }).ranked;
   const sizeOf = new Map(candidates.map((f) => [f.path, f.size]));
   const readOrder = [

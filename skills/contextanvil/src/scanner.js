@@ -5,6 +5,8 @@ import { KIND_ORDER } from './core/facts.js';
 import { resolveLimits } from './core/limits.js';
 import { byCodeUnit, realpath } from './core/paths.js';
 import { createReader } from './core/reader.js';
+import { escapeUnsafe } from './core/sanitize.js';
+import { redact } from './core/secrets.js';
 import { walkRepository } from './core/walker.js';
 import { createDetectorContext } from './detectors/context.js';
 import { DETECTORS } from './detectors/index.js';
@@ -26,10 +28,10 @@ export function scanRepository(rootInput = '.', options = {}) {
   try {
     root = realpath(path.resolve(rootInput));
   } catch {
-    throw new ContextAnvilError('ROOT_NOT_FOUND', `Path does not exist or is not accessible: ${rootInput}`);
+    throw new ContextAnvilError('ROOT_NOT_FOUND', `Path does not exist or is not accessible: ${escapeUnsafe(String(rootInput))}`);
   }
   if (!fs.statSync(root).isDirectory()) {
-    throw new ContextAnvilError('ROOT_NOT_DIRECTORY', `Not a directory: ${rootInput}`);
+    throw new ContextAnvilError('ROOT_NOT_DIRECTORY', `Not a directory: ${escapeUnsafe(String(rootInput))}`);
   }
 
   const boundIgnoreIo = options[snapshotReadBudget] === true;
@@ -42,10 +44,9 @@ export function scanRepository(rootInput = '.', options = {}) {
   for (const detector of DETECTORS) {
     try {
       detector.detect(ctx);
-    } catch (err) {
+    } catch {
       // Never echo err.message: it could quote repository content.
-      const detail = process.env.CONTEXTANVIL_DEBUG ? `: ${err.message}` : '';
-      diagnostics.push({ level: 'error', code: 'detector-failed', message: `Detector "${detector.id}" failed (${err.name})${detail}` });
+      diagnostics.push({ level: 'error', code: 'detector-failed', message: `Detector "${detector.id}" failed` });
     }
   }
 
@@ -66,7 +67,7 @@ export function scanRepository(rootInput = '.', options = {}) {
   const result = {
     schemaVersion: SCHEMA_VERSION,
     tool: { name: TOOL_NAME, version: VERSION },
-    root,
+    root: escapeUnsafe(redact(root)),
     limits,
     stats: {
       filesIndexed: walk.files.length,

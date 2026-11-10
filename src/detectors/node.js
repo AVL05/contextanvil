@@ -24,7 +24,7 @@ const TEST_CONFIGS = {
   '@playwright/test': /^playwright\.config\./, cypress: /^cypress\.config\./,
 };
 
-const LOCKFILES = [
+export const LOCKFILES = [
   ['package-lock.json', 'npm'], ['npm-shrinkwrap.json', 'npm'], ['pnpm-lock.yaml', 'pnpm'],
   ['yarn.lock', 'yarn'], ['bun.lock', 'bun'], ['bun.lockb', 'bun'],
 ];

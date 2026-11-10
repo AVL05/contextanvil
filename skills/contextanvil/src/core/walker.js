@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { isIgnoredBy, parseIgnore } from './ignore.js';
-import { classifySensitivePath } from './secrets.js';
+import { classifySensitivePath, redact } from './secrets.js';
 import { byCodeUnit, isInside, realpath, toPosix } from './paths.js';
 import { extensionOf } from './classify.js';
-import { escapeUnsafe, hasUnsafeCharacters } from './sanitize.js';
+import { escapeUnsafe, hasUnsafePathCharacters } from './sanitize.js';
 import { createReader } from './reader.js';
 
 /** Directory names that are never traversed (dependencies, build output, caches). */
@@ -117,7 +117,12 @@ export function walkRepository(root, limits, { respectIgnore = true, boundIgnore
     for (const ent of entries) {
       const rel = dir.rel ? `${dir.rel}/${ent.name}` : ent.name;
       const abs = path.join(dir.abs, ent.name);
-      if (hasUnsafeCharacters(ent.name)) {
+      if (ent.name.length >= 15 && redact(ent.name) !== ent.name) {
+        excluded.unreadable++;
+        diagnostics.push({ level: 'warn', code: 'credential-filename', message: 'Skipped a path containing a probable credential in its name' });
+        continue;
+      }
+      if (hasUnsafePathCharacters(ent.name)) {
         // Names with control or invisible characters could mislead a reader or a terminal; never index them.
         excluded.unreadable++;
         diagnostics.push({ level: 'warn', code: 'unsafe-filename', message: 'Skipped a path containing control or invisible characters', path: escapeUnsafe(rel) });
@@ -150,6 +155,11 @@ export function walkRepository(root, limits, { respectIgnore = true, boundIgnore
         isFile = true;
         isDir = false;
         symlinkTo = toPosix(path.relative(root, real));
+        if (redact(symlinkTo) !== symlinkTo || hasUnsafePathCharacters(symlinkTo)) {
+          excluded.unreadable++;
+          diagnostics.push({ level: 'warn', code: 'unsafe-symlink-target', message: 'Skipped a link to a path whose name cannot be shown safely', path: rel });
+          continue;
+        }
         size = st.size;
       }
 

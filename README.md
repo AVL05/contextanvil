@@ -52,8 +52,9 @@ This uses the open-source [`skills`](https://github.com/vercel-labs/skills) inst
 Code); add `-g` for a user-level install. Everything the Skill needs, including the analysis engine, lives in
 that one directory.
 
-Prerequisites: **Node.js 22 or later** on the machine that runs your agent. No npm install, no network access,
-no account and no MCP server are needed after the files are copied.
+Prerequisites: **Node.js 22 or later** on the machine that runs your agent. The current
+[`skills` installer](https://github.com/vercel-labs/skills#install-a-skill) requires Node.js 22.20 or later.
+The bundled launcher runs offline and needs only Node.js once the Skill is installed.
 
 **Windows and Codex.** Codex runs commands in a sandbox as a different Windows user. A Node.js that lives in your profile
 folder, for example one managed by nvm-windows, is on `PATH` but cannot be executed there ("Access denied"), and the Skill
@@ -111,17 +112,18 @@ are exposed through the Skill launcher; the `manifest` command, which writes fil
 | An unfamiliar repository should be checked before an agent works in it | "Just in case" scans before every task |
 | A complex task spans areas the agent does not know | Repeating an analysis whose result is already in the conversation |
 
-The Skill's instructions tell the agent to run one analysis per question, keep its reply short, verify each
-finding against the cited line, separate observations from inferences, and treat everything in the repository
-as untrusted data. Details live in `skills/contextanvil/references/`.
+The Skill asks the agent to run one analysis per question, check the cited evidence, distinguish observations
+from inferences, and treat repository text as untrusted. It tells the agent to leave secret-flagged lines
+unopened. The agent's own file tools remain governed by the host's permissions.
 
 ## Verified compatibility
 
-Tested on Windows 11 with Node.js 24.22.2, Claude Code 2.1.318 and Codex CLI 0.166.0: install from the default branch with
-`npx skills add AVL05/contextanvil`, discovery by both agents, running the bundled analyser from the installed location, auditing a
-repository with intentional defects, matching evidence, and an unchanged repository afterwards. Results and
-platform-specific limitations, including a Codex-on-Windows sandbox problem, are in
-[docs/skill.md](docs/skill.md). Linux and macOS were not tested with the real agents.
+Verified on Windows 11 with Node.js 24.22.2, Claude Code 2.1.318 and Codex CLI 0.166.0.
+The project-scope installer and bundled launcher were exercised for both clients. A desktop-inherited
+Codex sandbox launch failed, while the standalone CLI could run the launcher with a read-only sandbox.
+See [the integration results](docs/quality/doctor-hardening.md#skill-integration) and
+[platform-specific limitations](docs/skill.md#platform-specific-limitations). Linux and macOS are covered
+by engine CI. Real agent sessions were tested on Windows only.
 
 ## Skill layout
 
@@ -319,48 +321,28 @@ in a `rendered` field.
 
 ### `doctor`
 
-```text
-$ contextanvil doctor test/fixtures/next-app
-ContextAnvil doctor (v0.1.1)
-Root: test/fixtures/next-app
-Result: 0 errors, 3 warnings, 2 notes.
-
-MISSING OR WEAK CONTEXT
-  [info]  CLAUDE.md exists but AGENTS.md does not
-          at CLAUDE.md
-          Agents that read AGENTS.md (for example OpenAI Codex) will not see these instructions.
-          fix: Consider an AGENTS.md as the shared source and have CLAUDE.md reference it.
-  [info]  Instructions do not mention the build command
-          at package.json:7
-          package.json defines a "build" script, but no root instruction file refers to it.
-          fix: Document how to build the project.
-
-CONTRADICTIONS
-  [warn]  Instructions mention different package managers
-          at CLAUDE.md:7, CLAUDE.md:9
-          Commands for npm, pnpm appear in the instruction files. Agents may run the wrong one.
-          fix: Standardise on one package manager across all instruction files.
-
-OUTDATED REFERENCES
-  [warn]  CLAUDE.md references docs/navigation-spec.md, which does not exist
-          at CLAUDE.md:14
-          The path is quoted in the instructions but is not in the repository. Heuristic: medium confidence (it may be an example).
-          fix: Fix the path or remove the reference.
-  [warn]  CLAUDE.md references script "lint:fix" that package.json does not define
-          at CLAUDE.md:9
-          "npm run lint:fix" appears in the instructions but package.json has no such script. Heuristic: medium confidence.
-          fix: Update the instruction or add the script.
+```bash
+contextanvil doctor test/fixtures/next-app --excerpts
+contextanvil doctor . --json --fail-on never
 ```
 
-That sample project has those problems on purpose. The ContextAnvil repository itself reports
-`No problems found.`, and CI runs `doctor` on it. Use `--fail-on error|warning|never` to
-control the exit code (default `warning`).
+The first command audits a deliberately inconsistent fixture. It cites the instruction lines for the
+missing script and path and includes a bounded, redacted excerpt when available. Use
+`--fail-on error|warning|never` to control the exit code (default `warning`).
 
-Checks cover: missing or oversized instruction files; conflicting package managers and lockfiles; scripts
-and paths mentioned in instructions that do not exist; manifest entry points that do not exist; secrets,
-terminal control characters, hidden Unicode characters, hidden HTML or comments, encoded blobs and
-agent-hijacking phrases in instruction files; sensitive files not covered by ignore rules; install-time scripts;
-and agent hook / MCP configuration that can run commands.
+Node command checks infer the owning package from the guide, literal directory changes and supported
+single-workspace selectors. The analyser skips unresolved, conditional or illustrative commands.
+Local Markdown links and short forwarding guides are checked relative to their file. Quoted paths use
+heuristics for generated output, dependency-relative examples and external repositories. Verify the
+inferred scope before changing instructions.
+
+Doctor also surfaces missing or oversized instructions, Node entry points, probable secrets, hidden
+characters and content, suspicious directives, sensitive-looking paths, lifecycle scripts, and agent
+hook or MCP configuration. Filename and lifecycle notes are cues for review. The analyser neither
+inspects sensitive files nor establishes whether a hook ran.
+
+See the [historical accuracy evaluation](docs/quality/doctor-evaluation.md) and
+[hardening verification](docs/quality/doctor-hardening.md) for measured results and their limits.
 
 ## How well does the ranking work?
 

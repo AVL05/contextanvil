@@ -1,8 +1,8 @@
-import { neutralize, neutralizeDeep } from './sanitize.js';
-import { redact } from './secrets.js';
+import { neutralizeDeep } from './sanitize.js';
+import { safeText } from './secrets.js';
 
 /** Every string that originates in a scanned file passes through this before it can be shown. */
-const clean = (s) => redact(neutralize(String(s)).text);
+const clean = (s) => safeText(String(s));
 
 /**
  * A fact is the unit of knowledge ContextAnvil reports.
@@ -26,7 +26,7 @@ const CONFIDENCES = new Set(['high', 'medium', 'low']);
 
 function cleanExcerpt(text) {
   if (text === undefined || text === null) return undefined;
-  const oneLine = redact(String(text)).replace(/\s+/g, ' ').trim();
+  const oneLine = clean(text).replace(/\s+/g, ' ').trim();
   return oneLine.length > 160 ? `${oneLine.slice(0, 157)}...` : oneLine;
 }
 
@@ -35,7 +35,7 @@ export function createFact({ kind, id, claim, status = 'observed', confidence = 
   if (!STATUSES.has(status)) throw new Error(`Unknown fact status: ${status}`);
   if (!CONFIDENCES.has(confidence)) throw new Error(`Unknown confidence: ${confidence}`);
   const ev = evidence.map((e) => {
-    const out = { path: neutralize(e.path).text };
+    const out = { path: clean(e.path) };
     if (e.line !== undefined) out.line = e.line;
     const excerpt = cleanExcerpt(e.excerpt);
     if (excerpt) out.excerpt = excerpt;

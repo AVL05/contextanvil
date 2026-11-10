@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { classifyFile, isGeneratedOrLock } from '../core/classify.js';
 import { byCodeUnit, dirname, normalizeRelative } from '../core/paths.js';
+import { safeText } from '../core/secrets.js';
 import { contentNeedle } from './terms.js';
 
 const JS_EXT = ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.mts', '.cts', '.tsx'];
@@ -33,7 +34,7 @@ function symbolsOf(text, language) {
       const name = m[nameGroup];
       if (!name || seen.has(name)) break;
       seen.add(name);
-      out.push({ name, kind: kindGroup ? m[kindGroup].replace('*', '') : 'export', line: i + 1 });
+      out.push({ name: safeText(name), kind: kindGroup ? m[kindGroup].replace('*', '') : 'export', line: i + 1 });
       break;
     }
     const named = /^\s*export\s*\{([^}]{0,500})\}/.exec(all[i]);
@@ -42,7 +43,7 @@ function symbolsOf(text, language) {
         const name = part.trim().split(/\s+as\s+/).pop()?.trim();
         if (name && /^[A-Za-z_$][\w$]*$/.test(name) && !seen.has(name) && out.length < MAX_SYMBOLS) {
           seen.add(name);
-          out.push({ name, kind: 'export', line: i + 1 });
+          out.push({ name: safeText(name), kind: 'export', line: i + 1 });
         }
       }
     }

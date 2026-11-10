@@ -16,9 +16,9 @@ export function* lines(text) {
     let inFence = fence !== null;
     if (m) {
       if (fence === null) {
-        fence = m[1][0];
+        fence = m[1];
         inFence = true;
-      } else if (m[1][0] === fence) {
+      } else if (m[1][0] === fence[0] && m[1].length >= fence.length && !raw.slice(m[0].length).trim()) {
         fence = null;
       }
     }
@@ -76,9 +76,12 @@ export function sliceLines(text, startLine, endLine) {
 export function extractInlineReferences(text) {
   const refs = [];
   for (const l of lines(text)) {
-    if (l.inFence) continue;
-    for (const m of l.text.matchAll(/`([^`\n]+)`/g)) refs.push({ value: m[1].trim(), line: l.number, via: 'code' });
-    for (const m of l.text.matchAll(/\]\(([^)\s]+)\)/g)) refs.push({ value: m[1].trim(), line: l.number, via: 'link' });
+    if (l.inFence || l.text.length > 4000) continue;
+    const prose = l.text.replace(/`([^`\n]{1,4000})`/g, (_, value) => {
+      refs.push({ value: value.trim(), line: l.number, via: 'code' });
+      return ' ';
+    });
+    for (const m of prose.matchAll(/\]\(([^)\s]{1,512})\)/g)) refs.push({ value: m[1].trim(), line: l.number, via: 'link' });
   }
   return refs;
 }

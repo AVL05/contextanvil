@@ -1,0 +1,257 @@
+[
+  {
+    "repository": "astral-sh/uv",
+    "commit": "419068541b7452193b72a240d345595595cca3e3",
+    "tree": "419068541b7452193b72a240d345595595cca3e3",
+    "licenseMetadata": "Apache-2.0",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "AGENTS.md",
+        "sha": "f6994e01b21a4453bd08a210821cb063d4442b90"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE-APACHE",
+        "sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE-MIT",
+        "sha": "014835144877ea9c926d027ece3e1a26290cf481"
+      }
+    ]
+  },
+  {
+    "repository": "bagisto/bagisto",
+    "commit": "b740b83719bd698c93a07c4bc1c1f21f2cc169f1",
+    "tree": "b740b83719bd698c93a07c4bc1c1f21f2cc169f1",
+    "licenseMetadata": "MIT",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "AGENTS.md",
+        "sha": "cf70ff9cca32c8f3e7edcda8bb03045c54ba3a61"
+      },
+      {
+        "mode": "100644",
+        "path": "CLAUDE.md",
+        "sha": "f309573b4d2d686118dfccf5347fd8222fe39daf"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE",
+        "sha": "aa358e891824a51cee018218e17165bdc7190441"
+      },
+      {
+        "mode": "100644",
+        "path": "packages/Webkul/AGENTS.md",
+        "sha": "e2b75dfe553a1e6ae71c64c84430ff39c15194b5"
+      }
+    ]
+  },
+  {
+    "repository": "dagger/dagger",
+    "commit": "9f15293b2d3960d9eeee567d2e50bd60dcf0df80",
+    "tree": "9f15293b2d3960d9eeee567d2e50bd60dcf0df80",
+    "licenseMetadata": "Apache-2.0",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "LICENSE",
+        "sha": "17b2ba29b525453b46b0311d202b63044d3aa5cb"
+      },
+      {
+        "mode": "100644",
+        "path": "engine/ebpf/AGENTS.md",
+        "sha": "4011e77cb1e121351f17518f85a62aaf6709a56d"
+      }
+    ]
+  },
+  {
+    "repository": "facebook/react",
+    "commit": "b05c0b75fd9778536152eead30814c9ca90c810a",
+    "tree": "b05c0b75fd9778536152eead30814c9ca90c810a",
+    "licenseMetadata": "MIT",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "CLAUDE.md",
+        "sha": "863aaab66c523299eae4a1781169929701ed67c6"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE",
+        "sha": "b93be90515ccd0b9daedaa589e42bf5929693f1f"
+      },
+      {
+        "mode": "100644",
+        "path": "compiler/CLAUDE.md",
+        "sha": "aed679ba3cda2af1f156ea11852ad4d205fb9dbd"
+      }
+    ]
+  },
+  {
+    "repository": "jesseduffield/lazygit",
+    "commit": "bd4062a1e745b47d87ee8d0b24649529ed28b499",
+    "tree": "bd4062a1e745b47d87ee8d0b24649529ed28b499",
+    "licenseMetadata": "MIT",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "AGENTS.md",
+        "sha": "ea4374c532cb2180fbe23c1fd04bf8c880107245"
+      },
+      {
+        "mode": "100644",
+        "path": "CLAUDE.md",
+        "sha": "3f1ed7b4ce9db87158d3211baf97be72e46e5673"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE",
+        "sha": "83121f5a650729af45e44f0d4e94449a61826006"
+      }
+    ]
+  },
+  {
+    "repository": "livewire/livewire",
+    "commit": "e03c29c8181804cdafe9d5819b7ab5cc93adbf12",
+    "tree": "e03c29c8181804cdafe9d5819b7ab5cc93adbf12",
+    "licenseMetadata": "MIT",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "CLAUDE.md",
+        "sha": "02c97705e3db2986c7025b8ff2c79512a63c7e21"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE.md",
+        "sha": "0e11e1e6784041cfda8642d87e602340484adb1d"
+      },
+      {
+        "mode": "100644",
+        "path": "docs/AGENTS.md",
+        "sha": "783f205500fcbf10a1886f2d6212627a4c23bc2d"
+      }
+    ]
+  },
+  {
+    "repository": "lobehub/lobehub",
+    "commit": "01561bb2d50ffce033d03728910c97b02ad20e2f",
+    "tree": "01561bb2d50ffce033d03728910c97b02ad20e2f",
+    "licenseMetadata": "NOASSERTION",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "AGENTS.md",
+        "sha": "a4e5924a1604c3b7ca11e3f0c038e30a04ab9302"
+      },
+      {
+        "mode": "100644",
+        "path": "GEMINI.md",
+        "sha": "9072b68275dfb0c650c4761c54611e73f0dd4a8e"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE",
+        "sha": "96025078db1637a3b5c34c8297e11fdfdd6834e4"
+      },
+      {
+        "mode": "100644",
+        "path": "e2e/CLAUDE.md",
+        "sha": "e8e69ac84308d4f05d938f5d96ee79a792d7b5fa"
+      },
+      {
+        "mode": "100644",
+        "path": "packages/agent-templates/src/templates/claw/AGENTS.md",
+        "sha": "1b1d625c236159612f6a6e456771ff6c9ec8041f"
+      },
+      {
+        "mode": "100644",
+        "path": "packages/model-runtime/CLAUDE.md",
+        "sha": "b4a0ec4f0042b6d9bc71c413cad93219388b2761"
+      }
+    ]
+  },
+  {
+    "repository": "pnpm/pnpm",
+    "commit": "35d6bb6f613b539f88d60ba0fd90afcd8496db81",
+    "tree": "35d6bb6f613b539f88d60ba0fd90afcd8496db81",
+    "licenseMetadata": "MIT",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "AGENTS.md",
+        "sha": "b666127d29317b4ef6128c9a475afc8c8c2fea51"
+      },
+      {
+        "mode": "120000",
+        "path": "CLAUDE.md",
+        "sha": "47dc3e3d863cfb5727b87d785d09abf9743c0a72"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE",
+        "sha": "565d3e85af157e84829fc486d58a199d4b4f4de4"
+      },
+      {
+        "mode": "100644",
+        "path": "pnpm/AGENTS.md",
+        "sha": "cb88829cb13ce58f6aacdafebeb00bb9267faa36"
+      },
+      {
+        "mode": "120000",
+        "path": "pnpm/CLAUDE.md",
+        "sha": "47dc3e3d863cfb5727b87d785d09abf9743c0a72"
+      },
+      {
+        "mode": "120000",
+        "path": "pnpm/GEMINI.md",
+        "sha": "47dc3e3d863cfb5727b87d785d09abf9743c0a72"
+      },
+      {
+        "mode": "100644",
+        "path": "pnpr/AGENTS.md",
+        "sha": "5c5d9156aa719ffd8f5df98fcfb633dc7d35a52d"
+      }
+    ]
+  },
+  {
+    "repository": "pydantic/pydantic",
+    "commit": "560f0f96a37d6913afdfddb2de22030ef08e68c3",
+    "tree": "560f0f96a37d6913afdfddb2de22030ef08e68c3",
+    "licenseMetadata": "MIT",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "AGENTS.md",
+        "sha": "210125cc7db996036876b2a34033c156498a4960"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE",
+        "sha": "488c6260c10f2e88fa1fae58a63fccec8d600cd1"
+      }
+    ]
+  },
+  {
+    "repository": "rectorphp/rector-src",
+    "commit": "6029e8ddbb90ab57874e6ea575dda80d7fdba338",
+    "tree": "6029e8ddbb90ab57874e6ea575dda80d7fdba338",
+    "licenseMetadata": "MIT",
+    "paths": [
+      {
+        "mode": "100644",
+        "path": "CLAUDE.md",
+        "sha": "3b9e45b4801e6de45a13bdac2a25c44d2acce294"
+      },
+      {
+        "mode": "100644",
+        "path": "LICENSE",
+        "sha": "bdd7b9aabd5471cf57ac72dd383d0ba3af009b87"
+      }
+    ]
+  }
+]

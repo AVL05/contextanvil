@@ -2,7 +2,8 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { isInside, normalizeRelative, realpath, resolveUnder, toPosix } from './paths.js';
-import { classifySensitivePath } from './secrets.js';
+import { classifySensitivePath, redact } from './secrets.js';
+import { hasUnsafePathCharacters } from './sanitize.js';
 
 /**
  * The only way detectors and the compiler touch file contents.
@@ -52,7 +53,8 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
         warn('symlink-escape', 'Path resolves outside the repository root and was not read', rel);
         return null;
       }
-      if (classifySensitivePath(toPosix(path.relative(root, real)))) {
+      const target = toPosix(path.relative(root, real));
+      if (classifySensitivePath(target) || (target !== rel && (redact(target) !== target || hasUnsafePathCharacters(target)))) {
         warn('sensitive-target', 'Sensitive target was not read', rel);
         return null;
       }
@@ -131,6 +133,18 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
         return isInside(root, realpath(resolveUnder(root, norm)));
       } catch {
         return false;
+      }
+    },
+    resolveDirectory(rel) {
+      const norm = normalizeRelative(rel);
+      if (!norm || hasUnsafePathCharacters(norm)) return null;
+      try {
+        const real = realpath(resolveUnder(root, norm));
+        if (!isInside(root, real) || !fs.statSync(real).isDirectory()) return null;
+        const target = toPosix(path.relative(root, real));
+        return hasUnsafePathCharacters(target) || redact(target) !== target ? null : target;
+      } catch {
+        return null;
       }
     },
     bytesRead: () => totalRead,

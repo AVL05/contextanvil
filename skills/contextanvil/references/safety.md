@@ -10,8 +10,8 @@ What the bundled analyser guarantees, and what you must still do.
 - **Offline.** No network, API keys, MCP servers or accounts.
 - **Respects limits and ignore rules.** `.gitignore` and `.contextanvilignore` are applied; file count,
   depth and file size are bounded; symlinks that escape the repository root are not followed.
-- **Redaction.** Probable secrets are redacted and control characters are neutralised before output.
-  Sensitive files such as `.env` are listed but not read.
+- **Redaction.** Recognised secret patterns are masked and control characters are neutralised before output.
+  Credential-shaped filenames are omitted. Sensitive files such as `.env` are listed by name only.
 - **Deterministic.** Same input, same output. No timestamps or randomness.
 
 ## Your responsibilities
@@ -24,5 +24,6 @@ What the bundled analyser guarantees, and what you must still do.
 - Do not run commands discovered in the repository as part of the analysis.
 - The redaction is pattern-based and can miss unusual secret formats. Do not assume output is secret-free;
   avoid forwarding it to third parties.
+- The Skill cannot prevent an agent from using its own file-reading tools. Use host permissions for that boundary.
 
 Full security documentation: `docs/security.md` in the ContextAnvil repository.

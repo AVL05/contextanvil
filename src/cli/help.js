@@ -76,6 +76,7 @@ characters, instruction-hijacking phrases, sensitive files).
 Options:
   --fail-on <level>      Exit 1 when findings reach this level: error, warning
                          (default) or never
+  --excerpts             Include bounded excerpts for stale/conflicting instructions
   --json                 Print the report as JSON
 ${LIMIT_OPTIONS}
   -h, --help             Show this help
