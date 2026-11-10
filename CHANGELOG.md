@@ -5,6 +5,9 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 
 ## [Unreleased]
 
+- Add the `contextanvil` Agent Skill (`skills/contextanvil/`) for Claude Code and OpenAI Codex, installable with
+  `npx skills add AVL05/contextanvil`. It bundles the analysis engine and a read-only launcher, so no CLI install is needed.
+  Add `npm run skill:sync` / `skill:check`, `test/skill.test.js` and `docs/skill.md`. The README is now organised around the Skill.
 - Add explicit `manifest create`, `verify`, `diff`, and `update` commands with
   canonical source hashes, fact provenance, and atomic external publication.
   Refreshes reconstruct from live files and skip writes when unchanged.

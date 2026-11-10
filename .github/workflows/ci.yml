@@ -64,6 +64,13 @@ jobs:
           node bin/contextanvil.js nonsense > /dev/null 2>&1; test $? -eq 2 || { echo "expected exit 2"; exit 1; }
           node bin/contextanvil.js scan ./does-not-exist > /dev/null 2>&1; test $? -eq 3 || { echo "expected exit 3"; exit 1; }
 
+      - name: Skill engine matches src/ and the launcher runs
+        shell: bash
+        run: |
+          npm run skill:check
+          node skills/contextanvil/scripts/contextanvil.mjs --version
+          node skills/contextanvil/scripts/contextanvil.mjs doctor .
+
       - name: Output is identical between two runs in separate processes
         shell: bash
         run: |
