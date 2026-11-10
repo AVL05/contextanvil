@@ -42,7 +42,7 @@ export function createFact({ kind, id, claim, status = 'observed', confidence = 
     return out;
   });
   return {
-    id,
+    id: clean(id),
     kind,
     claim: clean(claim),
     status,
