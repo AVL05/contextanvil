@@ -57,26 +57,27 @@ function looksLikeRealValue(value) {
 /**
  * Each rule: a global regex, a label, optionally a `group` whose match is the
  * secret value (otherwise the whole match is replaced), an `accept` filter and
- * a cheap `hint` substring that must be present for the rule to run at all.
+ * cheap `hints`, of which at least one must be present for the rule to run.
  */
 const RULES = [
-  { type: 'aws-access-key', re: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g },
-  { type: 'github-token', re: /\b(?:gh[pousr]_[A-Za-z0-9]{36,255}|github_pat_[A-Za-z0-9_]{50,255})\b/g },
-  { type: 'slack-token', re: /\bxox[abprs]-[A-Za-z0-9-]{10,200}\b/g },
-  { type: 'stripe-key', re: /\b[sr]k_live_[A-Za-z0-9]{16,200}\b/g },
-  { type: 'google-api-key', re: /\bAIza[0-9A-Za-z_-]{35}\b/g },
-  { type: 'npm-token', re: /\bnpm_[A-Za-z0-9]{36}\b/g },
-  { type: 'api-key', re: /\bsk-(?:ant-)?[A-Za-z0-9_-]{20,200}\b/g },
-  { type: 'jwt', hint: 'eyJ', re: /\beyJ[A-Za-z0-9_-]{10,2000}\.eyJ[A-Za-z0-9_-]{10,2000}\.[A-Za-z0-9_-]{10,2000}\b/g },
+  { type: 'aws-access-key', hints: ['AKIA', 'ASIA'], re: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g },
+  { type: 'github-token', hints: ['gh'], re: /\b(?:gh[pousr]_[A-Za-z0-9]{36,255}|github_pat_[A-Za-z0-9_]{50,255})\b/g },
+  { type: 'slack-token', hints: ['xox'], re: /\bxox[abprs]-[A-Za-z0-9-]{10,200}\b/g },
+  { type: 'stripe-key', hints: ['k_live_'], re: /\b[sr]k_live_[A-Za-z0-9]{16,200}\b/g },
+  { type: 'google-api-key', hints: ['AIza'], re: /\bAIza[0-9A-Za-z_-]{35}\b/g },
+  { type: 'npm-token', hints: ['npm_'], re: /\bnpm_[A-Za-z0-9]{36}\b/g },
+  { type: 'api-key', hints: ['sk-'], re: /\bsk-(?:ant-)?[A-Za-z0-9_-]{20,200}\b/g },
+  { type: 'jwt', hints: ['eyJ'], re: /\beyJ[A-Za-z0-9_-]{10,2000}\.eyJ[A-Za-z0-9_-]{10,2000}\.[A-Za-z0-9_-]{10,2000}\b/g },
   {
     type: 'url-credentials',
-    hint: '://',
+    hints: ['://'],
     re: /\b([a-z][a-z0-9+.-]{1,20}:\/\/)([^\s:@/]{1,100}):([^\s@/]{1,200})@/gi,
     group: 3,
     accept: (_scheme, user, pass) => !/^(pass(word)?|secret|changeme|x+|\*+|<.*>|\$\{.*\}|\{\{.*\}\}|example.*)$/i.test(pass) && user !== pass,
   },
   {
     type: 'credential-assignment',
+    hints: [':', '='],
     re: /((?:api[_-]?key|secret|token|passw(?:or)?d|credential|auth)[A-Za-z0-9_.-]{0,40})(\s{0,8}[:=]\s{0,8})(["']?)([^\s"'`,;]{12,200})\3/gi,
     group: 4,
     accept: (_key, _sep, _quote, value) => looksLikeRealValue(value),
@@ -131,8 +132,8 @@ export function findSecrets(text) {
     found.push({ type: 'private-key', line });
     if (found.length >= MAX_FINDINGS_PER_RULE) break;
   }
-  for (const { type, re, accept, hint } of RULES) {
-    if (hint && !text.includes(hint)) continue;
+  for (const { type, re, accept, hints } of RULES) {
+    if (!hints.some((hint) => text.includes(hint))) continue;
     re.lastIndex = 0;
     let count = 0;
     for (const m of text.matchAll(re)) {
@@ -162,8 +163,8 @@ export function redact(text) {
     out = chunks.join('') + text.slice(cursor);
   }
   for (const rule of RULES) {
-    const { type, re, group, accept, hint } = rule;
-    if (hint && !out.includes(hint)) continue;
+    const { type, re, group, accept, hints } = rule;
+    if (!hints.some((hint) => out.includes(hint))) continue;
     re.lastIndex = 0;
     out = out.replace(re, (...args) => {
       const m = args.slice(0, -2);
