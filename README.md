@@ -52,9 +52,8 @@ no account and no MCP server are needed after the files are copied.
 **Windows and Codex.** Codex runs commands in a sandbox as a different Windows user. A Node.js that lives in your profile
 folder, for example one managed by nvm-windows, is on `PATH` but cannot be executed there ("Access denied"), and the Skill
 will report that Node.js is unavailable. The minimum workaround is a Node.js 22+ in a location every local user can read,
-such as `C:Program Files
-odejs`, then a new Codex session. This was verified with a Node.js binary already under
-`C:Program Files`; the official installer and other Windows setups were not tested. Details: [docs/skill.md](docs/skill.md).
+such as `C:\Program Files\nodejs`, then a new Codex session. This was verified with a Node.js binary already under
+`C:\Program Files`; the official installer and other Windows setups were not tested. Details: [docs/skill.md](docs/skill.md).
 
 Manual install, without the installer: copy `skills/contextanvil/` from this repository to
 `.claude/skills/contextanvil/` (Claude Code) and/or `.agents/skills/contextanvil/` (Codex), project-level or under
