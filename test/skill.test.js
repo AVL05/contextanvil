@@ -195,3 +195,11 @@ test('no secret format appears in any launcher output mode, including secrets in
     skill.cleanup();
   }
 });
+
+test('SKILL.md forbids opening secret-flagged lines, and the verify step carves out that exception', () => {
+  const text = fs.readFileSync(path.join(SKILL_DIR, 'SKILL.md'), 'utf8');
+  assert.match(text, /Never open, search or print lines flagged as secrets/);
+  assert.match(text, /except secret findings/);
+  assert.match(fs.readFileSync(path.join(SKILL_DIR, 'references', 'audit-workflow.md'), 'utf8'), /never open a line that carries a secret/);
+  assert.match(fs.readFileSync(path.join(SKILL_DIR, 'references', 'safety.md'), 'utf8'), /Do not open, search or print a line the tool flagged as a secret/);
+});
