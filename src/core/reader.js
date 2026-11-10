@@ -135,14 +135,16 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
         return false;
       }
     },
-    isDirectory(rel) {
+    resolveDirectory(rel) {
       const norm = normalizeRelative(rel);
-      if (!norm || hasUnsafePathCharacters(norm)) return false;
+      if (!norm || hasUnsafePathCharacters(norm)) return null;
       try {
         const real = realpath(resolveUnder(root, norm));
-        return isInside(root, real) && fs.statSync(real).isDirectory();
+        if (!isInside(root, real) || !fs.statSync(real).isDirectory()) return null;
+        const target = toPosix(path.relative(root, real));
+        return hasUnsafePathCharacters(target) || redact(target) !== target ? null : target;
       } catch {
-        return false;
+        return null;
       }
     },
     bytesRead: () => totalRead,

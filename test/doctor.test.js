@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
+import path from 'node:path';
 import { test } from 'node:test';
 import { diagnose, exceedsThreshold } from '../src/doctor.js';
 import { scanRepository } from '../src/scanner.js';
-import { FAKE, fixture, makeRepo } from './helpers.js';
+import { FAKE, fixture, makeRepo, trySymlink } from './helpers.js';
 
 const report = (root, options) => diagnose(scanRepository(root, options));
 const has = (r, id) => r.findings.some((f) => f.id === id);
@@ -398,6 +399,26 @@ test('shell scope stays unknown after a dynamic cd and honors literal cd --', (t
   t.after(repo.cleanup);
   assert.deepEqual(find(report(repo.root), 'missing-script-reference').map((f) => f.evidence.map((e) => [e.path, e.line])),
     [[['AGENTS.md', 5], ['apps/client/package.json', undefined]]]);
+});
+
+test('literal cd through a directory alias uses only the indexed in-tree package', (t) => {
+  const outside = makeRepo({ 'package.json': '{}' });
+  const repo = makeRepo({
+    'package.json': '{"scripts":{"root":"node server.js"}}',
+    'apps/demo/package.json': '{"scripts":{"preview":"vite preview"}}',
+    'AGENTS.md': [
+      '# Guide',
+      'Use `cd alias && npm run preview` to preview the package.',
+      'Use `cd alias && npm run unavailable` for the missing reference.',
+      'Use `cd external && npm run unknown` in the external checkout.',
+    ].join('\n'),
+  });
+  t.after(repo.cleanup);
+  t.after(outside.cleanup);
+  if (!trySymlink(path.join(repo.root, 'apps/demo'), path.join(repo.root, 'alias'), 'dir')
+    || !trySymlink(outside.root, path.join(repo.root, 'external'), 'dir')) return t.skip('directory symlinks unavailable');
+  const missing = find(report(repo.root), 'missing-script-reference');
+  assert.deepEqual(missing.map((f) => [f.evidence[0].line, f.evidence[1].path]), [[3, 'apps/demo/package.json']]);
 });
 
 test('npm start fallback and pnpm script arguments keep the correct owning manifest', (t) => {

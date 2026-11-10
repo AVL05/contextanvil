@@ -89,7 +89,7 @@ export function commandProjects(scan, reader) {
     },
     changeDirectory(base, relative) {
       const target = directory(base, relative);
-      return target === '' || (target !== null && reader.isDirectory(target)) ? target : null;
+      return target === '' || target === null ? target : reader.resolveDirectory(target);
     },
     nearest(scope, explicit = false) {
       if (!explicit && manifestAncestors.has(scope) && !manifests.has(scope)) return null;
