@@ -72,13 +72,22 @@ checks that the secret is not printed, and compares a digest of the repository b
 
 ## Platform-specific limitations
 
-1. **Codex on Windows, `node` not found.** Codex runs commands as a separate sandbox user (`CodexSandboxOffline`).
-   On the test machine `node` comes from nvm-windows (`C:\nvm4w\nodejs` links into the user profile). The sandbox
-   user could see `node.exe` there but could not resolve `node`, so in `read-only` and `workspace-write` modes the
-   Skill reported that Node.js was missing and stopped, as its instructions say. The audit succeeded when the agent was
-   given the path to a copy of `node.exe` in a readable folder. A system-wide Node.js install, or a `node` on a path
-   the sandbox user can read, should avoid this; that was not tested. A run with Codex's sandbox disabled was not
-   performed.
+1. **Codex on Windows, `node` not reachable (nvm-windows).** Codex runs commands as a separate sandbox user
+   (`CodexSandboxOffline`). On the test machine `node` came from nvm-windows: `C:\nvm4w\nodejs` is a symbolic link to
+   `C:\Users\<user>\AppData\Local\nvm\<version>`, and the permissions on that folder list only SYSTEM, Administrators and
+   the user. Inside the `workspace-write` sandbox, listing that folder and running `node.exe` (through the link and
+   directly) both returned "Access denied", while `C:\Program Files\Git\cmd\git.exe` ran. The Skill therefore reported that
+   Node.js was unavailable and stopped, as designed.
+
+   **Minimum workaround:** use a Node.js 22+ that lives in a location every local user can read, such as
+   `C:\Program Files\nodejs`, and start a new Codex session. Nothing in the Skill, PATH or sandbox settings has to change,
+   and no executable has to be copied.
+
+   **Verified:** a Node.js 22.22.0 binary already present under `C:\Program Files` (shipped with another application)
+   ran the installed launcher inside the `workspace-write` sandbox, and the analysed repository was unchanged.
+   **Not verified:** the official Node.js installer, other Windows setups (other version managers, corporate policies,
+   other Windows versions), and a Codex run with its sandbox disabled. An earlier test that copied `node.exe` next to the
+   project also worked, but it is not a recommended workaround.
 2. **Codex on Windows, protected directories.** A first attempt put the test projects under a protected temp directory;
    the sandbox denied reads there. Use ordinary project directories.
 3. **Symlinks.** The installer links `.claude/skills/contextanvil` to the `.agents` copy. This worked for Claude Code on
