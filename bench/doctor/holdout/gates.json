@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "status": "proposed",
+  "statusNote": "Proposed before any holdout execution. Maintainers may change a value only before the lock; the lock records this file's digest. Derivations are in docs/quality/doctor-release-gates.md.",
+  "confidence": {
+    "alpha": 0.05,
+    "method": "exact one-sided binomial (Clopper-Pearson) bound; a gate is met only when the bound, not the point estimate, clears the limit"
+  },
+  "coverage": {
+    "overall": {
+      "minDeterminateDefectPositives": 14,
+      "minDeterminateNegatives": 29,
+      "minRepositoriesWithDefectPositives": 3,
+      "maxRepositoryShareOfDefectPositives": 0.5,
+      "minInstructionDocumentsSwept": 24
+    },
+    "perCategory": {
+      "minDeterminateDefectPositives": 5,
+      "minDeterminateNegatives": 29
+    },
+    "cues": {
+      "minDeterminateCues": 29
+    },
+    "security": {
+      "minDeterminateSecurityPositives": 5
+    }
+  },
+  "accuracy": {
+    "defectPrecision": { "floor": 0.8, "bound": "lower", "population": "all emitted warning and error findings, matched or audited" },
+    "defectRecall": { "floor": 0.5, "bound": "lower", "population": "determinate supported defect opportunities" },
+    "falsePositiveRate": { "ceiling": 0.1, "bound": "upper", "population": "determinate explicit negative opportunities" },
+    "cueFactualAccuracy": { "floor": 0.9, "bound": "lower", "population": "emitted info findings, matched or audited" },
+    "evidenceCorrectness": { "floor": 0.9, "bound": "lower", "population": "emitted findings adjudicated correct" },
+    "severityExactAgreement": { "floor": 0.8, "bound": "lower", "population": "emitted findings adjudicated correct" },
+    "leaveOneRepositoryOut": { "pointEstimateMustClearFloor": true }
+  },
+  "security": {
+    "errorSeverityFalsePositives": { "max": 0 },
+    "credentialValuesInOutput": { "max": 0 },
+    "nonAsciiOrControlBytesInOutput": { "max": 0 },
+    "evidencePathsOutsideSnapshot": { "max": 0 },
+    "snapshotModifications": { "max": 0 },
+    "nonDeterministicRepeats": { "max": 0 },
+    "uncaughtFailures": { "max": 0 }
+  },
+  "runtime": {
+    "pairedRuns": 7,
+    "maxMedianLatencyRatio": 1.2,
+    "maxMedianPeakRssRatio": 1.2,
+    "baseline": "the previously published candidate replayed on the same machine, interleaved with the locked candidate"
+  },
+  "decision": {
+    "go": "Every coverage requirement for every category the release documentation describes as accurate is met, every accuracy gate passes, and every security and runtime gate passes.",
+    "scopedGo": "A category below its coverage minimum is unvalidated. Release is allowed only if the documentation says so for that category and makes no accuracy claim for it.",
+    "noGo": "Any failed accuracy gate in a validated category, or any non-zero security gate."
+  }
+}
