@@ -83,9 +83,13 @@ export function commandProjects(scan, reader) {
 
   return {
     load,
+    hasScript(project, { manager, name }) {
+      const server = project.scope ? `${project.scope}/server.js` : 'server.js';
+      return project.scripts.has(name) || (manager === 'npm' && name === 'start' && reader.has(server));
+    },
     changeDirectory(base, relative) {
       const target = directory(base, relative);
-      return target === '' || (target !== null && reader.exists(target)) ? target : null;
+      return target === '' || (target !== null && reader.isDirectory(target)) ? target : null;
     },
     nearest(scope, explicit = false) {
       if (!explicit && manifestAncestors.has(scope) && !manifests.has(scope)) return null;
@@ -116,6 +120,10 @@ function parseInvocation(tokens, cwd, projects) {
   let selector = null;
   let end = args.length;
   for (let index = 0; index < args.length; index++) {
+    // pnpm forwards arguments after the script name. npm can consume its
+    // workspace options there until the explicit argument separator.
+    const run = args[start] === 'run' || args[start] === 'run-script';
+    if (manager === 'pnpm' && index > start + Number(run)) break;
     if (args[index] === '--') { end = index; break; }
     const [option, attached] = args[index].split('=', 2);
     if (['--if-present', '--workspaces', '--recursive', '-r'].includes(option)) return null;
@@ -142,7 +150,7 @@ function parseInvocation(tokens, cwd, projects) {
   if (!action || start >= end) return null;
   const explicitRun = action === 'run' || action === 'run-script';
   if (!explicitRun && BUILTINS.has(action)) return INSTALL.has(action) ? { manager, scope, install: true } : null;
-  const name = explicitRun ? args[start + 1] : action;
+  const name = explicitRun && start + 1 < end ? args[start + 1] : explicitRun ? undefined : action;
   if (!name || !/^[A-Za-z][\w:.-]{0,199}$/.test(name)) return null;
   if (!explicitRun && ((manager === 'npm' && !['test', 'start', 'stop', 'restart'].includes(name))
     || (manager === 'bun' && name === 'test') || (manager === 'pnpm' && ['dlx', 'deploy', 'fetch', 'setup'].includes(name)))) return null;
@@ -169,15 +177,16 @@ export function instructionCommands(doc, projects) {
     if (text.length > 4000) continue;
     if (fence && !fence.shell) continue;
     const prose = text.replace(/`[^`\n]{1,4000}`/g, ' ');
-    if (NON_DIRECTIVE.test(fence ? text : prose)) continue;
+    if (!fence && NON_DIRECTIVE.test(prose)) continue;
     const snippets = fence ? [text] : [...text.matchAll(/`([^`\n]{1,4000})`/g)].map((m) => m[1]);
     const alternative = /\bor\b/i.test(prose) && snippets.length > 1;
     for (const snippet of snippets) {
       let location = fence ? cwd : doc.scope;
       for (const tokens of commands(snippet)) {
-        if (tokens[0] === 'cd' && tokens.length === 2) {
-          location = location === null ? null : projects.changeDirectory(location, tokens[1]);
-        } else {
+        if (tokens[0] === 'cd') {
+          const args = tokens[1] === '--' ? tokens.slice(2) : tokens.slice(1);
+          location = location !== null && args.length === 1 ? projects.changeDirectory(location, args[0]) : null;
+        } else if (!fence || !NON_DIRECTIVE.test(tokens.join(' '))) {
           const command = parseInvocation(tokens, location, projects);
           if (command) result.push({ ...command, line: line.number, alternative, path: doc.path });
         }

@@ -14,7 +14,7 @@ diagnostics can have no anchor.
 | `hidden-comment` / `hidden-html-element` | Instruction-like text invisible in rendered Markdown | Make it visible or delete it |
 | `encoded-payload` | A 300+ character base64-like string | Review what it encodes |
 | `sensitive-file-not-ignored` | An unignored filename suggests sensitive contents (not read; do not open it) | Review the intended role and tracking status |
-| `no-gitignore` | No `.gitignore` at the repository root, so build output and local files may reach agent context | Add a `.gitignore` |
+| `no-gitignore` | No root `.gitignore` was found in the scanned tree | Check the source checkout and exclusions before adding a file |
 | `install-time-script` | A Node or Composer lifecycle script may run for a matching operation | Check the script and event before installation |
 | `agent-executable-config` | Agent settings declare hooks or local/remote MCP integrations | Review the integration before enabling it |
 
@@ -48,4 +48,4 @@ diagnostics can have no anchor.
 
 Limits that reduce completeness (`file-limit`, `depth-limit`, `file-too-large`, `malformed-json`,
 `symlink-escape`, `unreadable-directory`, `instruction-unreadable`, `detector-failed`,
-`credential-filename`, `unsafe-symlink-target`). Tell the user which coverage was affected.
+`credential-filename`, `unsafe-filename`, `unsafe-symlink-target`). Tell the user which coverage was affected.

@@ -5,6 +5,10 @@ and the project aims to follow [Semantic Versioning](https://semver.org/) once i
 
 ## [Unreleased]
 
+- Correct literal shell directory handling, pnpm script argument scope, npm's implicit start target,
+  and document-relative path evidence. Preserve Unicode characters and neutralise standalone carriage
+  returns in Doctor excerpts.
+
 - Check supported Node commands against the owning package, including nested guides, literal directory changes
   and single-workspace selectors. Treat explicit alternatives, conditional examples and output snippets conservatively.
 - Resolve local guide links and imports in context. Allow short forwarding files and scoped overrides. Explain

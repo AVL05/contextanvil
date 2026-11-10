@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { isInside, normalizeRelative, realpath, resolveUnder, toPosix } from './paths.js';
 import { classifySensitivePath, redact } from './secrets.js';
-import { hasUnsafeCharacters } from './sanitize.js';
+import { hasUnsafePathCharacters } from './sanitize.js';
 
 /**
  * The only way detectors and the compiler touch file contents.
@@ -54,7 +54,7 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
         return null;
       }
       const target = toPosix(path.relative(root, real));
-      if (classifySensitivePath(target) || (target !== rel && (redact(target) !== target || hasUnsafeCharacters(target)))) {
+      if (classifySensitivePath(target) || (target !== rel && (redact(target) !== target || hasUnsafePathCharacters(target)))) {
         warn('sensitive-target', 'Sensitive target was not read', rel);
         return null;
       }
@@ -131,6 +131,16 @@ export function createReader({ root, files, limits, diagnostics = [] }) {
       if (index.has(norm)) return true;
       try {
         return isInside(root, realpath(resolveUnder(root, norm)));
+      } catch {
+        return false;
+      }
+    },
+    isDirectory(rel) {
+      const norm = normalizeRelative(rel);
+      if (!norm || hasUnsafePathCharacters(norm)) return false;
+      try {
+        const real = realpath(resolveUnder(root, norm));
+        return isInside(root, real) && fs.statSync(real).isDirectory();
       } catch {
         return false;
       }

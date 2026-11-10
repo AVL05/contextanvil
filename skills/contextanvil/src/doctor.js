@@ -34,6 +34,7 @@ const GUIDE_IMPORT = /^\s*@([\w.@/-]{1,512}\.md)\s*$/i;
 const GUIDE_LINK = /^\[([^\]\r\n]{1,80})\]\(([\w.@/-]{1,400}\.md)\)$/i;
 const PATH_EXAMPLE = /\b(?:for example|sample (?:link|path)|placeholder|e\.g\.)\b/i;
 const EXTERNAL_SCOPE = /\b(?:another|external|upstream|separate|other) (?:git |github )?(?:repository|repo)\b/i;
+const CROSS_REPO_FOLDER = /\b(?:port(?:ed)?|sync(?:ed)?|cop(?:y|ied)) to `([\w.-]{1,100}\/[\w.-]{1,100})`\s{0,8}\(the `([^`\r\n]{1,512})` (?:directory|folder)\)/i;
 const GENERATED = /\b(?:generated|build output|artifacts?|written to|gitignored|not tracked|where binaries are built)\b/i;
 const SOURCE_LOCATION = /\b(?:source|implemented|implementation|hardcoded|checked[- ]in|tracked)\b/i;
 
@@ -45,6 +46,15 @@ function pathCandidates(doc, value, via) {
   const parent = dirname(doc.path);
   const relative = normalizeRelative(parent ? `${parent}/${value}` : value);
   return [...new Set([relative, ...(via === 'code' ? [normalizeRelative(value)] : [])].filter(Boolean))];
+}
+
+function dependencyScope(lines, index) {
+  for (let cursor = index; cursor >= Math.max(0, index - 4); cursor--) {
+    const line = lines[cursor];
+    if (line.inFence || !line.text.trim()) break;
+    if (line.text.length <= 4000 && /\b(?:vendored|dependency)\b/i.test(line.text)) return true;
+  }
+  return false;
 }
 
 function agentConfig(text) {
@@ -143,7 +153,7 @@ export function diagnose(scan, { excerpts = false } = {}) {
   const managerByProject = new Map();
   for (const command of commands) {
     const project = projects.load(command.scope);
-    if (command.alternative || !project || (!command.install && project.scripts.has(command.name))) continue;
+    if (command.alternative || !project || (!command.install && projects.hasScript(project, command))) continue;
     if (!managerByProject.has(project)) managerByProject.set(project, new Map());
     const managers = managerByProject.get(project);
     if (!managers.has(command.manager)) managers.set(command.manager, command);
@@ -188,7 +198,7 @@ export function diagnose(scan, { excerpts = false } = {}) {
   for (const ref of commands) {
     if (!ref.name || ref.alternative) continue;
     const project = projects.load(ref.scope);
-    if (!project || project.scripts.has(ref.name)) continue;
+    if (!project || projects.hasScript(project, ref)) continue;
     const key = JSON.stringify([ref.path, project.path, ref.name]);
     if (reportedScripts.has(key)) continue;
     reportedScripts.add(key);
@@ -214,15 +224,18 @@ export function diagnose(scan, { excerpts = false } = {}) {
       const context = docLines.slice(Math.max(0, ref.line - 2), ref.line + 1)
         .filter((line) => !line.inFence && line.text.length <= 4000).map((line) => line.text.trim()).join(' ');
       const sourceLine = docLines[ref.line - 1].text;
+      const external = CROSS_REPO_FOLDER.exec(sourceLine);
+      const externalPath = external?.[2] === value && !pathCandidates(d, external[1], 'code').some((p) => reader.exists(p));
       if (PATH_EXAMPLE.test(sourceLine) || EXTERNAL_SCOPE.test(sourceLine)
-        || (/(?:\bvendored\b|\bdependency\b)/i.test(context) && /^(?:lib|vendor)\//.test(value))
+        || externalPath || (/^(?:lib|vendor)\//.test(value) && dependencyScope(docLines, ref.line - 1))
         || GENERATED.test(sourceLine)) continue;
       const candidates = pathCandidates(d, value, ref.via);
       if (!candidates.length || candidates.some((p) => reader.exists(p))) continue;
-      const target = normalizeRelative(value) ?? candidates[0];
-      const first = target.split('/')[0];
+      const target = ref.via === 'code' ? normalizeRelative(value) ?? candidates[0] : candidates[0];
+      const normalized = normalizeRelative(value) ?? target;
+      const first = normalized.split('/')[0];
       if ((DEFAULT_EXCLUDED_DIRS.has(first) && !(first === 'build' && SOURCE_LOCATION.test(context) && candidates.some((p) => reader.exists(dirname(p)))))
-        || (target.startsWith('target/') && reader.has('Cargo.toml')) || target.startsWith('storage/') || target.startsWith('bootstrap/cache')) continue;
+        || (normalized.startsWith('target/') && reader.has('Cargo.toml')) || normalized.startsWith('storage/') || normalized.startsWith('bootstrap/cache')) continue;
       // A partial path such as "features/" is usually relative to some other directory (src/, app/, ...).
       if (ref.via === 'code' && scan.files.some((f) => f.path.startsWith(`${target}/`) || f.path.includes(`/${target}/`) || f.path.endsWith(`/${target}`))) continue;
       if (reported.has(target)) continue;
@@ -301,7 +314,9 @@ export function diagnose(scan, { excerpts = false } = {}) {
       [{ path: s.path }], 'Verify the intended role and tracking status before deciding whether to ignore or secure the file.'));
   }
   if (!scan.files.some((f) => f.path === '.gitignore')) {
-    findings.push(finding('info', 'unsafe', 'no-gitignore', 'No .gitignore at the repository root', 'Without ignore rules, build output and local files may end up in agent context.', [], 'Add a .gitignore.'));
+    findings.push(finding('info', 'unsafe', 'no-gitignore', 'No root .gitignore found in the scan',
+      'Archive exports or scan exclusions may omit tracked files.',
+      [], 'Check the source checkout and its ignore rules before adding a file.'));
   }
   for (const f of facts.filter((x) => x.kind === 'script' && x.data.runsOnInstall)) {
     findings.push(finding('info', 'unsafe', 'install-time-script', `Lifecycle script "${f.data.name}" can run automatically`,
@@ -324,7 +339,7 @@ export function diagnose(scan, { excerpts = false } = {}) {
   // ---- scan quality ----------------------------------------------------------
   for (const diag of scan.diagnostics) {
     if (['malformed-json', 'instruction-unreadable', 'file-limit', 'depth-limit', 'symlink-escape', 'unreadable-directory', 'file-too-large', 'detector-failed',
-      'credential-filename', 'unsafe-symlink-target'].includes(diag.code)) {
+      'credential-filename', 'unsafe-filename', 'unsafe-symlink-target'].includes(diag.code)) {
       const testFixture = diag.code === 'malformed-json' && diag.path?.split('/').slice(0, -1).includes('fixtures')
         && diag.path.split('/').some((part) => ['test', 'tests', '__tests__'].includes(part));
       const severity = diag.level === 'error' ? 'error' : testFixture ? 'info' : 'warning';
@@ -357,7 +372,8 @@ export function diagnose(scan, { excerpts = false } = {}) {
         const doc = documents.get(evidence.path);
         const line = doc?.lines[evidence.line - 1]?.trim();
         if (!line || doc.secrets.has(evidence.line) || line.includes('[REDACTED:')) continue;
-        evidence.excerpt = line.length > 120 ? `${line.slice(0, 117)}...` : line;
+        const characters = Array.from(line);
+        evidence.excerpt = characters.length > 120 ? `${characters.slice(0, 117).join('')}...` : line;
       }
     }
   }

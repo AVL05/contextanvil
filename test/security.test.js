@@ -12,7 +12,7 @@ import { diagnose } from '../src/doctor.js';
 import { run } from '../src/cli/index.js';
 import { renderDoctor, renderScan, scanToJson } from '../src/render/text.js';
 import { scanRepository } from '../src/scanner.js';
-import { FAKE, collector, makeRepo, trySymlink } from './helpers.js';
+import { FAKE, collector, makeRepo, treeDigest, trySymlink } from './helpers.js';
 
 test('detected secret-shaped script names do not leak through fact identifiers', (t) => {
   const secret = FAKE.aws();
@@ -97,6 +97,53 @@ test('an oversized or unfinished private-key block is hidden while preserving it
   assert.ok(!redact([header, ...lines].join('\n')).includes(body));
 });
 
+test('doctor excerpts preserve Unicode and line anchors in both output formats without writing', async (t) => {
+  const secret = FAKE.aws();
+  const long = `${'a'.repeat(116)}🚀 Read the [guide](docs/long.md).`;
+  const repo = makeRepo({
+    'AGENTS.md': Buffer.concat([
+      Buffer.from([
+        '# Guide', FAKE.privateKey(), long, `Read the [guide](docs/secret.md). Key: ${secret}`,
+        'See [the guide](docs/control.md).\rKeep this line visible.', 'See [the guide](docs/encoding.md). ',
+      ].join('\r\n')),
+      Buffer.from([0xff]),
+    ]),
+    'package.json': '{broken}',
+  });
+  t.after(repo.cleanup);
+  const before = treeDigest(repo.root);
+  const text = collector();
+  const json = collector();
+  const options = ['doctor', repo.root, '--excerpts', '--fail-on', 'never'];
+  assert.equal(await run(options, { stdout: text }), 0);
+  assert.equal(await run([...options, '--json'], { stdout: json }), 0);
+  const report = JSON.parse(json.text);
+  const excerpts = new Map(report.findings.filter((f) => f.id === 'missing-path-reference').map((f) => [
+    f.evidence[0].line, f.evidence[0].excerpt,
+  ]));
+  assert.equal(excerpts.get(5), `${'a'.repeat(116)}🚀...`);
+  assert.equal(excerpts.get(6), undefined);
+  assert.match(excerpts.get(7), /<U\+000D>/);
+  assert.match(excerpts.get(8), /\uFFFD/);
+  assert.equal(text.text.split('source (untrusted):').length - 1, 3);
+  assert.match(text.text, /\\ud83d\\ude80\.\.\./i);
+  assert.ok(!text.text.includes('\r'));
+  assert.ok(!(text.text + json.text).includes(secret));
+  assert.ok(report.findings.filter((f) => f.id === 'secret-in-instructions').every((f) => !f.evidence.some((e) => e.excerpt)));
+  assert.ok(report.findings.some((f) => f.id === 'malformed-json'));
+  assert.equal(treeDigest(repo.root), before);
+});
+
+test('line breaks and tabs in filesystem names are not indexed or shown literally', (t) => {
+  if (process.platform === 'win32') return t.skip('Windows forbids these filenames');
+  const name = 'bad\nfile\tname.js';
+  const repo = makeRepo({ [name]: 'export {};\n' });
+  t.after(repo.cleanup);
+  const scan = scanRepository(repo.root);
+  assert.ok(!scan.files.some((file) => file.path === name));
+  assert.match(scan.diagnostics.find((item) => item.code === 'unsafe-filename').path, /\\u\{a\}.*\\u\{9\}/);
+});
+
 function timed(fn) {
   const t = performance.now();
   const value = fn();
@@ -116,6 +163,7 @@ const HOSTILE = {
   'many spaces after hash': `#${' '.repeat(N)}x`,
   'many secret-like lines': Array.from({ length: 4000 }, (_, i) => `token_${i} = ${'Ab1'.repeat(8)}${i}`).join('\n'),
   'repeated shell quotes and link markers': '`[";'.repeat(N / 4),
+  'repeated external-folder prefixes': 'ported to `a/b` (the `'.repeat(Math.floor(N / 20)),
 };
 
 test('regression: hostile text cannot cause catastrophic regex backtracking (secrets, headings)', () => {
@@ -156,7 +204,7 @@ test('a scan of a repository with a hostile .gitignore and a long file name fini
 test('a scan, context and doctor over hostile instruction files finish quickly and leak nothing', () => {
   const secret = FAKE.generic() + 'LEAK';
   const repo = makeRepo({
-    'AGENTS.md': `# Guide\n\n${HOSTILE['dotted words']}\n\n${HOSTILE['repeated api_key']}\n\nAPI_KEY=${secret}\n`,
+    'AGENTS.md': `# Guide\n\n${HOSTILE['dotted words']}\n\n${HOSTILE['repeated api_key']}\n\n${HOSTILE['repeated external-folder prefixes'].slice(0, 3900)} [guide](docs/stale.md)\n\nAPI_KEY=${secret}\n`,
     'src/a.js': 'export {};\n',
     '.gitignore': 'x\n',
   });

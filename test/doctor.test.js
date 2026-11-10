@@ -383,3 +383,57 @@ test('review cues identify what to verify without claiming execution or exposure
     ['packages/broken/package.json', 'warning'], ['test/fixtures/broken/package.json', 'info'],
   ]);
 });
+
+test('shell scope stays unknown after a dynamic cd and honors literal cd --', (t) => {
+  const repo = makeRepo({
+    'package.json': '{"scripts":{"root":"node server.js"}}',
+    'apps/client/package.json': '{"scripts":{"client":"vite"}}',
+    'apps/client/readme.md': '# File, not a directory\n',
+    'AGENTS.md': [
+      '# Guide', '```bash', 'cd -- apps/client', 'npm run client', 'npm run missing',
+      'cd "$OTHER_PACKAGE" # if available', 'npm run unknown', '```',
+      'Run `cd apps/client/readme.md && npm run unreachable`.',
+    ].join('\n'),
+  });
+  t.after(repo.cleanup);
+  assert.deepEqual(find(report(repo.root), 'missing-script-reference').map((f) => f.evidence.map((e) => [e.path, e.line])),
+    [[['AGENTS.md', 5], ['apps/client/package.json', undefined]]]);
+});
+
+test('npm start fallback and pnpm script arguments keep the correct owning manifest', (t) => {
+  const repo = makeRepo({
+    'package.json': '{"scripts":{"serve":"node server.js"},"workspaces":["apps/*"]}',
+    'pnpm-workspace.yaml': 'packages: ["apps/*"]\n',
+    'server.js': '// default npm start target\n',
+    'apps/docs/package.json': '{"name":"@demo/docs","scripts":{"check":"node check.js"}}',
+    'AGENTS.md': [
+      '# Guide', 'Run `npm start` to start the root server.',
+      'Run `pnpm run serve --filter @demo/docs` to pass the filter to the script.',
+      'Run `pnpm --filter @demo/docs run missing` to check the selected package.',
+    ].join('\n'),
+  });
+  t.after(repo.cleanup);
+  const findings = find(report(repo.root), 'missing-script-reference');
+  assert.deepEqual(findings.map((f) => [f.evidence[0].line, f.evidence[1].path]), [[4, 'apps/docs/package.json']]);
+});
+
+test('explicit external and dependency scopes do not hide later local paths', (t) => {
+  const repo = makeRepo({
+    'AGENTS.md': [
+      '# Guide',
+      'Changes are ported to `example-org/docs-site` (the `src/content/reference/` folder).',
+      'Only two vendored files matter:',
+      '   `lib/parser/main.php` (engine loop), plus',
+      '   the reductions described in',
+      '   `lib/parser/other.php`.',
+      '',
+      'Read `lib/parser/local.php` before changing the local implementation.',
+    ].join('\n'),
+    'sub/AGENTS.md': '# Local\n\nSee [the guide](design.md).\n',
+    'design.md': '# Root guide\n',
+  });
+  t.after(repo.cleanup);
+  const stale = find(report(repo.root), 'missing-path-reference');
+  assert.deepEqual(stale.map((f) => [f.evidence[0].path, f.evidence[0].line]), [['AGENTS.md', 8], ['sub/AGENTS.md', 3]]);
+  assert.ok(stale.some((f) => f.title.includes('sub/design.md')));
+});
