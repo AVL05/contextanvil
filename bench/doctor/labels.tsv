@@ -1,0 +1,66 @@
+repo	category	id	verdict	path	line	key	severity	rationale
+agentsmd/agents.md	conflict	conflicting-package-managers	harmless	-	-	-	-	Line 10 explicitly gives interchangeable alternatives for the same dev script.
+agentsmd/agents.md	conflict	instruction-lockfile-mismatch	ambiguous	-	-	-	-	package.json:26 and pnpm-lock.yaml establish pnpm, but the guide presents npm script invocations as alternatives, not as dependency installation instructions.
+agentsmd/agents.md	stale	missing-script-reference	harmless	AGENTS.md	36	"test"	-	The test entry is explicitly conditional and there is no test script in package.json.
+agentsmd/agents.md	stale	missing-script-reference	non-issue	AGENTS.md	10	"dev"	-	All three invocations resolve the declared dev script after dependencies are installed.
+agentsmd/agents.md	missing	agents-without-claude	ambiguous	AGENTS.md	-	-	-	The absence is factual, but support for a second agent is not specified.
+agentsmd/agents.md	missing	instructions-omit-build	non-issue	-	-	-	-	The build command is documented with a deliberate prohibition for interactive sessions.
+cloudflare/agents	stale	missing-path-reference	issue	design/AGENTS.md	35	rfc-state-sync.md	warning	The linked RFC is absent from the pinned tree.
+cloudflare/agents	stale	missing-path-reference	issue	design/AGENTS.md	36	rfc-state-v2-batching.md	warning	The linked RFC is absent from the pinned tree.
+cloudflare/agents	stale	missing-path-reference	non-issue	AGENTS.md	90	agents/tsconfig	-	This is an exported package subpath, declared in packages/agents/package.json.
+cloudflare/agents	stale	missing-path-reference	non-issue	AGENTS.md	140	design/test-coverage-matrix.md	-	The cited design file is present.
+cloudflare/agents	stale	missing-path-reference	non-issue	packages/agents/AGENTS.md	409	mcp/server/index.ts	-	The layout prose uses paths under the package src directory. The server source is present there.
+cloudflare/agents	stale	missing-path-reference	non-issue	packages/agents/AGENTS.md	409	mcp/client/index.ts	-	The layout prose uses paths under the package src directory. The client source is present there.
+cloudflare/agents	stale	missing-path-reference	non-issue	packages/agents/AGENTS.md	409	mcp/server/legacy-agent.ts	-	The layout prose uses paths under the package src directory. The legacy source is present there.
+cloudflare/agents	stale	missing-path-reference	harmless	examples/AGENTS.md	179	src/styles.css	-	The path describes the template inside each full-stack example.
+cloudflare/agents	stale	missing-path-reference	harmless	docs/AGENTS.md	34	state.md	-	The line illustrates package-relative link syntax.
+cloudflare/agents	stale	missing-path-reference	harmless	agent-think/AGENTS.md	144	ca/warp-ca.crt	-	The CA file is deliberately gitignored and supplied by setup.
+cloudflare/agents	stale	missing-script-reference	non-issue	AGENTS.md	69	"test:react"	-	The script is defined in root package.json.
+cloudflare/agents	stale	missing-script-reference	non-issue	packages/agents/AGENTS.md	396	"evals"	-	The script belongs to packages/agents/package.json.
+cloudflare/agents	missing	instructions-omit-test	non-issue	-	-	-	-	The root instructions explicitly document pnpm run test.
+cloudflare/agents	conflict	conflicting-package-managers	non-issue	-	-	-	-	pnpm is the repository workflow. npm in the prose describes published packages.
+cloudflare/agents	missing	instruction-oversized	ambiguous	packages/agents/AGENTS.md	-	-	-	This is a scoped reference. Size alone does not establish a context problem.
+eslint/eslint	stale	missing-script-reference	non-issue	AGENTS.md	42	"start"	-	The command explicitly changes into docs and docs/package.json defines start.
+eslint/eslint	stale	missing-script-reference	non-issue	AGENTS.md	26	"test"	-	The root manifest defines test.
+eslint/eslint	missing	instructions-omit-build	ambiguous	-	-	-	-	The first build-like script updates documentation links. It is not a canonical build entry point.
+eslint/eslint	conflict	conflicting-package-managers	non-issue	-	-	-	-	The listed commands use npm. The test:pnpm script name is not a pnpm invocation.
+laravel/laravel	conflict	duplicate-instructions	ambiguous	-	-	-	-	The two entry files are identical. It is unknown whether the template generation makes duplication intentional.
+laravel/laravel	missing	instructions-omit-build	ambiguous	-	-	-	-	The root guide is an explicit bootstrap for generated project instructions.
+laravel/laravel	unsafe	install-time-script	security-issue	composer.json	51	post-autoload-dump	info	Composer declares an automatic lifecycle hook. Surface it as a review signal.
+laravel/laravel	unsafe	install-time-script	security-issue	composer.json	55	post-update-cmd	info	Composer declares an update lifecycle hook, which is relevant to setup involving dependency updates.
+laravel/laravel	unsafe	remote-shell-substitution	unsupported	AGENTS.md	20	-	-	The bootstrap asks the user to run downloaded code through shell substitution. The existing pipe detector does not cover this form.
+laravel/laravel	unsafe	remote-powershell-execution	unsupported	AGENTS.md	26	-	-	The Windows prerequisite downloads and evaluates a script. There is no corresponding detector.
+laravel/laravel	unsafe	remote-shell-substitution	unsupported	AGENTS.md	32	-	-	The Linux prerequisite also invokes remote shell code via substitution.
+filamentphp/filament	missing	instruction-empty	non-issue	CLAUDE.md	-	-	-	The short file imports the existing AGENTS.md rather than omitting instructions.
+filamentphp/filament	missing	instructions-omit-test	ambiguous	-	-	-	-	Composer is the documented main test flow. The JS-specific test command could still benefit contributors.
+filamentphp/filament	stale	missing-script-reference	non-issue	AGENTS.md	36	"build-demo"	-	package.json defines this command. The destination is conditional.
+filamentphp/filament	stale	composer-script-reference	unsupported	AGENTS.md	31	-	-	Composer script declarations are outside the stale command checker.
+phpstan/phpstan-src	stale	missing-path-reference	issue	turbo-ext/CLAUDE.md	72	build/TurboAttributeCollector.php	warning	The stated source location omits PHPStan/Build. The file is at build/PHPStan/Build/TurboAttributeCollector.php.
+phpstan/phpstan-src	stale	missing-path-reference	harmless	turbo-ext/CLAUDE.md	627	lib/PhpParser/ParserAbstract.php	-	The preceding sentence explicitly scopes the path to a vendored dependency.
+phpstan/phpstan-src	stale	missing-path-reference	non-issue	turbo-ext/CLAUDE.md	372	PN_REDUCE_SPLIT_1/2	-	This is compact notation for two C symbols, not a filesystem path.
+phpstan/phpstan-src	stale	missing-path-reference	harmless	turbo-ext/CLAUDE.md	69	vendor/turbo-class-map.php	-	The instructions explicitly identify the file as generated by Composer.
+phpstan/phpstan-src	missing	claude-without-agents	ambiguous	CLAUDE.md	-	-	-	The project does not promise instructions for other clients.
+phpstan/phpstan-src	missing	instruction-oversized	ambiguous	CLAUDE.md	-	-	-	The measured length is large, but audience and context cost are policy decisions.
+phpstan/phpstan-src	missing	instruction-oversized	ambiguous	turbo-ext/CLAUDE.md	-	-	-	The long reference is scoped to the extension directory.
+phpstan/phpstan-src	unsafe	install-time-script	security-issue	composer.json	138	post-autoload-dump	info	The pinned Composer script conditionally invokes the tracked generator. Surface the hook without inferring malicious behavior.
+astral-sh/ruff	missing	instruction-empty	non-issue	CLAUDE.md	-	-	-	The file imports the root guide.
+astral-sh/ruff	missing	instruction-large	ambiguous	AGENTS.md	-	-	-	Size is observable but harm from the cross-project guide was not measured.
+astral-sh/ruff	stale	missing-path-reference	non-issue	AGENTS.md	148	generics/legacy	-	The paragraph is relative to the mdtest suite; the folder exists inside that suite.
+astral-sh/ruff	stale	cargo-command-reference	unsupported	AGENTS.md	95	-	-	Cargo target validation is outside the Node script checker.
+nushell/nushell	conflict	duplicate-instructions	non-issue	-	-	-	-	CLAUDE.md is an in-tree symlink to AGENTS.md and cannot drift independently.
+nushell/nushell	stale	missing-path-reference	harmless	AGENTS.md	15	target/debug	-	Cargo build output is explicitly described as generated and configurable.
+nushell/nushell	stale	missing-path-reference	non-issue	AGENTS.md	18	devdocs/rust_style.md	-	The linked Rust style guide is tracked.
+nushell/nushell	stale	cargo-command-reference	unsupported	AGENTS.md	17	-	-	Cargo test target correctness is outside scope.
+openai/openai-python	missing	agents-without-claude	ambiguous	AGENTS.md	-	-	-	There is no stated requirement to support a second agent.
+openai/openai-python	stale	missing-path-reference	non-issue	AGENTS.md	33	.github/workflows/ci.yml	-	The workflow exists at the pinned commit.
+openai/openai-python	unsafe	suspicious-instruction:skip-confirmation	non-issue	AGENTS.md	34	-	-	The workflow description explicitly restricts privileges and disallows automatic merging.
+openai/openai-python	stale	python-command-reference	unsupported	AGENTS.md	20	-	-	Python version consistency across manifests and CI is outside scope.
+modelcontextprotocol/go-sdk	stale	missing-path-reference	non-issue	AGENTS.md	28	scripts/server-conformance.sh	-	The referenced script exists in the source snapshot.
+modelcontextprotocol/go-sdk	stale	missing-path-reference	non-issue	AGENTS.md	29	scripts/client-conformance.sh	-	The referenced script exists in the source snapshot.
+modelcontextprotocol/go-sdk	stale	go-command-reference	unsupported	AGENTS.md	22	-	-	Validation of Go package/test targets is outside scope.
+modelcontextprotocol/go-sdk	missing	agents-without-claude	ambiguous	AGENTS.md	-	-	-	The second agent client is not a documented target.
+charmbracelet/crush	missing	instruction-empty	non-issue	internal/cmd/stats/AGENTS.md	-	-	-	One focused formatting instruction adds useful local guidance on top of the root guide.
+charmbracelet/crush	missing	agents-without-claude	ambiguous	AGENTS.md	-	-	-	The absence of a second agent guide is factual. The need is unknown.
+charmbracelet/crush	stale	missing-path-reference	non-issue	AGENTS.md	12	github.com/charmbracelet/crush	-	This is the module identifier declared in go.mod, not a file.
+charmbracelet/crush	stale	missing-path-reference	non-issue	AGENTS.md	197	internal/ui/AGENTS.md	-	The nested instruction file is tracked.
+charmbracelet/crush	stale	go-command-reference	unsupported	AGENTS.md	105	-	-	Validation of Go or Task commands is outside scope.

@@ -1,0 +1,144 @@
+{
+  "engineCommit": "c8b2624b743902db0cdbd9f3eeb5ee91b85aa2bb",
+  "snapshot": "GitHub codeload tar.gz source export at pinned commit",
+  "repositories": [
+    {
+      "repo": "agentsmd/agents.md",
+      "ecosystem": "Next.js / React",
+      "commit": "d001185d792eb6402a58e4cbef1c228b309ec25d",
+      "archiveSha256": "1271ac6a8e0d49abf99f4d6ca62a776c0adf2d9ae2743fb262f355b0312ee14b",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "instructions": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "repo": "astral-sh/ruff",
+      "ecosystem": "Rust",
+      "commit": "3cd7c518989cb1f0656db144c8caf42b97d58673",
+      "archiveSha256": "340ed11e8d3e1575eb40a2b033f53f2b500f0b957056a56fa44f15a843defc82",
+      "license": "MIT and Apache-2.0 notices; consult LICENSE for component terms",
+      "licensePath": "LICENSE",
+      "instructions": [
+        "AGENTS.md",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "repo": "charmbracelet/crush",
+      "ecosystem": "Go",
+      "commit": "fedf5b82b392d2e02226b196c83f593c03d27803",
+      "archiveSha256": "5b0e768de2ddef9b66046793ba0729b252f32fd2ff2352bc87b22dd59479fb11",
+      "license": "FSL-1.1-MIT",
+      "licensePath": "LICENSE.md",
+      "instructions": [
+        "AGENTS.md",
+        "internal/cmd/stats/AGENTS.md",
+        "internal/oauth/callback/AGENTS.md",
+        "internal/ui/AGENTS.md"
+      ]
+    },
+    {
+      "repo": "cloudflare/agents",
+      "ecosystem": "TypeScript / React",
+      "commit": "55752144ac2c553e0ea8047b37c69e073ecd1755",
+      "archiveSha256": "eb3bffe10b8a182275c19773283f916d2e83ee73839a060713865b4a1e23f6a9",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "instructions": [
+        "AGENTS.md",
+        "agent-think/AGENTS.md",
+        "design/AGENTS.md",
+        "docs/AGENTS.md",
+        "examples/AGENTS.md",
+        "examples/webmcp-react/AGENTS.md",
+        "guides/AGENTS.md",
+        "packages/agents/AGENTS.md",
+        "packages/agents/src/tests/capabilities/AGENTS.md"
+      ]
+    },
+    {
+      "repo": "eslint/eslint",
+      "ecosystem": "JavaScript",
+      "commit": "af4c3a9cc7c770419532b191ac465d4a1566eb0c",
+      "archiveSha256": "c2d675723473ff7ef58b566e7052e394c9af7264270ee51572ea2f731ce357f5",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "instructions": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "repo": "filamentphp/filament",
+      "ecosystem": "PHP / Laravel",
+      "commit": "9d78093cfebdc96c077b1d8dbf94b41738f28992",
+      "archiveSha256": "c29508f45f30690d946a1ff43db46db2e2a51fb0940f6621b89cc39a68680b2a",
+      "license": "MIT",
+      "licensePath": "LICENSE.md",
+      "instructions": [
+        "AGENTS.md",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "repo": "laravel/laravel",
+      "ecosystem": "PHP / Laravel",
+      "commit": "def7ce14811161f3c689a71ca8abc1369da44bd6",
+      "archiveSha256": "2ffa5bf50e001b93d5f2e98fceb606b5d56e4732bcba7a41411a8eb55bf9cee7",
+      "license": "MIT declared; no root license file in export",
+      "licensePath": "composer.json",
+      "instructions": [
+        "AGENTS.md",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "repo": "modelcontextprotocol/go-sdk",
+      "ecosystem": "Go",
+      "commit": "328036ea2090c83f28c41a42ee4c9e5ec7393a4f",
+      "archiveSha256": "fd572f831eb692e028d2d40c3292a49ac3eb22241ec076d17abe6019fcd8c28f",
+      "license": "MIT / Apache-2.0 transition; CC-BY-4.0 for documentation contributions",
+      "licensePath": "LICENSE",
+      "instructions": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "repo": "nushell/nushell",
+      "ecosystem": "Rust",
+      "commit": "a4819256a2d875ca42c8600242388da291f3beaa",
+      "archiveSha256": "6d79ea2058fc17c2ba511640f43db2431ee325552c967ba595a8ec369afac8fe",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "instructions": [
+        "AGENTS.md",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "repo": "openai/openai-python",
+      "ecosystem": "Python",
+      "commit": "3d573c04ef9ceafcba682ae5a98b3971a062a777",
+      "archiveSha256": "39d03968323c63feee0b384618bc7a908b737f84c8c7d33d30785fe3f0e2df8e",
+      "license": "Apache-2.0",
+      "licensePath": "LICENSE",
+      "instructions": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "repo": "phpstan/phpstan-src",
+      "ecosystem": "PHP",
+      "commit": "24ba68cf280ea45f341189d42e7252970901914a",
+      "archiveSha256": "60c5890ea107aaed81cf1958275e95dbc57b63ac3380300279dd0a4c975ddeaf",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "instructions": [
+        "CLAUDE.md",
+        "apigen/infra/CLAUDE.md",
+        "turbo-ext/CLAUDE.md"
+      ]
+    }
+  ]
+}
